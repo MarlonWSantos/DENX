@@ -83,34 +83,34 @@ public class GETClient {
 	
   
     //Retorna uma lista com o recursos dos motes da rede
-  public String[] discover(String[] url) {
+  public String discover(String url) {
 	  
       //Declara o Coapclient de acordo com o número de URL recebidos
-    CoapClient[] client = new CoapClient[url.length];
+    CoapClient client = new CoapClient(url);
 	  
 	  //Vincula os Coapclient a cada URL recebida
-	for(int i=0;i<url.length;i++){		 
-      client[i] = new CoapClient(url[i]);
-	}
+	//for(int i=0;i<url.length;i++){		 
+     // client = new CoapClient(url);
+	//}
   
 	CoapResponse response = null;
 	
 	  //Cria lista para armazenar os recursos
-	String[] listResourceInfo = new String[url.length];
+	String listResourceInfo = new String();
 
 	
 	  try {
 		  //Cada Coapclient faz uma requisição para a URL e armazena a resposta
-		for(int i=0;i<url.length;i++) {  
-	      response = client[i].get();
+		//for(int i=0;i<url.length;i++) {  
+	      response = client.get();
 	    
 	        //Se houver conteúdo na mensagem,adiciona na lista
 	      if (response!=null) {
-	    	  listResourceInfo[i]=response.getResponseText();
+	    	  listResourceInfo=response.getResponseText();
 		  }else {
 		    System.out.println("No response received.");
 		  }
-	    }
+	    
 		
 	  }catch (ConnectorException e) {
 	  	  // TODO Auto-generated catch block
@@ -121,10 +121,10 @@ public class GETClient {
 	  }
 			
 	    //Finaliza os Coapclients criados
-	  for(int i=0;i<url.length;i++) {
-		client[i].shutdown();
+	 // for(int i=0;i<url.length;i++) {
+		client.shutdown();
 		
-	  }
+	 // }
 	  return listResourceInfo;
   }
 }

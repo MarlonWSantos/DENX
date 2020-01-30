@@ -15,6 +15,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -27,6 +29,7 @@ import javafx.scene.text.Text;
 public class Controller implements Initializable{
 	
 	private String url;
+	private String urlmote;
 
     @FXML
     private Button buttonDiscover;
@@ -73,8 +76,10 @@ public class Controller implements Initializable{
 
     
     @FXML
-    private void discoverMotes(ActionEvent event) throws IOException {
+    private void mainController(ActionEvent event) throws IOException {
     	WgetJava obj = new WgetJava();
+    	RoutesMotes routes = new RoutesMotes();
+    	ResourcesMotes res = new ResourcesMotes();
     	
       url=textFieldURL.getText();
 	 
@@ -83,35 +88,36 @@ public class Controller implements Initializable{
     
         //Faz o pedido ao Border Router da informação e armazena
       obj.sendGET();
-      treatmentOfInformation(obj);
+            
+      treatmentOfInformation(obj,routes);
+      showIPs(routes,res);
+      showRoutes(routes);
+      showResources();
     }
     
-    private void treatmentOfInformation(WgetJava obj) {
+    private void treatmentOfInformation(WgetJava obj,RoutesMotes routes) {
     	
-      RoutesMotes routes = new RoutesMotes();
-    
         //Armazena as informações das Rotas e IP
       routes.setResponse(obj.getResponse());
     
         //Filtra e separa os IPs das Rotas
       routes.filterResponse();
-      showRoutesAndIPs(routes);
     }
     
+    private void showIPs(RoutesMotes routes,ResourcesMotes res) {
+        ObservableList<String> ips = FXCollections.observableArrayList ();
+        
+        res.setIPs(routes.getListIPs());
+        
+        ips.addAll(res.getCoapIPs());
+        
+        listViewNeighbors.setItems(ips);
+    }
     
-    private void showRoutesAndIPs(RoutesMotes routes) {
-    	
-      ObservableList<String> ips = FXCollections.observableArrayList ();
- 
-      
-      ips.addAll(routes.getListIPs());
-      
-      listViewNeighbors.setItems(ips);
-      
-            
+    private void showRoutes(RoutesMotes routes) {
+    	            
       StringBuilder rotas = new StringBuilder();
-      
-      
+            
       for (String arr : routes.getListRoutes()) {
     	    rotas.append(arr);
     	}      
@@ -119,19 +125,45 @@ public class Controller implements Initializable{
       labelRoutes.setText(rotas.toString().replace(",", "")); 
     }
     
+    private void showResources() {
+		ResourcesMotes res = new ResourcesMotes();
+		GETClient client = new GETClient();
+
+
+    	listViewNeighbors.setOnMouseClicked(new EventHandler() {
+			@Override
+			public void handle(Event event) {
+				showAlert();
+				ObservableList<String> resources = FXCollections.observableArrayList();
+
+				String url;
+								
+				url = res.URLWellKnownCore(listViewNeighbors.getSelectionModel().getSelectedItem());
+				
+				resources.addAll(res.setResources(client.discover(url)));
+				System.out.println(resources.toString());
+    			listViewInfoMote.setItems(resources);
+			}			 
+	 });
+    }
+    
+    private void showAlert() {
+        Alert alert = new Alert(null);
+        //alert.setTitle("Test Connection");
+ 
+        // Header Text: null
+        alert.setHeaderText(null);
+        alert.setWidth(50);
+        alert.setContentText("Aguarde...");
+ 
+        alert.showAndWait();
+    }   
+    
+    
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		listViewNeighbors.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		
-		 listViewNeighbors.setOnMouseClicked(new EventHandler() {
-				@Override
-				public void handle(Event event) {
-		            System.out.print(listViewNeighbors.getSelectionModel().getSelectedItem());					
-				}			 
-		 });
-		
-		
+				
 		
 		
 		

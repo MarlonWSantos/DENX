@@ -46,7 +46,7 @@ public class ResourcesMotes{
 	  
       for (String arr : listIPs) {
     	    //Muda o prefixo fe80 do IP para aaaa e armazena
-    	  listCoapIPs.add(arr.replace("fe80", "coap://[aaaa").replace("\n", "]:5683"));
+    	  listCoapIPs.add(arr.replace("fe80", "[aaaa").replace("\n", "]"));
      }      
   }
   
@@ -56,57 +56,52 @@ public class ResourcesMotes{
     
   
     //Retorna a URL Well-kwown/core dos motes
-  public List<String> URLWellKnownCore() {
-	  
-	List<String> listIPs = new ArrayList<String>();
-
-    for(String arr: listCoapIPs) {
-    	listIPs.add(arr+"/.well-known/core");
-    }	
-	  return listIPs;
+  public String URLWellKnownCore(String ip) {
+		
+	  return ip.replace("[aaaa", "coap://[aaaa").replace("]", "]:5683/.well-known/core");
   }
   //TODO refactoring
 //*************************************************************************************************
     //Armazena todas os IPs Coaps e seus respectivos recursos
-  public void setAllResources(String[] listRes){
+  public List<String> setResources(String infoRes){
 	  
 	  
 	listResources = new ArrayList<String>();
 	
-	ArrayList<String> resources = new ArrayList<String>();
+	//ArrayList<String> resources = new ArrayList<String>();
 	
-	moteResource = new String[listRes.length][];
+	//moteResource = new String[infoRes.length][];
 	
 		
 	  //Repete de acordo com o número de IPs Coaps existentes      
-	for(int i=0;i<listCoapIPs.size();i++){
+	//for(int i=0;i<listCoapIPs.size();i++){
 		
 		  //Adiciona o IP Coap 
-		listResources.add("\n"+getCoapIP(i));
-		listResources.add("\n");
+		//listResources.add("\n"+getCoapIP(i));
+		//listResources.add("\n");
 						  	
 	    //Define o padrão das tags dos recursos na mensagem
       Pattern res = Pattern.compile("</(.*?)>;");
 	  
         //Busca dentro da mensagem o padrão dos recursos definido
-	  Matcher matcherRes = res.matcher(listRes[i]);
+	  Matcher matcherRes = res.matcher(infoRes);
 
 	    //Enquanto encontrar padrões do recursos,adiciona na lista temporária
 	  while (matcherRes.find()) {
-	    resources.add(matcherRes.group().replace("<","").replace(">;",""));
-	    resources.add("\n");
+	    listResources.add(matcherRes.group().replace("<","").replace(">;",""));
 	  }
 	  
 	    //Converte para array String a lista com os padrões de recursos e os armazena-os
-	  moteResource[i] = resources.toArray(new String[resources.size()]);
+	 // moteResource[i] = resources.toArray(new String[resources.size()]);
 	  
 	  
 	    //Adiciona os recursos da lista temporária para a lista definitava
-	  listResources.addAll(resources);
+	  //listResources.addAll(resources);
 	    //Limpa a lista temporária
-	  resources.clear();
-	}
-  } 
+	 // resources.clear();
+	
+     return listResources;
+  }
   
   public List<String> getListResources(){
 	  return listResources;
