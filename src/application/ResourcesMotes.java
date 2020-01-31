@@ -56,7 +56,7 @@ public class ResourcesMotes{
     
   
     //Retorna a URL Well-kwown/core dos motes
-  public String URLWellKnownCore(String ip) {
+  public String getURLWellKnownCore(String ip) {
 		
 	  return ip.replace("[aaaa", "coap://[aaaa").replace("]", "]:5683/.well-known/core");
   }

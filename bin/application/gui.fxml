@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.Pane?>
+
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="806.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
@@ -16,17 +18,18 @@
       <Text fx:id="textInfoMote" layoutX="184.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Infomation Mote" />
       <Button fx:id="buttonGet" layoutX="294.0" layoutY="32.0" mnemonicParsing="false" text="GET" />
       <Button fx:id="buttonObs" layoutX="373.0" layoutY="31.0" mnemonicParsing="false" text="OBS" />
-      <Text fx:id="textTerminal" layoutX="586.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Terminal" />
+      <Text fx:id="textTerminal" layoutX="20.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Terminal" />
       <ScrollPane layoutX="14.0" layoutY="100.0">
          <content>
             <ListView fx:id="listViewNeighbors" prefHeight="200.0" prefWidth="150.0" />
          </content>
       </ScrollPane>
       <ListView fx:id="listViewInfoMote" layoutX="177.0" layoutY="101.0" prefHeight="200.0" prefWidth="150.0" />
-      <Label fx:id="labelTerminal" alignment="TOP_LEFT" layoutX="590.0" layoutY="33.0" prefHeight="490.0" prefWidth="199.0" />
-      <Text fx:id="textRoutes" layoutX="31.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Routes" />
-      <Label fx:id="labelRoutes" alignment="TOP_LEFT" layoutX="20.0" layoutY="328.0" prefHeight="200.0" prefWidth="338.0" />
-      <Text fx:id="textResources" layoutX="344.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resources" />
-      <Label fx:id="labelRes" layoutX="338.0" layoutY="101.0" prefHeight="200.0" prefWidth="230.0" />
+      <Label fx:id="labelTerminal" alignment="TOP_LEFT" layoutX="9.0" layoutY="340.0" prefHeight="192.0" prefWidth="785.0" />
+      <Text fx:id="textRoutes" layoutX="357.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Routes" />
+      <Label fx:id="labelRoutes" alignment="TOP_CENTER" layoutX="344.0" layoutY="101.0" prefHeight="200.0" prefWidth="338.0" />
+      <Text fx:id="textResources" layoutX="101.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resources" />
+      <Label fx:id="labelRes" layoutX="549.0" layoutY="14.0" prefHeight="75.0" prefWidth="230.0" />
    </children>
 </AnchorPane>
+
