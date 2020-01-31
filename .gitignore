@@ -23,3 +23,6 @@
 hs_err_pid*
 /bin1/
 /bin/
+
+# Californium files
+Californium.properties

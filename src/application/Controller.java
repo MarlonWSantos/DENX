@@ -130,6 +130,10 @@ public class Controller {
     	listViewNeighbors.setOnMouseClicked(new EventHandler() {
 			@Override
 			public void handle(Event event) {
+				
+				  //Desabilita a listView após o primeiro clique
+				listViewNeighbors.setDisable(true);
+
 				  //Se não estiver buscando recursos, muda flag informando que estará buscando
 				if(loading==false) {
 					loading=true;
@@ -153,7 +157,9 @@ public class Controller {
 						@Override
 						public void handle(ActionEvent event) {
 							  //muda flag informando que não está buscando recursos
-							loading=false;											
+							loading=false;
+							  //Reabilita a listView para novo clique
+							listViewNeighbors.setDisable(false);
 						}
 										
 					}));
