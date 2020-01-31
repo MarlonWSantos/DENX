@@ -28,7 +28,6 @@
       <Label fx:id="labelTerminal" alignment="TOP_LEFT" layoutX="9.0" layoutY="340.0" prefHeight="192.0" prefWidth="785.0" />
       <Text fx:id="textRoutes" layoutX="357.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Routes" />
       <Label fx:id="labelRoutes" alignment="TOP_CENTER" layoutX="344.0" layoutY="101.0" prefHeight="200.0" prefWidth="338.0" />
-      <Text fx:id="textResources" layoutX="101.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resources" />
       <Label fx:id="labelRes" layoutX="549.0" layoutY="14.0" prefHeight="75.0" prefWidth="230.0" />
    </children>
 </AnchorPane>

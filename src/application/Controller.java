@@ -56,7 +56,6 @@ public class Controller {
     @FXML private Label labelTerminal;
     @FXML private Text textRoutes;
     @FXML private Label labelRoutes;
-    @FXML private Text textResources;
     @FXML private Label labelRes;
     @FXML private Pane AlertMessage;
     @FXML private Text TextAlert;
