@@ -40,7 +40,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import sun.net.www.protocol.file.Handler;
 
-public class Controller {
+public class Controller implements Initializable{
 	
 	private String urlBorderRouter;
 	private String urlmote;
@@ -190,8 +190,60 @@ public class Controller {
     }
     
     
+
+    @FXML
+    private void getMoteResource(ActionEvent event) {
+    	
+    	//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias 
+    	if(listViewIsNotEmpty(listViewNeighbors) && (listViewIsNotEmpty(listViewInfoMote))) { 
+    		
+    		ResourcesMotes res = new ResourcesMotes();
+    		StringBuilder urlResource = new StringBuilder();
+    		
+    		  //Captura o ip selecionado na listView
+    		String ipMote = listViewNeighbors.getSelectionModel().getSelectedItem();
+    		
+    		  //Captura o recurso selecionado na listView
+    		urlResource = res.getURLResource(ipMote,resource);
+    		
+    		System.out.println(urlResource.toString());
+    			
+    		
+    	}
+    }
     
     
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		StringBuilder list = new StringBuilder();
+		
+		list.append("linha1\n");
+		list.append("linha2\n");
+		list.append("linha3\n");
+		list.append("linha4\n");
+		list.append("linha5\n");
+		list.append("linha6\n");
+		list.append("linha7\n");
+		list.append("linha8\n");
+		list.append("linha9\n");
+		list.append("linha10\n");
+		list.append("linha11\n");
+		list.append("linha12\n");
+		list.append("linha13\n");
+		list.append("linha14\n");
+		list.append("linha15\n");
+		
+		labelRoutes.setText(list.toString());
+		
+		ObservableList<String> listObs = FXCollections.observableArrayList();
+		
+		listObs.add(list.toString());
+		
+		listViewNeighbors.setItems(listObs);
+		listViewInfoMote.setItems(listObs);
+		
+	}
     
 
 }

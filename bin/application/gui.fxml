@@ -13,8 +13,8 @@
       <Button fx:id="buttonDiscover" layoutX="20.0" layoutY="29.0" mnemonicParsing="false" onAction="#mainController" text="Discover" />
       <TextField fx:id="textFieldURL" layoutX="101.0" layoutY="31.0" promptText="aaaa::c30c:0:0:1" text="aaaa::c30c:0:0:1" />
       <Text fx:id="textNeighbors" layoutX="31.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Neighbors" />
-      <Text fx:id="textInfoMote" layoutX="184.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Infomation Mote" />
-      <Button fx:id="buttonGet" layoutX="294.0" layoutY="32.0" mnemonicParsing="false" text="GET" />
+      <Text fx:id="texResourcesMote" layoutX="184.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resources Mote" />
+      <Button fx:id="buttonGet" layoutX="294.0" layoutY="32.0" mnemonicParsing="false" onAction="#getMoteResource" text="GET" />
       <Button fx:id="buttonObs" layoutX="373.0" layoutY="31.0" mnemonicParsing="false" text="OBS" />
       <Text fx:id="textTerminal" layoutX="20.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Terminal" />
       <ScrollPane layoutX="14.0" layoutY="100.0">

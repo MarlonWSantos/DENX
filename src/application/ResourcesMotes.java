@@ -60,25 +60,13 @@ public class ResourcesMotes{
 		
 	  return ip.replace("[aaaa", "coap://[aaaa").replace("]", "]:5683/.well-known/core");
   }
-  //TODO refactoring
-//*************************************************************************************************
+  
+  
     //Armazena todas os IPs Coaps e seus respectivos recursos
   public List<String> setResources(String infoRes){
 	  
 	  
 	listResources = new ArrayList<String>();
-	
-	//ArrayList<String> resources = new ArrayList<String>();
-	
-	//moteResource = new String[infoRes.length][];
-	
-		
-	  //Repete de acordo com o número de IPs Coaps existentes      
-	//for(int i=0;i<listCoapIPs.size();i++){
-		
-		  //Adiciona o IP Coap 
-		//listResources.add("\n"+getCoapIP(i));
-		//listResources.add("\n");
 						  	
 	    //Define o padrão das tags dos recursos na mensagem
       Pattern res = Pattern.compile("</(.*?)>;");
@@ -90,61 +78,23 @@ public class ResourcesMotes{
 	  while (matcherRes.find()) {
 	    listResources.add(matcherRes.group().replace("<","").replace(">;",""));
 	  }
-	  
-	    //Converte para array String a lista com os padrões de recursos e os armazena-os
-	 // moteResource[i] = resources.toArray(new String[resources.size()]);
-	  
-	  
-	    //Adiciona os recursos da lista temporária para a lista definitava
-	  //listResources.addAll(resources);
-	    //Limpa a lista temporária
-	 // resources.clear();
 	
      return listResources;
   }
   
-  public List<String> getListResources(){
-	  return listResources;
-  }
   
-  
-    //Mostra os recursos por mote
-  public void showMoteResource(int mote) {
+    //Retorna URL do recurso para busca
+  public StringBuilder getURLResource(String ipMote, String resource) {
 	  
-	  System.out.println("\nRecursos do Mote\n");
+	  StringBuilder URLResMote = new StringBuilder();
 	  
-	    //Exibe o IP do mote
-	  System.out.println(getCoapIP(mote));
+	  URLResMote.append("coap://");
+	  URLResMote.append(ipMote);
+	  URLResMote.append(":5683");
+	  URLResMote.append(resource);
 	  
-	  //Exibe os recursos do mote especificado
-	for(int j=0;j<moteResource[mote].length;j++) {
-	  System.out.println(moteResource[mote][j]);	
-	}  
+	  return URLResMote;
   }
   
   
-    //Exibe todos os recursos dos motes
-  public void showAllResources(){
-
-    System.out.println("\nRecursos disponíveis\n");
-    
-      //Exibe os recursos de acordo com o tamanho da lista
-    for(int i=0;i<listResources.size();i++) {
-    	System.out.println(listResources.get(i));
-    }        
-  }  
-
-
-    //Retorna o Coap IP do mote
-  public String getCoapIP(int i){
-    return listCoapIPs.get(i);
-  }
-
-  public String getResources(int i){
-	  return listResources.get(i);
-  }
- 
-  public int getSizeListResources() {
-	  return listResources.size();
-  }
 }
