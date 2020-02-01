@@ -22,7 +22,7 @@
             <ListView fx:id="listViewNeighbors" onMouseClicked="#showMoteResources" prefHeight="200.0" prefWidth="150.0" />
          </content>
       </ScrollPane>
-      <ListView fx:id="listViewInfoMote" layoutX="177.0" layoutY="101.0" onMouseClicked="#hello" prefHeight="200.0" prefWidth="150.0" />
+      <ListView fx:id="listViewInfoMote" layoutX="177.0" layoutY="101.0" onMouseClicked="#moteResource" prefHeight="200.0" prefWidth="150.0" />
       <Label fx:id="labelTerminal" alignment="TOP_LEFT" layoutX="9.0" layoutY="340.0" prefHeight="192.0" prefWidth="785.0" />
       <Text fx:id="textRoutes" layoutX="357.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Routes" />
       <Label fx:id="labelRoutes" alignment="TOP_CENTER" layoutX="344.0" layoutY="101.0" prefHeight="200.0" prefWidth="338.0" />

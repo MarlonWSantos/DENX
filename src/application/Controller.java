@@ -42,8 +42,9 @@ import sun.net.www.protocol.file.Handler;
 
 public class Controller {
 	
-	private String url;
+	private String urlBorderRouter;
 	private String urlmote;
+	private String resource;
 	private boolean loading=false;
     
 	@FXML private Button buttonDiscover;
@@ -71,10 +72,10 @@ public class Controller {
     	GETClient client = new GETClient();
     	
     	//Captura a URL do Border Router digitada
-      url=textFieldURL.getText();
+      urlBorderRouter=textFieldURL.getText();
 	 
         //Armazena  URL do Border Router
-      obj.setUrl(url);
+      obj.setUrl(urlBorderRouter);
     
         //Faz o pedido ao Border Router da informação e armazena
       obj.sendGET();
@@ -124,51 +125,73 @@ public class Controller {
     
     
     @FXML
-    void showMoteResources(MouseEvent event) {
+    private void showMoteResources(MouseEvent event) {
     	
-    	ResourcesMotes res = new ResourcesMotes();
-    	GETClient client = new GETClient();
-    	
-		  //Desabilita a listView após o primeiro clique
-		listViewNeighbors.setDisable(true);
+    	  //Se a listView com IPs não estiver vazia
+    	if(listViewIsNotEmpty(listViewNeighbors)) { 
 
-		  //Se não estiver buscando recursos, muda flag informando que estará buscando
-		if(loading==false) {
-			loading=true;
+    	
+    	  ResourcesMotes res = new ResourcesMotes();
+    	  GETClient client = new GETClient();
+    	
+		    //Desabilita a listView após o primeiro clique
+		  listViewNeighbors.setDisable(true);
+
+		    //Se não estiver buscando recursos, muda flag informando que estará buscando
+		  if(loading==false) {
+			  loading=true;
 									
-			ObservableList<String> resources = FXCollections.observableArrayList();
+			  ObservableList<String> resources = FXCollections.observableArrayList();
 
-			String urlWellKnownCore;
+			  String urlWellKnownCore;
 			
-			  //Captura o IP clicado na lista e busca sua URL do Well-known/core
-			urlWellKnownCore = res.getURLWellKnownCore(listViewNeighbors.getSelectionModel().getSelectedItem());
+		  	    //Captura o IP clicado na lista e busca sua URL do Well-known/core
+			  urlWellKnownCore = res.getURLWellKnownCore(listViewNeighbors.getSelectionModel().getSelectedItem());
 			
-			  //Faz um busca dos recursos através da URL/well-known/core e armazena na lista					
-			resources.addAll(res.setResources(client.discover(urlWellKnownCore)));
+			    //Faz um busca dos recursos através da URL/well-known/core e armazena na lista					
+			  resources.addAll(res.setResources(client.discover(urlWellKnownCore)));
 			
-			  //Exibe na GUI a lista com os recursos
-			listViewInfoMote.setItems(resources);
+			    //Exibe na GUI a lista com os recursos
+			  listViewInfoMote.setItems(resources);
 			
-			  //Cria um thead aguardando 2 segundos até a próxima busca de recursos				
-			Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+			    //Cria um thead aguardando 2 segundos até a próxima busca de recursos				
+			  Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
 
-				@Override
-				public void handle(ActionEvent event) {
-					  //muda flag informando que não está buscando recursos
-					loading=false;
-					  //Reabilita a listView para novo clique
-					listViewNeighbors.setDisable(false);
-				}
+				  @Override
+				  public void handle(ActionEvent event) {
+					    //muda flag informando que não está buscando recursos
+					  loading=false;
+					    //Reabilita a listView para novo clique
+					  listViewNeighbors.setDisable(false);
+				  }
 								
-			}));
-			timeline.play();
-		}
+			  }));
+			  timeline.play();
+		  }
+    	}
     }
     
     @FXML
-    private void hello(MouseEvent event) {
-    		System.out.println("hello");
+    private void moteResource(MouseEvent event) {
+    	
+    	  //Se a listView com IPs e a lista com recursos, ambas não estiverem vazias 
+    	if(listViewIsNotEmpty(listViewNeighbors) && (listViewIsNotEmpty(listViewInfoMote))) { 
+
+    	    //Captura o recurso selecionado da listView e armazena
+    	  resource=listViewInfoMote.getSelectionModel().getSelectedItem();
+    	System.out.println(resource);
+    	}
     }
+    
+    
+    private boolean listViewIsNotEmpty(ListView<String> listView) {
+    	//Retorna TRUE se a listView não estiver vazia
+      return !listView.getSelectionModel().getSelectedItems().isEmpty();	
+    }
+    
+    
+    
+    
+    
 
 }
-//TODO **************************************************************************************************
