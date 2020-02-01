@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.sun.org.glassfish.external.statistics.annotations.Reset;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -80,7 +82,6 @@ public class Controller {
       treatmentOfInformation(obj,routes);
       showIPs(routes,res);
       showRoutes(routes);
-      showResources(res,client);
     }
     
     
@@ -122,51 +123,52 @@ public class Controller {
     }
     
     
-    
-    private void showResources(ResourcesMotes res, GETClient client) {
+    @FXML
+    void showMoteResources(MouseEvent event) {
     	
-    	  //Se a lista for clicada, busca os recursos do mote
-    	listViewNeighbors.setOnMouseClicked(new EventHandler() {
-			@Override
-			public void handle(Event event) {
-				
-				  //Desabilita a listView após o primeiro clique
-				listViewNeighbors.setDisable(true);
+    	ResourcesMotes res = new ResourcesMotes();
+    	GETClient client = new GETClient();
+    	
+		  //Desabilita a listView após o primeiro clique
+		listViewNeighbors.setDisable(true);
 
-				  //Se não estiver buscando recursos, muda flag informando que estará buscando
-				if(loading==false) {
-					loading=true;
-											
-					ObservableList<String> resources = FXCollections.observableArrayList();
+		  //Se não estiver buscando recursos, muda flag informando que estará buscando
+		if(loading==false) {
+			loading=true;
+									
+			ObservableList<String> resources = FXCollections.observableArrayList();
 
-					String urlWellKnownCore;
-					
-					  //Captura o IP clicado na lista e busca sua URL do Well-known/core
-					urlWellKnownCore = res.getURLWellKnownCore(listViewNeighbors.getSelectionModel().getSelectedItem());
-					
-					  //Faz um busca dos recursos através da URL/well-known/core e armazena na lista					
-					resources.addAll(res.setResources(client.discover(urlWellKnownCore)));
-					
-					  //Exibe na GUI a lista com os recursos
-					listViewInfoMote.setItems(resources);
-					
-					  //Cria um thead aguardando 2 segundos até a próxima busca de recursos				
-					Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+			String urlWellKnownCore;
+			
+			  //Captura o IP clicado na lista e busca sua URL do Well-known/core
+			urlWellKnownCore = res.getURLWellKnownCore(listViewNeighbors.getSelectionModel().getSelectedItem());
+			
+			  //Faz um busca dos recursos através da URL/well-known/core e armazena na lista					
+			resources.addAll(res.setResources(client.discover(urlWellKnownCore)));
+			
+			  //Exibe na GUI a lista com os recursos
+			listViewInfoMote.setItems(resources);
+			
+			  //Cria um thead aguardando 2 segundos até a próxima busca de recursos				
+			Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
 
-						@Override
-						public void handle(ActionEvent event) {
-							  //muda flag informando que não está buscando recursos
-							loading=false;
-							  //Reabilita a listView para novo clique
-							listViewNeighbors.setDisable(false);
-						}
-										
-					}));
-					timeline.play();
+				@Override
+				public void handle(ActionEvent event) {
+					  //muda flag informando que não está buscando recursos
+					loading=false;
+					  //Reabilita a listView para novo clique
+					listViewNeighbors.setDisable(false);
 				}
-			}	
-    	});
-    }    
+								
+			}));
+			timeline.play();
+		}
+    }
+    
+    @FXML
+    private void hello(MouseEvent event) {
+    		System.out.println("hello");
+    }
 
 }
 //TODO **************************************************************************************************
