@@ -35,37 +35,46 @@ public class GETClient {
 	private List<String> listResourceInfo;
 	
 		
-  public void get(String[] url) {
+  public StringBuilder get(String url) {
 	  
 	  //Declara o Coapclient de acordo com o número de URL recebidos
-	CoapClient[] client = new CoapClient[url.length];
+	CoapClient client = new CoapClient();
+	
+	StringBuilder resourceInfo = new StringBuilder();
+
 	  
 	  //Cria os Coapclient um para cada URL recebida
-	for(int i=0;i<url.length;i++){		 
-      client[i] = new CoapClient(url[i]);
-	}
+	client = new CoapClient(url);
+	
   
 	CoapResponse response = null;   
 				
 	  try {
 		  //Cada Coapclient faz uma requisição para a URL e armazena a resposta
-		for(int i=0;i<url.length;i++) {  
-	      response = client[i].get();
+		response = client.get();
 	    
 	        //Se houver conteúdo na mensagem
 	      if (response!=null) {
 
+	    	  
+	    	  resourceInfo.append(response.getCode()+"\n");
+	    	  resourceInfo.append(response.getOptions()+"\n");
+	    	  resourceInfo.append(response.getResponseText()+"\n");
+	    	  resourceInfo.append(System.lineSeparator() + "ADVANCED" + System.lineSeparator()+"\n");
+	    	  resourceInfo.append(Utils.prettyPrint(response)+"\n");
+	    	  
+/*
 	          //Exibe as informações recebidas
 		    System.out.println(response.getCode());
 		    System.out.println(response.getOptions());
 		    System.out.println(response.getResponseText());
 		    System.out.println(System.lineSeparator() + "ADVANCED" + System.lineSeparator());
 		    System.out.println(Utils.prettyPrint(response));
-				
+*/				
 		  }else {
 		    System.out.println("No response received.");
 		  }
-	    }
+	    
 		
 	  }catch (ConnectorException e) {
 	  	  // TODO Auto-generated catch block
@@ -76,9 +85,9 @@ public class GETClient {
 	  }
 			
 	    //Finaliza os Coapclients criados
-	  for(int i=0;i<url.length;i++) {
-		client[i].shutdown();
-	  }
+	
+		client.shutdown();
+	  return resourceInfo;
   }
 	
   

@@ -17,15 +17,10 @@
       <Button fx:id="buttonGet" layoutX="294.0" layoutY="32.0" mnemonicParsing="false" onAction="#getMoteResource" text="GET" />
       <Button fx:id="buttonObs" layoutX="373.0" layoutY="31.0" mnemonicParsing="false" text="OBS" />
       <Text fx:id="textTerminal" layoutX="20.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Terminal" />
-      <ScrollPane layoutX="14.0" layoutY="100.0">
-         <content>
-            <ListView fx:id="listViewNeighbors" onMouseClicked="#showMoteResources" prefHeight="200.0" prefWidth="150.0" />
-         </content>
-      </ScrollPane>
       <ListView fx:id="listViewInfoMote" layoutX="177.0" layoutY="101.0" onMouseClicked="#moteResource" prefHeight="200.0" prefWidth="150.0" />
-      <Label fx:id="labelTerminal" alignment="TOP_LEFT" layoutX="9.0" layoutY="340.0" prefHeight="192.0" prefWidth="785.0" />
+      <ListView fx:id="listViewNeighbors" layoutX="17.0" layoutY="102.0" onMouseClicked="#showMoteResources" prefHeight="200.0" prefWidth="150.0" />
       <Text fx:id="textRoutes" layoutX="357.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Routes" />
       <Label fx:id="labelRoutes" alignment="TOP_CENTER" layoutX="344.0" layoutY="101.0" prefHeight="200.0" prefWidth="338.0" />
-      <Label fx:id="labelRes" layoutX="549.0" layoutY="14.0" prefHeight="75.0" prefWidth="230.0" />
+      <ScrollPane fx:id="scrollTerminal" hbarPolicy="NEVER" layoutX="14.0" layoutY="332.0" prefHeight="200.0" prefWidth="784.0" />
    </children>
 </AnchorPane>

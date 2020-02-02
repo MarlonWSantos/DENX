@@ -29,6 +29,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -47,21 +48,20 @@ public class Controller implements Initializable{
 	private String resource;
 	private boolean loading=false;
     
-	@FXML private Button buttonDiscover;
 	@FXML private TextField textFieldURL;
     @FXML private Text textNeighbors;
     @FXML private Text textInfoMote;
+    @FXML private Text textRoutes;
+    @FXML private Text TextAlert;
+    @FXML private Text textTerminal;
+    
+	@FXML private Button buttonDiscover;
     @FXML private Button buttonGet;
     @FXML private Button buttonObs;
-    @FXML private Text textTerminal;
     @FXML private ListView<String> listViewNeighbors;
     @FXML private ListView<String> listViewInfoMote;
-    @FXML private Label labelTerminal;
-    @FXML private Text textRoutes;
     @FXML private Label labelRoutes;
-    @FXML private Label labelRes;
-    @FXML private Pane AlertMessage;
-    @FXML private Text TextAlert;
+    @FXML private ScrollPane scrollTerminal;
     
     
     @FXML
@@ -179,7 +179,6 @@ public class Controller implements Initializable{
 
     	    //Captura o recurso selecionado da listView e armazena
     	  resource=listViewInfoMote.getSelectionModel().getSelectedItem();
-    	System.out.println(resource);
     	}
     }
     
@@ -198,52 +197,41 @@ public class Controller implements Initializable{
     	if(listViewIsNotEmpty(listViewNeighbors) && (listViewIsNotEmpty(listViewInfoMote))) { 
     		
     		ResourcesMotes res = new ResourcesMotes();
+    		GETClient client = new GETClient();
     		StringBuilder urlResource = new StringBuilder();
+    		StringBuilder infoResource = new StringBuilder();
+    		Label labelTerminal = new Label();
+    		
     		
     		  //Captura o ip selecionado na listView
     		String ipMote = listViewNeighbors.getSelectionModel().getSelectedItem();
     		
-    		  //Captura o recurso selecionado na listView
+    		  //Captura o recurso selecionado na listView e armazena sua URL
     		urlResource = res.getURLResource(ipMote,resource);
     		
-    		System.out.println(urlResource.toString());
-    			
+    		  //Faz uma requisição ao mote(servidor) pela informação sobre o recurso e armazena
+    		infoResource = client.get(urlResource.toString());
     		
+    		  //Insere a informação do recurso do mote na label
+    		labelTerminal.setText(infoResource.toString());
+    		
+    		  //Habilita a quebra de linha em textos longos
+    		labelTerminal.setWrapText(true);
+    		
+    		  //Define a largua máxima da label
+    		labelTerminal.setMaxWidth(784);// (mesma largura da ScrollPane)
+
+    		  //Exibe a informação do recurso na GUI	
+    		scrollTerminal.setContent(labelTerminal);
     	}
     }
     
     
+ 
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		StringBuilder list = new StringBuilder();
-		
-		list.append("linha1\n");
-		list.append("linha2\n");
-		list.append("linha3\n");
-		list.append("linha4\n");
-		list.append("linha5\n");
-		list.append("linha6\n");
-		list.append("linha7\n");
-		list.append("linha8\n");
-		list.append("linha9\n");
-		list.append("linha10\n");
-		list.append("linha11\n");
-		list.append("linha12\n");
-		list.append("linha13\n");
-		list.append("linha14\n");
-		list.append("linha15\n");
-		
-		labelRoutes.setText(list.toString());
-		
-		ObservableList<String> listObs = FXCollections.observableArrayList();
-		
-		listObs.add(list.toString());
-		
-		listViewNeighbors.setItems(listObs);
-		listViewInfoMote.setItems(listObs);
-		
 	}
-    
 
 }

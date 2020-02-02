@@ -1,11 +1,5 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
-#labelTerminal{
-	-fx-background-color: black;
-	-fx-text-fill: white;
-	-fx-font-size: 13px
-}
-
 #labelRoutes{
 	-fx-border-color: black;
 	-fx-background-color: white;
