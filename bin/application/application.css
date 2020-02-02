@@ -27,6 +27,13 @@
 	-fx-background-radius: 10 10 10 10; 
 }
 
+.toggle-button:selected {
+    -fx-background-color: #B40431;
+    -fx-text-fill: white;
+	-fx-font-size: 12px;
+	-fx-font-weight: bold;
+}
+
 
 
 

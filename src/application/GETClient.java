@@ -56,21 +56,13 @@ public class GETClient {
 	        //Se houver conteúdo na mensagem
 	      if (response!=null) {
 
-	    	  
+	          //Armazena a informação do recurso do mote
 	    	  resourceInfo.append(response.getCode()+"\n");
 	    	  resourceInfo.append(response.getOptions()+"\n");
 	    	  resourceInfo.append(response.getResponseText()+"\n");
 	    	  resourceInfo.append(System.lineSeparator() + "ADVANCED" + System.lineSeparator()+"\n");
 	    	  resourceInfo.append(Utils.prettyPrint(response)+"\n");
 	    	  
-/*
-	          //Exibe as informações recebidas
-		    System.out.println(response.getCode());
-		    System.out.println(response.getOptions());
-		    System.out.println(response.getResponseText());
-		    System.out.println(System.lineSeparator() + "ADVANCED" + System.lineSeparator());
-		    System.out.println(Utils.prettyPrint(response));
-*/				
 		  }else {
 		    System.out.println("No response received.");
 		  }
@@ -84,9 +76,9 @@ public class GETClient {
 	    e.printStackTrace();
 	  }
 			
-	    //Finaliza os Coapclients criados
-	
+	  	  //Finaliza o Coapclient criado
 		client.shutdown();
+		//Retorna a informação do recurso
 	  return resourceInfo;
   }
 	
@@ -94,13 +86,9 @@ public class GETClient {
     //Retorna uma lista com o recursos dos motes da rede
   public String discover(String url) {
 	  
-      //Declara o Coapclient de acordo com o número de URL recebidos
+      //Declara o Coapclient de acordo com o URL recebido
     CoapClient client = new CoapClient(url);
 	  
-	  //Vincula os Coapclient a cada URL recebida
-	//for(int i=0;i<url.length;i++){		 
-     // client = new CoapClient(url);
-	//}
   
 	CoapResponse response = null;
 	
@@ -109,8 +97,7 @@ public class GETClient {
 
 	
 	  try {
-		  //Cada Coapclient faz uma requisição para a URL e armazena a resposta
-		//for(int i=0;i<url.length;i++) {  
+		    //Coapclient faz uma requisição para a URL e armazena a resposta
 	      response = client.get();
 	    
 	        //Se houver conteúdo na mensagem,adiciona na lista
@@ -129,11 +116,9 @@ public class GETClient {
 	    e.printStackTrace();
 	  }
 			
-	    //Finaliza os Coapclients criados
-	 // for(int i=0;i<url.length;i++) {
+	      //Finaliza o Coapclient criado
 		client.shutdown();
 		
-	 // }
 	  return listResourceInfo;
   }
 }

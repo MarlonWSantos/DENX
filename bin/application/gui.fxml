@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
@@ -15,7 +16,6 @@
       <Text fx:id="textNeighbors" layoutX="31.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Neighbors" />
       <Text fx:id="texResourcesMote" layoutX="184.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resources Mote" />
       <Button fx:id="buttonGet" layoutX="294.0" layoutY="32.0" mnemonicParsing="false" onAction="#getMoteResource" text="GET" />
-      <Button fx:id="buttonObs" layoutX="373.0" layoutY="31.0" mnemonicParsing="false" text="OBS" />
       <Text fx:id="textTerminal" layoutX="20.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Terminal" />
       <ListView fx:id="listViewInfoMote" layoutX="177.0" layoutY="101.0" onMouseClicked="#moteResource" prefHeight="200.0" prefWidth="150.0" />
       <ListView fx:id="listViewNeighbors" layoutX="17.0" layoutY="102.0" onMouseClicked="#showMoteResources" prefHeight="200.0" prefWidth="150.0" />
@@ -25,5 +25,6 @@
          <content>
             <Label fx:id="labelTerminal" layoutX="14.0" layoutY="332.0" prefHeight="200.0" prefWidth="784.0" />
          </content></ScrollPane>
+      <ToggleButton fx:id="toggleObs" layoutX="376.0" layoutY="32.0" mnemonicParsing="false" onAction="#obsMote" prefHeight="26.0" prefWidth="46.0" text="Obs" />
    </children>
 </AnchorPane>

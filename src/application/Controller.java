@@ -33,6 +33,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -54,7 +55,7 @@ public class Controller implements Initializable{
     @FXML private Text textRoutes;
     @FXML private Text TextAlert;
     @FXML private Text textTerminal;
-    
+    @FXML private ToggleButton toggleObs;    
 	@FXML private Button buttonDiscover;
     @FXML private Button buttonGet;
     @FXML private Button buttonObs;
@@ -229,6 +230,14 @@ public class Controller implements Initializable{
     }
     
     
+    @FXML
+    private void obsMote(ActionEvent event) {
+    	int i=0;
+    	while(toggleObs.isSelected() && i<5) {
+    	System.out.println("hello");
+    	i++;
+    	}
+    }
  
     
 	@Override
