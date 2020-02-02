@@ -1,20 +1,31 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
-#labelRoutes{
-	-fx-border-color: black;
-	-fx-background-color: white;
-	-fx-border-radius: 10px;
-	-fx-background-radius: 10 10 10 10; 
-}	
+	
 
 .root{
 	-fx-background-color: #D8D8D8;	
 }
 
 
+#labelTerminal{
+	-fx-background-color: black;
+	-fx-text-fill: white;
+	-fx-font-size: 13px
+}
+
+#scrollTerminal{
+	-fx-background: black;
+	-fx-text-fill: white;
+	-fx-font-size: 13px
+}
 
 
-
+#labelRoutes{
+	-fx-border-color: black;
+	-fx-background-color: white;
+	-fx-border-radius: 10px;
+	-fx-background-radius: 10 10 10 10; 
+}
 
 
 

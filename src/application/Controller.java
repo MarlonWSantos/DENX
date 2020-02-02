@@ -61,7 +61,9 @@ public class Controller implements Initializable{
     @FXML private ListView<String> listViewNeighbors;
     @FXML private ListView<String> listViewInfoMote;
     @FXML private Label labelRoutes;
+    @FXML private Label labelTerminal;
     @FXML private ScrollPane scrollTerminal;
+    
     
     
     @FXML
@@ -200,7 +202,7 @@ public class Controller implements Initializable{
     		GETClient client = new GETClient();
     		StringBuilder urlResource = new StringBuilder();
     		StringBuilder infoResource = new StringBuilder();
-    		Label labelTerminal = new Label();
+    		labelTerminal = new Label();
     		
     		
     		  //Captura o ip selecionado na listView

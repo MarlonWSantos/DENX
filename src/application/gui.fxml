@@ -21,6 +21,9 @@
       <ListView fx:id="listViewNeighbors" layoutX="17.0" layoutY="102.0" onMouseClicked="#showMoteResources" prefHeight="200.0" prefWidth="150.0" />
       <Text fx:id="textRoutes" layoutX="357.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Routes" />
       <Label fx:id="labelRoutes" alignment="TOP_CENTER" layoutX="344.0" layoutY="101.0" prefHeight="200.0" prefWidth="338.0" />
-      <ScrollPane fx:id="scrollTerminal" hbarPolicy="NEVER" layoutX="14.0" layoutY="332.0" prefHeight="200.0" prefWidth="784.0" />
+      <ScrollPane fx:id="scrollTerminal" hbarPolicy="NEVER" layoutX="14.0" layoutY="332.0" maxWidth="784.0" prefHeight="200.0" prefWidth="784.0">
+         <content>
+            <Label fx:id="labelTerminal" layoutX="14.0" layoutY="332.0" prefHeight="200.0" prefWidth="784.0" />
+         </content></ScrollPane>
    </children>
 </AnchorPane>
