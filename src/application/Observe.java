@@ -40,42 +40,33 @@ import org.eclipse.californium.core.network.config.NetworkConfig.Keys;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
 
-public class Observer {
+public class Observe {
+	
+	private CoapObserveRelation relation;
+	private CoapClient client;;
+	//private StringBuilder infoObs;
 
-	public static void observer(String[] url) {
-		
-		int i=0;
+	public  void observe(String url) {
+		//StringBuilder infoObs = new StringBuilder();
+		client = new CoapClient(url);
+      
+		relation = client.observe(new CoapHandler() {
+		  @Override
+		  public void onLoad(CoapResponse response) {
+		    System.out.println(response.getResponseText());
+			 // infoObs.append(response.getResponseText()+"\n");
 			
-		CoapClient[] client = new CoapClient[url.length];
+		  }
+		  @Override
+		  public void onError() {
+		    System.err.println("Failed");
+		  }
+		});
 		
-		for (i=0;i<url.length;i++) {
-			client[i] = new CoapClient(url[i]);
-		}
+		System.out.println("inicia espera");
 		
-				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-				System.out.println("OBSERVE (press enter to exit)");
 				
-				CoapObserveRelation[] relation = new CoapObserveRelation[url.length];
-				
-				for(i=0;i<url.length;i++) {
-				
-					relation[i] = client[i].observe(new CoapHandler() {
-						@Override
-						public void onLoad(CoapResponse response) {
-							System.out.println(response.getResponseText());
-						}
-						@Override
-						public void onError() {
-							System.err.println("Failed");
-						}
-					});
-				}
-							
-		// wait for user
-				try { br.readLine(); } catch (IOException e) { }
-				
-				System.out.println("CANCELLATION");
-				  
-	};
+		  //relation.proactiveCancel();			 
+	}
+		
 }

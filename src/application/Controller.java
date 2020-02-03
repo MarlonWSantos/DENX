@@ -42,7 +42,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import sun.net.www.protocol.file.Handler;
 
-public class Controller implements Initializable{
+public class Controller {
 	
 	private String urlBorderRouter;
 	private String urlmote;
@@ -232,17 +232,47 @@ public class Controller implements Initializable{
     
     @FXML
     private void obsMote(ActionEvent event) {
-    	int i=0;
-    	while(toggleObs.isSelected() && i<5) {
-    	System.out.println("hello");
-    	i++;
-    	}
+
+     	  
+     	//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias 
+      	if(listViewIsNotEmpty(listViewNeighbors) && listViewIsNotEmpty(listViewInfoMote) && toggleObs.isSelected()) {
+      		
+      		disableNodes();
+      		
+    		ResourcesMotes res = new ResourcesMotes();
+    		Observe obs = new Observe();
+    		StringBuilder urlResource = new StringBuilder();
+    		
+    		
+    		  //Captura o ip selecionado na listView
+    		String ipMote = listViewNeighbors.getSelectionModel().getSelectedItem();
+    		
+    		  //Captura o recurso selecionado na listView e armazena sua URL
+    		urlResource = res.getURLResource(ipMote,resource);
+    		
+    		  //Faz uma requisição ao mote(servidor) solicitando observação do recurso
+    		obs.observe(urlResource.toString());
+      		
+      	}else {
+      		enableNodes();
+      	}
+        
+    }
+    
+      //Desabilita botões e listViews
+    private void disableNodes() {
+    	buttonDiscover.setDisable(true);
+    	buttonGet.setDisable(true);
+    	listViewNeighbors.setDisable(true);
+    	listViewInfoMote.setDisable(true);
     }
  
-    
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		
-	}
+      //Habilita botões e listViews
+    private void enableNodes() {
+    	buttonDiscover.setDisable(false);
+    	buttonGet.setDisable(false);
+    	listViewNeighbors.setDisable(false);
+    	listViewInfoMote.setDisable(false);
+    }    
 
 }

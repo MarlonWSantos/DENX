@@ -112,7 +112,7 @@ public class CoapObserveRelation {
 	 * @param request the request
 	 * @param endpoint the endpoint
 	 */
-	protected CoapObserveRelation(Request request, Endpoint endpoint, ScheduledThreadPoolExecutor executor) {
+	public CoapObserveRelation(Request request, Endpoint endpoint, ScheduledThreadPoolExecutor executor) {
 		this.request = request;
 		this.endpoint = endpoint;
 		this.orderer = new ObserveNotificationOrderer();
