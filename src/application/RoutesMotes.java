@@ -22,14 +22,11 @@ package application;
 import java.util.regex.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.*;
 
 
 public class RoutesMotes{
 
   private String response;
-  private String[] ip;
-  private String[] route;
   private List<String> listRoutes;
   private List<String> listIPs;
 

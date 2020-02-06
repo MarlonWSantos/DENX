@@ -21,25 +21,15 @@ package application;
 
 import java.util.regex.*;
 
-import javax.management.StringValueExp;
-import javax.swing.text.StringContent;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
-import java.io.*;
-import java.lang.reflect.Array;
 
 
 public class ResourcesMotes{
 
-  private String ip;
   private List<String> listResources;
   private List<String> listCoapIPs;
-  private String[][] moteResource;
-
-  
-    //Armazena os IPs coap para busca de seus recursos  
+  //Armazena os IPs coap para busca de seus recursos  
   public void setIPs(List<String> listIPs){
 	  listCoapIPs = new ArrayList<>();
 	  
