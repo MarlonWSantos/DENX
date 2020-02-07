@@ -25,6 +25,7 @@
          <content>
             <Label fx:id="labelTerminal" layoutX="14.0" layoutY="332.0" prefHeight="200.0" prefWidth="784.0" />
          </content></ScrollPane>
-      <ToggleButton fx:id="toggleObs" layoutX="376.0" layoutY="32.0" mnemonicParsing="false" onAction="#obsMote" prefHeight="26.0" prefWidth="46.0" text="Obs" />
+      <ToggleButton fx:id="toggleObs" layoutX="376.0" layoutY="32.0" mnemonicParsing="false" onAction="#showInfoObs" prefHeight="26.0" prefWidth="46.0" text="Obs" />
+      <Label fx:id="lbl" layoutX="647.0" layoutY="10.0" prefHeight="88.0" prefWidth="133.0" text="Label" />
    </children>
 </AnchorPane>

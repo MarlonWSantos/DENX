@@ -5,6 +5,7 @@ public class ThreadsObserve implements Runnable {
 
 	protected static Observe obs = new Observe();
 	private String url;
+	private String nomeThread;
 
 
 	public ThreadsObserve() {
@@ -26,9 +27,10 @@ public class ThreadsObserve implements Runnable {
 	}
 
 
-	public ThreadsObserve(String url) {
+	public ThreadsObserve(String url,String nomeThread) {
+		this.nomeThread=nomeThread;
 		this.url = url;
-		Thread t1 = new Thread(this);
+		Thread t1 = new Thread(this,nomeThread);
 		t1.start();
 	}
 

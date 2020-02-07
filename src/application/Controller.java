@@ -40,6 +40,8 @@ public class Controller {
 	@FXML private Label labelTerminal;
 	@FXML private ScrollPane scrollTerminal;
 
+	private StringBuilder lista = new StringBuilder();
+	private int i=0;
 
 
 	@FXML
@@ -212,6 +214,7 @@ public class Controller {
 
 	@FXML
 	private void obsMote(ActionEvent event) {
+		
 
 
 		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias e o botão selecionado
@@ -232,14 +235,12 @@ public class Controller {
 			//TODO Threads criados aqui não são finalizados após o fim da execução
 			
 			//Cria uma thread para fazer requisição ao mote(servidor) solicitando observação do recurso
-			ThreadsObserve t1 = new ThreadsObserve(urlResource.toString());
-
-			//Faz uma requisição ao mote(servidor) pela informação sobre o recurso e armazena
+			new ThreadsObserve(urlResource.toString(),"Obs #1");
 			
 
 		}else {
 			  //Cria uma thread para finalizar a observação 
-			ThreadsObserve t2 = new ThreadsObserve();
+			new ThreadsObserve();
 			enableNodes();
 		}
 
@@ -259,6 +260,19 @@ public class Controller {
 		buttonGet.setDisable(false);
 		listViewNeighbors.setDisable(false);
 		listViewInfoMote.setDisable(false);
-	}	
+	}
+	
+	@FXML
+	public void showInfoObs(ActionEvent event) {
+		i++;
+		System.out.println("Dentro da Show info: ");
+		lista.append("hello marlon"+i);
+		lista.append("\n");
+		labelTerminal.setText(lista.toString());
+		labelTerminal.setWrapText(true);
+		labelTerminal.setMaxWidth(784);
+		scrollTerminal.setContent(labelTerminal);
 
+	}	
+  	
 }
