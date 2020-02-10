@@ -27,24 +27,28 @@ import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
 
 public class Observe{
+		
+	
+	CoapObserveRelation relation;
+	CoapClient client;
+	
 
-    @FXML
-    private Label lbl;
 
 	public void observe(String url) {
 
-		CoapClient client = new CoapClient(url);
-		Controller ctr = new Controller();		
 
-		CoapObserveRelation relation = client.observe(new CoapHandler() {
+		client = new CoapClient(url);
+
+		relation = client.observe(new CoapHandler() {
 			@Override
 			public void onLoad(CoapResponse response) {
-				System.out.println(response.getResponseText());
-				//ctr.showInfoObs(response.getResponseText().toString());
-				lbl.setText(response.getResponseText().toString());
-				lbl.setText("hello");
-
-
+				System.out.println("resposta: "+response.getResponseText());
+					Controller.lista.append(response.getResponseText());
+					Controller.lista.append("\n");
+				
+			
+			
+				
 			}
 			@Override
 			public void onError() {
@@ -52,26 +56,22 @@ public class Observe{
 			}
 		});
 
-		System.out.println("Observando...");
 
-		synchronized (this) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				
-				e.printStackTrace();
-			}
-		}		
-		
-		relation.proactiveCancel();	
-		
-		
 		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
 			
+			synchronized (this) {
+
+				wait();
+			}	
+			
+			
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Fim da observação");
+	
+		relation.reactiveCancel();
+
+
 	}	
+	
 }

@@ -26,6 +26,7 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("IIPDN - GUI CoAP Client");
 			primaryStage.show();
+			
 
 			 //TODO corrige o problema dos Threads não finalizados
 //			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -43,7 +44,6 @@ public class Main extends Application {
 
 	public static void main(String[] args){
 		launch(args);
-
 
 	}
 

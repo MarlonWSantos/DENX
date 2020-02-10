@@ -40,8 +40,9 @@ public class Controller {
 	@FXML private Label labelTerminal;
 	@FXML private ScrollPane scrollTerminal;
 
-	private StringBuilder lista = new StringBuilder();
-	private int i=0;
+	public static StringBuilder lista = new StringBuilder("Vazio\n");
+	
+	public static boolean stopObs;
 
 
 	@FXML
@@ -220,10 +221,14 @@ public class Controller {
 		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias e o botão selecionado
 		if(listViewIsNotEmpty(listViewNeighbors) && listViewIsNotEmpty(listViewInfoMote) && toggleObs.isSelected()) {
 
+			
 			disableNodes();
 
 			ResourcesMotes res = new ResourcesMotes();
 			StringBuilder urlResource = new StringBuilder();
+			Observe obs = new Observe();
+			
+			
 
 
 			//Captura o ip selecionado na listView
@@ -234,11 +239,12 @@ public class Controller {
 
 			//TODO Threads criados aqui não são finalizados após o fim da execução
 			
-			//Cria uma thread para fazer requisição ao mote(servidor) solicitando observação do recurso
-			new ThreadsObserve(urlResource.toString(),"Obs #1");
-			
+							
+				//Cria uma thread para fazer requisição ao mote(servidor) solicitando observação do recurso
+				new ThreadsObserve(this,urlResource.toString(),"Thread Obs #1");
 
 		}else {
+			
 			  //Cria uma thread para finalizar a observação 
 			new ThreadsObserve();
 			enableNodes();
@@ -262,17 +268,16 @@ public class Controller {
 		listViewInfoMote.setDisable(false);
 	}
 	
-	@FXML
-	public void showInfoObs(ActionEvent event) {
-		i++;
-		System.out.println("Dentro da Show info: ");
-		lista.append("hello marlon"+i);
-		lista.append("\n");
+	public void show() {
+				
 		labelTerminal.setText(lista.toString());
-		labelTerminal.setWrapText(true);
-		labelTerminal.setMaxWidth(784);
-		scrollTerminal.setContent(labelTerminal);
 
-	}	
+		labelTerminal.setWrapText(true);
+
+		labelTerminal.setMaxWidth(784);
+
+		scrollTerminal.setContent(labelTerminal);		
+	}
+	
   	
 }
