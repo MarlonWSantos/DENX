@@ -69,7 +69,7 @@ public class Observe{
 			e.printStackTrace();
 		}
 	
-		relation.reactiveCancel();
+		relation.proactiveCancel();
 
 
 	}	
