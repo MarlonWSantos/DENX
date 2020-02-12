@@ -35,7 +35,7 @@ public class Observe{
 
 	public void observe(String url,Controller control) {
 		
-		 infoObs = new StringBuilder();
+		 infoObs = new StringBuilder("\nObserving ...\n\n");
 
 
 		client = new CoapClient(url);
@@ -43,7 +43,6 @@ public class Observe{
 		relation = client.observe(new CoapHandler() {
 			@Override
 			public void onLoad(CoapResponse response) {
-				System.out.println("resposta: "+response.getResponseText());
 				infoObs.append(response.getResponseText());
 				infoObs.append("\n");
 				showInfoObs(control);
@@ -70,7 +69,10 @@ public class Observe{
 			e.printStackTrace();
 		}
 	
-		client.shutdown();	
+		client.shutdown();
+		infoObs.append("\nObserve stopped!\n\n");
+		showInfoObs(control);
+
 
 	}	
 	

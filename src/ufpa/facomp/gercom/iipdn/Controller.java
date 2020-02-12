@@ -224,12 +224,14 @@ public class Controller {
 			
 							
 			//Cria uma thread para fazer requisição ao mote(servidor) solicitando observação do recurso
-			new ThreadsObserve(this,urlResource.toString(),"Thread Obs #1");
+			new ThreadsObserve(this,urlResource.toString(),"Thread Observe");
+			
 
 		}else {
 			
 			  //Cria uma thread para finalizar a observação 
 			new ThreadsObserve();
+			
 			
 			enableNodes();
 		}

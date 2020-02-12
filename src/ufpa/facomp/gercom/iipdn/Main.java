@@ -20,22 +20,13 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("gui.fxml"));
+			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("iipdn.fxml"));
 			Scene scene = new Scene(root,800,537);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("iipdn.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("IIPDN - GUI CoAP Client");
 			primaryStage.show();
 			
-
-			 //TODO corrige o problema dos Threads não finalizados
-//			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-//				@Override
-//				public void handle(WindowEvent e) {
-//					Platform.exit();
-//					System.exit(0);
-//				}
-//			});
 			
 		} catch(Exception e) {
 			e.printStackTrace();
