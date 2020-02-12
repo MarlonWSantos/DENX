@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="806.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="806.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufpa.facomp.gercom.iipdn.Controller">
    <children>
       <Button fx:id="buttonDiscover" layoutX="20.0" layoutY="29.0" mnemonicParsing="false" onAction="#mainController" text="Discover" />
       <TextField fx:id="textFieldURL" layoutX="101.0" layoutY="31.0" promptText="aaaa::c30c:0:0:1" text="aaaa::c30c:0:0:1" />

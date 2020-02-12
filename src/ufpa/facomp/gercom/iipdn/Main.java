@@ -1,4 +1,4 @@
-package application;
+package ufpa.facomp.gercom.iipdn;
 
 import java.net.URL;
 import java.util.ResourceBundle;

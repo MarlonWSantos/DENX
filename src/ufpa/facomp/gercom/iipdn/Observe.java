@@ -15,15 +15,11 @@
  *    Achim Kraus (Bosch Software Innovations GmbH) - add saving payload
  *    Marlon W. Santos (Federal University of Pará) - add Observer                                                  
  ******************************************************************************/
-package application;
+package ufpa.facomp.gercom.iipdn;
 
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
-
 import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
 

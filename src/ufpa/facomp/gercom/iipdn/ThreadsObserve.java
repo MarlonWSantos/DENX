@@ -1,14 +1,10 @@
-package application;
-
-import com.sun.webkit.ContextMenu.ShowContext;
-
-import javafx.application.Platform;
+package ufpa.facomp.gercom.iipdn;
 
 public class ThreadsObserve implements Runnable {
 	
 	
 	protected static Observe obs = new Observe();
-	protected static Controller control;
+	protected Controller control;
 	private String url;
 	private String nomeThread;
 	

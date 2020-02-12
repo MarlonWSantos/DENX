@@ -1,4 +1,4 @@
-package application;
+package ufpa.facomp.gercom.iipdn;
 
 import java.io.IOException;
 import javafx.animation.KeyFrame;
@@ -212,9 +212,6 @@ public class Controller {
 
 			ResourcesMotes res = new ResourcesMotes();
 			StringBuilder urlResource = new StringBuilder();
-			Observe obs = new Observe();
-			
-			
 
 
 			//Captura o ip selecionado na listView

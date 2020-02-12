@@ -14,7 +14,7 @@
  *    Matthias Kovatsch - creator and main architect
  *    Achim Kraus (Bosch Software Innovations GmbH) - add saving payload     
  ******************************************************************************/
-package application;
+package ufpa.facomp.gercom.iipdn;
 
 import java.io.IOException;
 import org.eclipse.californium.core.CoapClient;

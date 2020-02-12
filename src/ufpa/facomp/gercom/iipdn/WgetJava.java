@@ -1,4 +1,4 @@
-package application;
+package ufpa.facomp.gercom.iipdn;
 
 
 /*     Wget Java is a non-interactive network downloader in Java

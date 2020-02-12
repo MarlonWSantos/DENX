@@ -1,4 +1,4 @@
-package application;
+package ufpa.facomp.gercom.iipdn;
 
 
 /*     Resources Motes - It store the resources of each mote
