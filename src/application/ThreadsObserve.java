@@ -11,12 +11,7 @@ public class ThreadsObserve implements Runnable {
 	private String url;
 	private String nomeThread;
 	
-	//protected static Controller control = new Controller();
 	protected static Controller control;
-
-	
-
-
 
 
 	public ThreadsObserve( ) {
@@ -26,16 +21,8 @@ public class ThreadsObserve implements Runnable {
 			public void run() {
 				
 				synchronized (obs) {
-					obs.notifyAll();
-
-					
-				}
-				
-				
-
-
-
-
+					obs.notifyAll();					
+				}				
 			}
 		});
 
@@ -49,28 +36,20 @@ public class ThreadsObserve implements Runnable {
 		this.control=control;
 		
 		Thread beginObserve = new Thread(this,nomeThread);
-		Thread refresh = new Thread(this,"refresh terminal");
 		
 		beginObserve.start();
 		
-
-		
-		refresh.start();
 	}
 
 
 	@Override
-	public void run() {
-		
+	public void run() {		
 
 		if(Thread.currentThread().getName().equalsIgnoreCase("Thread Obs #1")) {
 
-			obs.observe(url);
-				
+			obs.observe(url);				
 
-		}
-
-		
+		}		
 		
 		if(Thread.currentThread().getName().equalsIgnoreCase("refresh terminal")) {
 
@@ -78,8 +57,7 @@ public class ThreadsObserve implements Runnable {
 				@Override
 				public void run() {
 
-							control.show();
-
+						//	control.show();
 					
 				}
 			});

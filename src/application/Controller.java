@@ -197,18 +197,8 @@ public class Controller {
 
 			//Faz uma requisição ao mote(servidor) pela informação sobre o recurso e armazena
 			infoResource = client.get(urlResource.toString());
-
-			//Insere a informação do recurso do mote na label
-			labelTerminal.setText(infoResource.toString());
-
-			//Habilita a quebra de linha em textos longos
-			labelTerminal.setWrapText(true);
-
-			//Define a largua máxima da label
-			labelTerminal.setMaxWidth(784);// (mesma largura da ScrollPane)
-
-			//Exibe a informação do recurso na GUI	
-			scrollTerminal.setContent(labelTerminal);
+			
+			showOnGUI(infoResource.toString());
 		}
 	}
 
@@ -240,8 +230,8 @@ public class Controller {
 			//TODO Threads criados aqui não são finalizados após o fim da execução
 			
 							
-				//Cria uma thread para fazer requisição ao mote(servidor) solicitando observação do recurso
-				new ThreadsObserve(this,urlResource.toString(),"Thread Obs #1");
+			//Cria uma thread para fazer requisição ao mote(servidor) solicitando observação do recurso
+			new ThreadsObserve(this,urlResource.toString(),"Thread Obs #1");
 
 		}else {
 			
@@ -268,14 +258,18 @@ public class Controller {
 		listViewInfoMote.setDisable(false);
 	}
 	
-	public void show() {
+	public void showOnGUI(String info) {
 				
-		labelTerminal.setText(lista.toString());
+		//Insere a informação do recurso do mote na label
+		labelTerminal.setText(info);
 
+		//Habilita a quebra de linha em textos longos
 		labelTerminal.setWrapText(true);
 
-		labelTerminal.setMaxWidth(784);
+		//Define a largua máxima da label
+		labelTerminal.setMaxWidth(784);// (mesma largura da ScrollPane)
 
+		//Exibe a informação do recurso na GUI	
 		scrollTerminal.setContent(labelTerminal);		
 	}
 	

@@ -43,11 +43,6 @@ public class Observe{
 			@Override
 			public void onLoad(CoapResponse response) {
 				System.out.println("resposta: "+response.getResponseText());
-					Controller.lista.append(response.getResponseText());
-					Controller.lista.append("\n");
-				
-			
-			
 				
 			}
 			@Override
@@ -69,8 +64,7 @@ public class Observe{
 			e.printStackTrace();
 		}
 	
-		relation.proactiveCancel();
-
+		client.shutdown();
 
 	}	
 	
