@@ -8,10 +8,10 @@ public class ThreadsObserve implements Runnable {
 	
 	
 	protected static Observe obs = new Observe();
+	protected static Controller control;
 	private String url;
 	private String nomeThread;
 	
-	protected static Controller control;
 
 
 	public ThreadsObserve( ) {
@@ -35,34 +35,17 @@ public class ThreadsObserve implements Runnable {
 		this.url = url;
 		this.control=control;
 		
-		Thread beginObserve = new Thread(this,nomeThread);
+		Thread beginObserve = new Thread(this,nomeThread);		
 		
-		beginObserve.start();
-		
+		beginObserve.start();		
+
 	}
 
 
 	@Override
 	public void run() {		
 
-		if(Thread.currentThread().getName().equalsIgnoreCase("Thread Obs #1")) {
-
-			obs.observe(url);				
-
-		}		
-		
-		if(Thread.currentThread().getName().equalsIgnoreCase("refresh terminal")) {
-
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-
-						//	control.show();
-					
-				}
-			});
-
-		}
+			obs.observe(url,control);		
 		
 	}
 

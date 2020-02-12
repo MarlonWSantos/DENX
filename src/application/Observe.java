@@ -20,6 +20,7 @@ package application;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -29,12 +30,16 @@ import org.eclipse.californium.core.CoapObserveRelation;
 public class Observe{
 		
 	
-	CoapObserveRelation relation;
-	CoapClient client;
+	private CoapObserveRelation relation;
+	private CoapClient client;		
+	private StringBuilder infoObs;	
+	protected static Controller control;
 	
 
 
-	public void observe(String url) {
+	public void observe(String url,Controller control) {
+		
+		 infoObs = new StringBuilder();
 
 
 		client = new CoapClient(url);
@@ -43,6 +48,11 @@ public class Observe{
 			@Override
 			public void onLoad(CoapResponse response) {
 				System.out.println("resposta: "+response.getResponseText());
+				infoObs.append(response.getResponseText());
+				infoObs.append("\n");
+				showInfoObs(control);
+				
+				
 				
 			}
 			@Override
@@ -64,8 +74,19 @@ public class Observe{
 			e.printStackTrace();
 		}
 	
-		client.shutdown();
+		client.shutdown();	
 
 	}	
+	
+	private void showInfoObs(Controller control) {
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				control.showOnGUI(infoObs.toString());
+				
+			}
+		});
+	}
 	
 }

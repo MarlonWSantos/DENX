@@ -40,11 +40,7 @@ public class Controller {
 	@FXML private Label labelTerminal;
 	@FXML private ScrollPane scrollTerminal;
 
-	public static StringBuilder lista = new StringBuilder("Vazio\n");
 	
-	public static boolean stopObs;
-
-
 	@FXML
 	private void mainController(ActionEvent event) throws IOException {
 		WgetJava obj = new WgetJava();
@@ -237,6 +233,7 @@ public class Controller {
 			
 			  //Cria uma thread para finalizar a observação 
 			new ThreadsObserve();
+			
 			enableNodes();
 		}
 
