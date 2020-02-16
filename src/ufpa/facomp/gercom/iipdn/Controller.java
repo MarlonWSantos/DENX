@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -36,9 +37,11 @@ public class Controller {
 	@FXML private Button buttonObs;
 	@FXML private ListView<String> listViewNeighbors;
 	@FXML private ListView<String> listViewInfoMote;
+	@FXML private ListView<?> listViewGroup;
 	@FXML private Label labelRoutes;
 	@FXML private Label labelTerminal;
 	@FXML private ScrollPane scrollTerminal;
+	@FXML private CheckBox checkObsGroup;
 
 	
 	@FXML
