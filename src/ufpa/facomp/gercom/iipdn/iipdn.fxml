@@ -28,12 +28,12 @@
          </content></ScrollPane>
       <ToggleButton fx:id="toggleObs" layoutX="376.0" layoutY="32.0" mnemonicParsing="false" onAction="#obsMote" prefHeight="26.0" prefWidth="46.0" text="Obs" />
       <ListView fx:id="listViewGroup" layoutX="690.0" layoutY="101.0" prefHeight="200.0" prefWidth="230.0" />
-      <CheckBox fx:id="checkObsGroup" layoutX="690.0" layoutY="48.0" mnemonicParsing="false" text="Observe Group" />
-      <Text fx:id="TextGroups" layoutX="703.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Group" />
+      <CheckBox fx:id="checkObsGroup" layoutX="690.0" layoutY="48.0" mnemonicParsing="false" onAction="#visibleObsGroup" text="Observe Group" />
+      <Text fx:id="textGroups" layoutX="703.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Group" />
       <Text fx:id="textSaveto" layoutX="694.0" layoutY="471.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save to:" />
       <TextField fx:id="texFieldSaveTo" layoutX="747.0" layoutY="454.0" promptText="/tmp" />
       <Button fx:id="buttonAddItem" layoutX="703.0" layoutY="324.0" mnemonicParsing="false" text="Add item" />
-      <Button fx:id="buttonremoveItem" layoutX="806.0" layoutY="323.0" mnemonicParsing="false" text="Remove item" />
+      <Button fx:id="buttonRemoveItem" layoutX="806.0" layoutY="323.0" mnemonicParsing="false" text="Remove item" />
       <Button fx:id="buttonClearGroup" layoutX="698.0" layoutY="388.0" mnemonicParsing="false" text="Clear Group" />
       <ToggleButton fx:id="buttonObsGroup" layoutX="812.0" layoutY="390.0" mnemonicParsing="false" text="Obs Group" />
       <Text layoutX="691.0" layoutY="501.0" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="*Default saving to /tmp" />

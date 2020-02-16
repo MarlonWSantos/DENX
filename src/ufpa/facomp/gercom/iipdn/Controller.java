@@ -46,13 +46,14 @@ public class Controller implements Initializable{
 	@FXML private Label labelTerminal;
 	@FXML private ScrollPane scrollTerminal;
 	@FXML private CheckBox checkObsGroup;
-	@FXML private Text TextGroups;
+	@FXML private Text textGroups;
     @FXML private Text textSaveto;
     @FXML private TextField texFieldSaveTo;
     @FXML private Button buttonAddItem;
-    @FXML private Button buttonremoveItem;
+    @FXML private Button buttonRemoveItem;
     @FXML private Button buttonClearGroup;
     @FXML private ToggleButton buttonObsGroup;
+    
 
 	
 	@FXML
@@ -253,7 +254,7 @@ public class Controller implements Initializable{
 	}
 
 	//Desabilita botões e listViews
-	public void disableNodes(Boolean option ) {
+	public void disableNodes(boolean option ) {
 		buttonDiscover.setDisable(option);
 		buttonGet.setDisable(option);
 		listViewNeighbors.setDisable(option);
@@ -276,12 +277,31 @@ public class Controller implements Initializable{
 		//Exibe a informação do recurso na GUI	
 		scrollTerminal.setContent(labelTerminal);		
 	}
+	
+	public void disableObsGroup(double opacity,boolean option) {
+		textGroups.setOpacity(opacity);
+		listViewGroup.setDisable(option);
+		buttonAddItem.setDisable(option);
+		buttonRemoveItem.setDisable(option);
+		buttonClearGroup.setDisable(option);
+		buttonObsGroup.setDisable(option);
+		textSaveto.setOpacity(opacity);
+		texFieldSaveTo.setDisable(option);
+	}
+	
+	 @FXML
+	 private void visibleObsGroup(ActionEvent event) {
+		 if(checkObsGroup.isSelected()) {
+			 disableObsGroup(1, false);
+		 }else {
+			 disableObsGroup(0.5,true); 
+		 }			
+	 }
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		listViewGroup.setDisable(true);
-		butt
+		disableObsGroup(0.5,true);
 		
 	}
 	
