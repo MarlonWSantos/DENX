@@ -1,6 +1,9 @@
 package ufpa.facomp.gercom.iipdn;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -8,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -19,7 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class Controller {
+public class Controller implements Initializable{
 
 	private String urlBorderRouter;
 	private String resource;
@@ -42,6 +46,13 @@ public class Controller {
 	@FXML private Label labelTerminal;
 	@FXML private ScrollPane scrollTerminal;
 	@FXML private CheckBox checkObsGroup;
+	@FXML private Text TextGroups;
+    @FXML private Text textSaveto;
+    @FXML private TextField texFieldSaveTo;
+    @FXML private Button buttonAddItem;
+    @FXML private Button buttonremoveItem;
+    @FXML private Button buttonClearGroup;
+    @FXML private ToggleButton buttonObsGroup;
 
 	
 	@FXML
@@ -264,6 +275,14 @@ public class Controller {
 
 		//Exibe a informação do recurso na GUI	
 		scrollTerminal.setContent(labelTerminal);		
+	}
+
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		listViewGroup.setDisable(true);
+		butt
+		
 	}
 	
   	
