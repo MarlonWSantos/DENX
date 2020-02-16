@@ -28,6 +28,7 @@ public class Controller implements Initializable{
 	private String urlBorderRouter;
 	private String resource;
 	private boolean loading=false;
+	private StringBuilder URLGroup;
 
 	@FXML private TextField textFieldURL;
 	@FXML private Text textNeighbors;
@@ -41,10 +42,11 @@ public class Controller implements Initializable{
 	@FXML private Button buttonObs;
 	@FXML private ListView<String> listViewNeighbors;
 	@FXML private ListView<String> listViewInfoMote;
-	@FXML private ListView<?> listViewGroup;
+	@FXML private ListView<String> listViewGroup;
 	@FXML private Label labelRoutes;
 	@FXML private Label labelTerminal;
 	@FXML private ScrollPane scrollTerminal;
+	
 	@FXML private CheckBox checkObsGroup;
 	@FXML private Text textGroups;
     @FXML private Text textSaveto;
@@ -169,6 +171,7 @@ public class Controller implements Initializable{
 		}
 	}
 
+	
 	@FXML
 	private void moteResource(MouseEvent event) {
 
@@ -185,7 +188,6 @@ public class Controller implements Initializable{
 		//Retorna TRUE se a listView não estiver vazia
 		return !listView.getSelectionModel().getSelectedItems().isEmpty();	
 	}
-
 
 
 	@FXML
@@ -222,7 +224,7 @@ public class Controller implements Initializable{
 		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias e o botão selecionado
 		if(listViewIsNotEmpty(listViewNeighbors) && listViewIsNotEmpty(listViewInfoMote) && toggleObs.isSelected()) {
 
-			
+			 
 			disableNodes(true);
 
 			ResourcesMotes res = new ResourcesMotes();
@@ -253,6 +255,7 @@ public class Controller implements Initializable{
 
 	}
 
+	
 	//Desabilita botões e listViews
 	public void disableNodes(boolean option ) {
 		buttonDiscover.setDisable(option);
@@ -278,6 +281,7 @@ public class Controller implements Initializable{
 		scrollTerminal.setContent(labelTerminal);		
 	}
 	
+	
 	  //Desabilita o campo Observe Group
 	public void disableObsGroup(double opacity,boolean option) {
 		textGroups.setOpacity(opacity);
@@ -290,16 +294,75 @@ public class Controller implements Initializable{
 		texFieldSaveTo.setDisable(option);
 	}
 	
+	
 	 @FXML
 	 private void visibleObsGroup(ActionEvent event) {
 		   //Se o checkbox estiver selecionado habilita o campo Observe Group
 		 if(checkObsGroup.isSelected()) {
 			 disableObsGroup(1, false);
 			 
+			   //Cria uma lista para o grupo de IPs
+			 URLGroup = new StringBuilder();
+			 
+			 
+			 
 			 //Do contrário desabilita o campo Observe Group
 		 }else {
-			 disableObsGroup(0.5,true); 
+			 disableObsGroup(0.5,true);
+			 
+			 clearGroup(event);
 		 }			
+	 }
+	 
+	 
+	 @FXML
+	 private void addGroupItem(ActionEvent event) {
+		 
+		  //Se a listView com IPs e a lista com recursos, ambas não estiverem vazias 
+		if(listViewIsNotEmpty(listViewNeighbors) && (listViewIsNotEmpty(listViewInfoMote))) {
+			
+			  //Captura IP e recurso selecionado
+			String ipMote = listViewNeighbors.getSelectionModel().getSelectedItem();
+			String resource = listViewInfoMote.getSelectionModel().getSelectedItem();
+			
+			  //Armazena a URL
+			URLGroup.append(ipMote+resource);
+			URLGroup.append("\n");
+			
+			ObservableList<String> listGroup = FXCollections.observableArrayList();
+			
+			  //Insere a URL no grupo pra exibição
+			listGroup.add(URLGroup.toString());
+			
+			  //Exibe o grupo de IPs
+			listViewGroup.setItems(listGroup);
+		}
+	 }
+
+	 
+	 @FXML
+	 private void clearGroup(ActionEvent event) {
+		 
+		 //Se a lista de grupos de IPs não estiver vazia,
+		if(URLGroup.length() != 0) {
+			
+			  //Limpa a listView do grupo e apaga os IPs da memória
+			listViewGroup.getItems().clear();
+			URLGroup.delete(0, URLGroup.length());
+			URLGroup.setLength(0);
+		}
+	 }
+	    
+	 
+	 @FXML
+	 private void obsGroup(ActionEvent event) {
+
+	 }
+	 
+	 
+	 @FXML
+	 private void removeGroupItem(ActionEvent event) {
+
 	 }
 
 
