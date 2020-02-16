@@ -24,7 +24,7 @@
       <Label fx:id="labelRoutes" alignment="TOP_CENTER" layoutX="344.0" layoutY="101.0" prefHeight="200.0" prefWidth="338.0" />
       <ScrollPane fx:id="scrollTerminal" layoutX="14.0" layoutY="332.0" prefHeight="200.0" prefWidth="670.0" vbarPolicy="ALWAYS">
          <content>
-            <Label fx:id="labelTerminal" layoutX="14.0" layoutY="332.0" prefHeight="200.0" />
+            <Label fx:id="labelTerminal" layoutX="14.0" layoutY="332.0" prefWidth="670.0" />
          </content></ScrollPane>
       <ToggleButton fx:id="toggleObs" layoutX="376.0" layoutY="32.0" mnemonicParsing="false" onAction="#obsMote" prefHeight="26.0" prefWidth="46.0" text="Obs" />
       <ListView fx:id="listViewGroup" layoutX="690.0" layoutY="101.0" prefHeight="200.0" prefWidth="230.0" />

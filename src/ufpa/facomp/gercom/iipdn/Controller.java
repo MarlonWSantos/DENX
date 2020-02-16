@@ -211,7 +211,7 @@ public class Controller {
 		if(listViewIsNotEmpty(listViewNeighbors) && listViewIsNotEmpty(listViewInfoMote) && toggleObs.isSelected()) {
 
 			
-			disableNodes();
+			disableNodes(true);
 
 			ResourcesMotes res = new ResourcesMotes();
 			StringBuilder urlResource = new StringBuilder();
@@ -236,26 +236,20 @@ public class Controller {
 			new ThreadsObserve();
 			
 			
-			enableNodes();
+			disableNodes(false);
 		}
 
 	}
 
 	//Desabilita botões e listViews
-	public void disableNodes() {
-		buttonDiscover.setDisable(true);
-		buttonGet.setDisable(true);
-		listViewNeighbors.setDisable(true);
-		listViewInfoMote.setDisable(true);
+	public void disableNodes(Boolean option ) {
+		buttonDiscover.setDisable(option);
+		buttonGet.setDisable(option);
+		listViewNeighbors.setDisable(option);
+		listViewInfoMote.setDisable(option);
 	}
 
-	//Habilita botões e listViews
-	private void enableNodes() {
-		buttonDiscover.setDisable(false);
-		buttonGet.setDisable(false);
-		listViewNeighbors.setDisable(false);
-		listViewInfoMote.setDisable(false);
-	}
+	
 	
 	public void showOnGUI(String info) {
 				
@@ -266,7 +260,7 @@ public class Controller {
 		labelTerminal.setWrapText(true);
 
 		//Define a largua máxima da label
-		labelTerminal.setMaxWidth(784);// (mesma largura da ScrollPane)
+		labelTerminal.setMaxWidth(670);// (mesma largura da ScrollPane)
 
 		//Exibe a informação do recurso na GUI	
 		scrollTerminal.setContent(labelTerminal);		
