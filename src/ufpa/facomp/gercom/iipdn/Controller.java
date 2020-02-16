@@ -278,6 +278,7 @@ public class Controller implements Initializable{
 		scrollTerminal.setContent(labelTerminal);		
 	}
 	
+	  //Desabilita o campo Observe Group
 	public void disableObsGroup(double opacity,boolean option) {
 		textGroups.setOpacity(opacity);
 		listViewGroup.setDisable(option);
@@ -291,8 +292,11 @@ public class Controller implements Initializable{
 	
 	 @FXML
 	 private void visibleObsGroup(ActionEvent event) {
+		   //Se o checkbox estiver selecionado habilita o campo Observe Group
 		 if(checkObsGroup.isSelected()) {
 			 disableObsGroup(1, false);
+			 
+			 //Do contrário desabilita o campo Observe Group
 		 }else {
 			 disableObsGroup(0.5,true); 
 		 }			
@@ -301,6 +305,7 @@ public class Controller implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		  //Inicia com o campo Observe Group desabilitado
 		disableObsGroup(0.5,true);
 		
 	}
