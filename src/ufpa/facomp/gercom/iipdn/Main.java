@@ -1,17 +1,10 @@
 package ufpa.facomp.gercom.iipdn;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
+import javafx.stage.Stage;
 
 
 public class Main extends Application {
