@@ -378,7 +378,6 @@ public class Controller implements Initializable{
 					System.out.println(url);
 					new ThreadsObserve(url,"Thread Observe Group");
 				}
-				//new ThreadsObserve(listGroup,"Thread Observe Group");
 			}
 
 		}else {
