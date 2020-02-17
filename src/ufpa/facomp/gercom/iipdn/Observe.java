@@ -17,6 +17,10 @@
  ******************************************************************************/
 package ufpa.facomp.gercom.iipdn;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
 import javafx.application.Platform;
@@ -30,6 +34,8 @@ public class Observe{
 	private CoapClient client;
 	private StringBuilder infoObs;	
 	protected static Controller control;
+	private PrintStream file=null;
+
 
 
 
@@ -86,6 +92,15 @@ public class Observe{
 			}
 		});
 	}
+	
+	public void saveFileObs() {
+		try {
+			file = new PrintStream(new File("/home/suporteig-02/Imagens/teste.txt"));
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 
 
 	public void observeGroup(String url) {		
@@ -95,7 +110,9 @@ public class Observe{
 		relation = client.observe(new CoapHandler() {
 			@Override
 			public void onLoad(CoapResponse response) {
-				System.out.println(response.getResponseText());				
+				System.setOut(file);
+				System.out.println(response.getResponseText());
+
 			}
 			@Override
 			public void onError() {
