@@ -63,6 +63,7 @@ public class ThreadsObserve implements Runnable {
 		}
 
 		if(Thread.currentThread().getName().equalsIgnoreCase("Thread Observe Group")) {
+			obs.saveFileObs();
 			obs.observeGroup(url);
 		}
 				
