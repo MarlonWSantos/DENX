@@ -374,6 +374,8 @@ public class Controller implements Initializable{
 			if(!listGroup.isEmpty()) {
 				
 				for (String url : listGroup) {
+					url = url.replace("[", "coap://[").replace("]/", "]:5683/");
+					System.out.println(url);
 					new ThreadsObserve(url,"Thread Observe Group");
 				}
 				//new ThreadsObserve(listGroup,"Thread Observe Group");

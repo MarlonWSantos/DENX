@@ -116,7 +116,7 @@ public class Observe{
 			e.printStackTrace();
 		}
 
-		client.shutdown();
+		client.shutdown(url);
 		System.out.println("Observe stopped!");
 	}
 

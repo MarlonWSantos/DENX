@@ -46,9 +46,9 @@ public class ThreadsObserve implements Runnable {
 		this.url = url;
 
 
-		Thread beginObserve = new Thread(this,nomeThread);
+		Thread beginObserveGroup = new Thread(this,nomeThread);
 
-		beginObserve.start();		
+		beginObserveGroup.start();		
 
 					
 
