@@ -228,6 +228,10 @@ public class Controller implements Initializable{
 
 			 
 			disableNodes(true);
+			
+			if(checkObsGroup.isSelected()) {
+				 disableObsGroup(0.5,true);
+			}
 
 			ResourcesMotes res = new ResourcesMotes();
 			StringBuilder urlResource = new StringBuilder();
@@ -253,6 +257,11 @@ public class Controller implements Initializable{
 			
 			
 			disableNodes(false);
+			
+			if(checkObsGroup.isSelected()) {
+				 disableObsGroup(1,false);
+			}
+			
 		}
 
 	}
@@ -265,11 +274,6 @@ public class Controller implements Initializable{
 		listViewNeighbors.setDisable(option);
 		listViewInfoMote.setDisable(option);
 		checkObsGroup.setDisable(option);
-		
-		if(checkObsGroup.isSelected()) {
-			disableObsGroup(0.5,true);
-
-		}
 	}
 
 	
@@ -349,15 +353,15 @@ public class Controller implements Initializable{
 			
 			  //Limpa a listView do grupo e apaga os IPs da memória
 			listViewGroup.getItems().clear();
-		//	URLGroup.delete(0, URLGroup.length());
-		//	URLGroup.setLength(0);
 		}
 	 }
 	    
 	 
 	 @FXML
 	 private void removeGroupItem(ActionEvent event) {
-		
+		if(listViewIsNotEmpty(listViewGroup)) {
+			listGroup.remove(listViewGroup.getSelectionModel().getSelectedIndex());
+		}		
 	 }
 
 	 
