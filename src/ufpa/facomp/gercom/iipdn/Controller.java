@@ -27,8 +27,10 @@ public class Controller implements Initializable{
 
 	private String urlBorderRouter;
 	private String resource;
-	private boolean loading=false;
-	private StringBuilder URLGroup;
+	private boolean loading=false;	
+	private ObservableList<String> listGroup;
+
+
 
 	@FXML private TextField textFieldURL;
 	@FXML private Text textNeighbors;
@@ -262,6 +264,12 @@ public class Controller implements Initializable{
 		buttonGet.setDisable(option);
 		listViewNeighbors.setDisable(option);
 		listViewInfoMote.setDisable(option);
+		checkObsGroup.setDisable(option);
+		
+		if(checkObsGroup.isSelected()) {
+			disableObsGroup(0.5,true);
+
+		}
 	}
 
 	
@@ -297,13 +305,12 @@ public class Controller implements Initializable{
 	
 	 @FXML
 	 private void visibleObsGroup(ActionEvent event) {
+		 
 		   //Se o checkbox estiver selecionado habilita o campo Observe Group
 		 if(checkObsGroup.isSelected()) {
-			 disableObsGroup(1, false);
+			 disableObsGroup(1, false);			 
 			 
-			   //Cria uma lista para o grupo de IPs
-			 URLGroup = new StringBuilder();
-			 
+			listGroup = FXCollections.observableArrayList();
 			 
 			 
 			 //Do contrário desabilita o campo Observe Group
@@ -323,16 +330,10 @@ public class Controller implements Initializable{
 			
 			  //Captura IP e recurso selecionado
 			String ipMote = listViewNeighbors.getSelectionModel().getSelectedItem();
-			String resource = listViewInfoMote.getSelectionModel().getSelectedItem();
-			
-			  //Armazena a URL
-			URLGroup.append(ipMote+resource);
-			URLGroup.append("\n");
-			
-			ObservableList<String> listGroup = FXCollections.observableArrayList();
+			String resource = listViewInfoMote.getSelectionModel().getSelectedItem();			
 			
 			  //Insere a URL no grupo pra exibição
-			listGroup.add(URLGroup.toString());
+			listGroup.add(ipMote+resource);			
 			
 			  //Exibe o grupo de IPs
 			listViewGroup.setItems(listGroup);
@@ -344,15 +345,21 @@ public class Controller implements Initializable{
 	 private void clearGroup(ActionEvent event) {
 		 
 		 //Se a lista de grupos de IPs não estiver vazia,
-		if(URLGroup.length() != 0) {
+		if(listGroup.size() != 0) {
 			
 			  //Limpa a listView do grupo e apaga os IPs da memória
 			listViewGroup.getItems().clear();
-			URLGroup.delete(0, URLGroup.length());
-			URLGroup.setLength(0);
+		//	URLGroup.delete(0, URLGroup.length());
+		//	URLGroup.setLength(0);
 		}
 	 }
 	    
+	 
+	 @FXML
+	 private void removeGroupItem(ActionEvent event) {
+		
+	 }
+
 	 
 	 @FXML
 	 private void obsGroup(ActionEvent event) {
@@ -360,16 +367,14 @@ public class Controller implements Initializable{
 	 }
 	 
 	 
-	 @FXML
-	 private void removeGroupItem(ActionEvent event) {
-
-	 }
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		  //Inicia com o campo Observe Group desabilitado
 		disableObsGroup(0.5,true);
+		
+		
 		
 	}
 	
