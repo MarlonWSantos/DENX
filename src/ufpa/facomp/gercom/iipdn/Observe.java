@@ -24,18 +24,18 @@ import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
 
 public class Observe{
-		
-	
+
+
 	private CoapObserveRelation relation;
-	private CoapClient client;		
+	private CoapClient client;
 	private StringBuilder infoObs;	
 	protected static Controller control;
-	
+
 
 
 	public void observe(String url,Controller control) {
-		
-		 infoObs = new StringBuilder("\nObserving ...\n\n");
+
+		infoObs = new StringBuilder("\nObserving ...\n\n");
 
 
 		client = new CoapClient(url);
@@ -46,9 +46,9 @@ public class Observe{
 				infoObs.append(response.getResponseText());
 				infoObs.append("\n");
 				showInfoObs(control);
-				
-				
-				
+
+
+
 			}
 			@Override
 			public void onError() {
@@ -58,33 +58,66 @@ public class Observe{
 
 
 		try {
-			
+
 			synchronized (this) {
 
 				wait();
 			}	
-			
-			
+
+
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	
+
 		client.shutdown();
 		infoObs.append("\nObserve stopped!\n\n");
 		showInfoObs(control);
 
 
 	}	
-	
+
 	private void showInfoObs(Controller control) {
 		Platform.runLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				control.showOnGUI(infoObs.toString());
-				
+
 			}
 		});
 	}
-	
+
+
+	public void observeGroup(String url) {		
+
+		client = new CoapClient(url);
+
+		relation = client.observe(new CoapHandler() {
+			@Override
+			public void onLoad(CoapResponse response) {
+				System.out.println(response.getResponseText());				
+			}
+			@Override
+			public void onError() {
+				System.err.println("Failed");
+			}
+		});
+
+
+		try {
+
+			synchronized (this) {
+
+				wait();
+			}	
+
+
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		client.shutdown();
+		System.out.println("Observe stopped!");
+	}
+
 }

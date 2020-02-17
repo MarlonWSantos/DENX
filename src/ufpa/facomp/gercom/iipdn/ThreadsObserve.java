@@ -1,13 +1,16 @@
 package ufpa.facomp.gercom.iipdn;
 
+import javafx.collections.ObservableList;
+
 public class ThreadsObserve implements Runnable {
-	
-	
+
+
 	protected static Observe obs = new Observe();
 	protected Controller control;
 	private String url;
 	private String nomeThread;
-	
+
+
 
 
 	public ThreadsObserve( ) {
@@ -15,7 +18,7 @@ public class ThreadsObserve implements Runnable {
 
 			@Override
 			public void run() {
-				
+
 				synchronized (obs) {
 					obs.notifyAll();					
 				}				
@@ -30,19 +33,40 @@ public class ThreadsObserve implements Runnable {
 		this.nomeThread=nomeThread;
 		this.url = url;
 		this.control=control;
-		
+
 		Thread beginObserve = new Thread(this,nomeThread);		
-		
+
 		beginObserve.start();		
 
 	}
+	
+
+	public ThreadsObserve(String url,String nomeThread) {
+		this.nomeThread=nomeThread;
+		this.url = url;
+
+
+		Thread beginObserve = new Thread(this,nomeThread);
+
+		beginObserve.start();		
+
+					
+
+}
 
 
 	@Override
-	public void run() {		
-
-			obs.observe(url,control);		
+	public void run() {
 		
+		if(Thread.currentThread().getName().equalsIgnoreCase("Thread Observe")) {
+			obs.observe(url,control);
+		}
+
+		if(Thread.currentThread().getName().equalsIgnoreCase("Thread Observe Group")) {
+			obs.observeGroup(url);
+		}
+				
+
 	}
 
 }

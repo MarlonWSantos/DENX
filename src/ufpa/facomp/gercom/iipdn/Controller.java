@@ -30,8 +30,6 @@ public class Controller implements Initializable{
 	private boolean loading=false;	
 	private ObservableList<String> listGroup;
 
-
-
 	@FXML private TextField textFieldURL;
 	@FXML private Text textNeighbors;
 	@FXML private Text textInfoMote;
@@ -48,31 +46,30 @@ public class Controller implements Initializable{
 	@FXML private Label labelRoutes;
 	@FXML private Label labelTerminal;
 	@FXML private ScrollPane scrollTerminal;
-	
+
 	@FXML private CheckBox checkObsGroup;
 	@FXML private Text textGroups;
-    @FXML private Text textSaveto;
-    @FXML private TextField texFieldSaveTo;
-    @FXML private Button buttonAddItem;
-    @FXML private Button buttonRemoveItem;
-    @FXML private Button buttonClearGroup;
-    @FXML private ToggleButton buttonObsGroup;
-    
+	@FXML private Text textSaveto;
+	@FXML private TextField texFieldSaveTo;
+	@FXML private Button buttonAddItem;
+	@FXML private Button buttonRemoveItem;
+	@FXML private Button buttonClearGroup;
+	@FXML private ToggleButton toggleObsGroup;
 
-	
+
 	@FXML
 	private void mainController(ActionEvent event) throws IOException {
 		WgetJava obj = new WgetJava();
 		RoutesMotes routes = new RoutesMotes();
 		ResourcesMotes res = new ResourcesMotes();
-		
+
 		//Captura a URL do Border Router digitada
 		urlBorderRouter=textFieldURL.getText();
 
-		
+
 		//TODO try..catch.. para tratamento da URL digitada pelo usuário
 
-		
+
 		//Armazena  URL do Border Router
 		obj.setUrl(urlBorderRouter);
 
@@ -128,8 +125,8 @@ public class Controller implements Initializable{
 
 		//Se a listView com IPs não estiver vazia
 		if(listViewIsNotEmpty(listViewNeighbors)) { 
-			
-			
+
+
 			//TODO Exibir PopUp com texto "Aguarde..." para o usuário
 
 
@@ -173,7 +170,7 @@ public class Controller implements Initializable{
 		}
 	}
 
-	
+
 	@FXML
 	private void moteResource(MouseEvent event) {
 
@@ -212,7 +209,7 @@ public class Controller implements Initializable{
 
 			//Faz uma requisição ao mote(servidor) pela informação sobre o recurso e armazena
 			infoResource = client.get(urlResource.toString());
-			
+
 			showOnGUI(infoResource.toString());
 		}
 	}
@@ -220,17 +217,15 @@ public class Controller implements Initializable{
 
 	@FXML
 	private void obsMote(ActionEvent event) {
-		
-
 
 		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias e o botão selecionado
 		if(listViewIsNotEmpty(listViewNeighbors) && listViewIsNotEmpty(listViewInfoMote) && toggleObs.isSelected()) {
 
-			 
+
 			disableNodes(true);
-			
+
 			if(checkObsGroup.isSelected()) {
-				 disableObsGroup(0.5,true);
+				disableObsGroup(0.5,true);
 			}
 
 			ResourcesMotes res = new ResourcesMotes();
@@ -244,29 +239,29 @@ public class Controller implements Initializable{
 			urlResource = res.getURLResource(ipMote,resource);
 
 			//TODO Threads criados aqui não são finalizados após o fim da execução
-			
-							
+
+
 			//Cria uma thread para fazer requisição ao mote(servidor) solicitando observação do recurso
 			new ThreadsObserve(this,urlResource.toString(),"Thread Observe");
-			
+
 
 		}else {
-			
-			  //Cria uma thread para finalizar a observação 
+
+			//Cria uma thread para finalizar a observação 
 			new ThreadsObserve();
-			
-			
+
+
 			disableNodes(false);
-			
+
 			if(checkObsGroup.isSelected()) {
-				 disableObsGroup(1,false);
+				disableObsGroup(1,false);
 			}
-			
+
 		}
 
 	}
 
-	
+
 	//Desabilita botões e listViews
 	public void disableNodes(boolean option ) {
 		buttonDiscover.setDisable(option);
@@ -276,10 +271,10 @@ public class Controller implements Initializable{
 		checkObsGroup.setDisable(option);
 	}
 
-	
-	
+
+
 	public void showOnGUI(String info) {
-				
+
 		//Insere a informação do recurso do mote na label
 		labelTerminal.setText(info);
 
@@ -292,95 +287,114 @@ public class Controller implements Initializable{
 		//Exibe a informação do recurso na GUI	
 		scrollTerminal.setContent(labelTerminal);		
 	}
-	
-	
-	  //Desabilita o campo Observe Group
+
+
+	//Desabilita o campo Observe Group
 	public void disableObsGroup(double opacity,boolean option) {
 		textGroups.setOpacity(opacity);
 		listViewGroup.setDisable(option);
 		buttonAddItem.setDisable(option);
 		buttonRemoveItem.setDisable(option);
 		buttonClearGroup.setDisable(option);
-		buttonObsGroup.setDisable(option);
+		toggleObsGroup.setDisable(option);
 		textSaveto.setOpacity(opacity);
 		texFieldSaveTo.setDisable(option);
 	}
-	
-	
-	 @FXML
-	 private void visibleObsGroup(ActionEvent event) {
-		 
-		   //Se o checkbox estiver selecionado habilita o campo Observe Group
-		 if(checkObsGroup.isSelected()) {
-			 disableObsGroup(1, false);			 
-			 
+
+
+	@FXML
+	private void visibleObsGroup(ActionEvent event) {
+
+		//Se o checkbox estiver selecionado habilita o campo Observe Group
+		if(checkObsGroup.isSelected()) {
+			disableObsGroup(1, false);			 
+
 			listGroup = FXCollections.observableArrayList();
-			 
-			 
-			 //Do contrário desabilita o campo Observe Group
-		 }else {
-			 disableObsGroup(0.5,true);
-			 
-			 clearGroup(event);
-		 }			
-	 }
-	 
-	 
-	 @FXML
-	 private void addGroupItem(ActionEvent event) {
-		 
-		  //Se a listView com IPs e a lista com recursos, ambas não estiverem vazias 
+
+
+			//Do contrário desabilita o campo Observe Group
+		}else {
+			disableObsGroup(0.5,true);
+
+			clearGroup(event);
+		}			
+	}
+
+
+	@FXML
+	private void addGroupItem(ActionEvent event) {
+
+		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias 
 		if(listViewIsNotEmpty(listViewNeighbors) && (listViewIsNotEmpty(listViewInfoMote))) {
-			
-			  //Captura IP e recurso selecionado
+
+			//Captura IP e recurso selecionado
 			String ipMote = listViewNeighbors.getSelectionModel().getSelectedItem();
 			String resource = listViewInfoMote.getSelectionModel().getSelectedItem();			
-			
-			  //Insere a URL no grupo pra exibição
+
+			//Insere a URL no grupo pra exibição
 			listGroup.add(ipMote+resource);			
-			
-			  //Exibe o grupo de IPs
+
+			//Exibe o grupo de IPs
 			listViewGroup.setItems(listGroup);
 		}
-	 }
+	}
 
-	 
-	 @FXML
-	 private void clearGroup(ActionEvent event) {
-		 
-		 //Se a lista de grupos de IPs não estiver vazia,
+
+	@FXML
+	private void clearGroup(ActionEvent event) {
+
+		//Se a lista de grupos de IPs não estiver vazia,
 		if(listGroup.size() != 0) {
-			
-			  //Limpa a listView do grupo e apaga os IPs da memória
+
+			//Limpa a listView do grupo e apaga os IPs da memória
 			listViewGroup.getItems().clear();
 		}
-	 }
-	    
-	 
-	 @FXML
-	 private void removeGroupItem(ActionEvent event) {
+	}
+
+
+	@FXML
+	private void removeGroupItem(ActionEvent event) {
+		//Se a lista não estiver vazia, deleta o item selecionado
 		if(listViewIsNotEmpty(listViewGroup)) {
 			listGroup.remove(listViewGroup.getSelectionModel().getSelectedIndex());
 		}		
-	 }
+	}
 
-	 
-	 @FXML
-	 private void obsGroup(ActionEvent event) {
 
-	 }
-	 
-	 
+	@FXML
+	private void obsGroup(ActionEvent event) {
+
+		if(toggleObsGroup.isSelected()){
+			System.out.println("selecionado!");
+
+//			for (String string : listGroup) {
+//				System.out.println(string.replace("[", "coap://[").replace("]/", "]:5683/"));
+//			}
+			
+			if(!listGroup.isEmpty()) {
+				
+				for (String url : listGroup) {
+					new ThreadsObserve(url,"Thread Observe Group");
+				}
+				//new ThreadsObserve(listGroup,"Thread Observe Group");
+			}
+
+		}else {
+			System.out.println("Não selecionado!");
+			
+			new ThreadsObserve();
+
+
+		}
+
+	}
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		  //Inicia com o campo Observe Group desabilitado
-		disableObsGroup(0.5,true);
-		
-		
-		
+		//Inicia com o campo Observe Group desabilitado
+		disableObsGroup(0.5,true);		
 	}
-	
-  	
+
+
 }
