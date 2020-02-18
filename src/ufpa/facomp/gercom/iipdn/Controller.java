@@ -377,6 +377,9 @@ public class Controller implements Initializable{
 				}else {
 					obs.saveFileObs();
 				}
+				
+				
+				showOnGUI("\nSaving Obs to "+ obs.getSavePath()+"\n\nObserving ...\n");
 
 
 				//TODO verificar a aceitação de URL sem prefixo coap
@@ -389,6 +392,8 @@ public class Controller implements Initializable{
 		}else {
 
 			new ThreadsObserve();
+			
+			showOnGUI("\nObserve stopped!\n");
 
 
 		}

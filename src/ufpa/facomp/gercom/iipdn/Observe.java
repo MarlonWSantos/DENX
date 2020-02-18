@@ -116,6 +116,7 @@ public class Observe{
 	public void observeGroup(String url) {		
 
 		client = new CoapClient(url);		
+		
 
 		relation = client.observe(new CoapHandler() {
 			@Override
