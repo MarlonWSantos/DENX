@@ -369,7 +369,6 @@ public class Controller implements Initializable{
 			if(!listGroup.isEmpty()) {
 
 				String pathToSave = texFieldSaveTo.getText();
-				System.out.println(pathToSave);
 				Observe obs = new Observe();
 				
 				if(!pathToSave.isEmpty()) {

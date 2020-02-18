@@ -34,7 +34,7 @@ public class Observe{
 	private CoapClient client;
 	private StringBuilder infoObs;	
 	protected static Controller control;
-	private PrintStream file=null;
+	private static PrintStream file=null;
 	private String savePath = "/tmp/obsResult.txt";
 
 
@@ -99,10 +99,14 @@ public class Observe{
 		this.savePath=savePath;
 	}
 	
+	public String getSavePath() {
+		return savePath;
+	}
+	
 	
 	public void saveFileObs() {
 		try {
-			file = new PrintStream(new File(savePath));
+			file = new PrintStream(new File(this.getSavePath()));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
@@ -111,12 +115,12 @@ public class Observe{
 
 	public void observeGroup(String url) {		
 
-		client = new CoapClient(url);
+		client = new CoapClient(url);		
 
 		relation = client.observe(new CoapHandler() {
 			@Override
 			public void onLoad(CoapResponse response) {
-				//System.setOut(file);
+				System.setOut(file);
 				System.out.println(response.getResponseText());
 
 			}
