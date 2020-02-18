@@ -39,7 +39,7 @@ public class ThreadsObserve implements Runnable {
 		beginObserve.start();		
 
 	}
-	
+
 
 	public ThreadsObserve(String url,String nomeThread) {
 		this.nomeThread=nomeThread;
@@ -50,23 +50,22 @@ public class ThreadsObserve implements Runnable {
 
 		beginObserveGroup.start();		
 
-					
 
-}
+
+	}
 
 
 	@Override
 	public void run() {
-		
+
 		if(Thread.currentThread().getName().equalsIgnoreCase("Thread Observe")) {
 			obs.observe(url,control);
 		}
 
 		if(Thread.currentThread().getName().equalsIgnoreCase("Thread Observe Group")) {
-			obs.saveFileObs();
 			obs.observeGroup(url);
 		}
-				
+
 
 	}
 

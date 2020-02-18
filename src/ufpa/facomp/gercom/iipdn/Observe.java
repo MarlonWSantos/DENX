@@ -35,6 +35,7 @@ public class Observe{
 	private StringBuilder infoObs;	
 	protected static Controller control;
 	private PrintStream file=null;
+	private String savePath = "/tmp/obsResult.txt";
 
 
 
@@ -92,12 +93,17 @@ public class Observe{
 			}
 		});
 	}
+
+
+	public void setSavePath(String savePath) {
+		this.savePath=savePath;
+	}
+	
 	
 	public void saveFileObs() {
 		try {
-			file = new PrintStream(new File("/home/suporteig-02/Imagens/teste.txt"));
+			file = new PrintStream(new File(savePath));
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
@@ -110,7 +116,7 @@ public class Observe{
 		relation = client.observe(new CoapHandler() {
 			@Override
 			public void onLoad(CoapResponse response) {
-				System.setOut(file);
+				//System.setOut(file);
 				System.out.println(response.getResponseText());
 
 			}
@@ -133,7 +139,8 @@ public class Observe{
 			e.printStackTrace();
 		}
 
-		client.shutdown(url);
+		
+		client.shutdown();
 		System.out.println("Observe stopped!");
 	}
 

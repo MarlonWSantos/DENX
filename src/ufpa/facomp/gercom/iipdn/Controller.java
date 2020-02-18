@@ -365,24 +365,30 @@ public class Controller implements Initializable{
 	private void obsGroup(ActionEvent event) {
 
 		if(toggleObsGroup.isSelected()){
-			System.out.println("selecionado!");
 
-//			for (String string : listGroup) {
-//				System.out.println(string.replace("[", "coap://[").replace("]/", "]:5683/"));
-//			}
-			
 			if(!listGroup.isEmpty()) {
+
+				String pathToSave = texFieldSaveTo.getText();
+				System.out.println(pathToSave);
+				Observe obs = new Observe();
 				
+				if(!pathToSave.isEmpty()) {
+					obs.setSavePath(pathToSave);
+					obs.saveFileObs();
+				}else {
+					obs.saveFileObs();
+				}
+
+
+				//TODO verificar a aceitação de URL sem prefixo coap
 				for (String url : listGroup) {
 					url = url.replace("[", "coap://[").replace("]/", "]:5683/");
-					System.out.println(url);
 					new ThreadsObserve(url,"Thread Observe Group");
 				}
 			}
 
 		}else {
-			System.out.println("Não selecionado!");
-			
+
 			new ThreadsObserve();
 
 
