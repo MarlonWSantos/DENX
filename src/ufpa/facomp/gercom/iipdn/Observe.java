@@ -44,7 +44,7 @@ public class Observe{
 		infoObs = new StringBuilder("\nObserving ...\n\n");
 
 
-		client = new CoapClient(url);
+		client.setURI(url);
 
 		relation = client.observe(new CoapHandler() {
 			@Override
@@ -115,7 +115,6 @@ public class Observe{
 	public void observeGroup(String url) {
 		
 
-		//client = new CoapClient(url);
 		client.setURI(url);
 		
 		relation = client.observe(new CoapHandler() {
@@ -145,7 +144,6 @@ public class Observe{
 		}
 
 		
-		//relation.proactiveCancel();
 		client.shutdown();
 		
 		System.out.println("Observe stopped!");
