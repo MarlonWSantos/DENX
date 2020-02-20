@@ -31,12 +31,11 @@ public class Observe{
 
 
 	private CoapObserveRelation relation;
-	private CoapClient client;
+	private CoapClient client = new CoapClient();
 	private StringBuilder infoObs;	
 	protected static Controller control;
 	private static PrintStream file=null;
 	private String savePath = "/tmp/obsResult.txt";
-
 
 
 
@@ -113,11 +112,12 @@ public class Observe{
 	}
 
 
-	public void observeGroup(String url) {		
-
-		client = new CoapClient(url);		
+	public void observeGroup(String url) {
 		
 
+		//client = new CoapClient(url);
+		client.setURI(url);
+		
 		relation = client.observe(new CoapHandler() {
 			@Override
 			public void onLoad(CoapResponse response) {
@@ -145,8 +145,14 @@ public class Observe{
 		}
 
 		
+		//relation.proactiveCancel();
 		client.shutdown();
+		
 		System.out.println("Observe stopped!");
-	}
+		
+
+		
+	}	
+
 
 }
