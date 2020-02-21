@@ -86,7 +86,7 @@ public class WgetJava{
 		  }
 
     }catch(Exception e){
-      System.out.println("Servidor não responde ou demora no envio da resposta");
+      System.out.println("Server not responding or out of range");
     }
   }
 	
