@@ -13,7 +13,13 @@
  * Contributors:
  *    Matthias Kovatsch - creator and main architect
  *    Achim Kraus (Bosch Software Innovations GmbH) - add saving payload
- *    Marlon W. Santos (Federal University of Pará) - add Observer                                                  
+ *    Marlon W. Santos (Federal University of Pará) - add observe
+ *    Marlon W. Santos (Federal University of Pará) - add showInfoObs
+ *    Marlon W. Santos (Federal University of Pará) - add setSavePath
+ *    Marlon W. Santos (Federal University of Pará) - add getSavePath
+ *    Marlon W. Santos (Federal University of Pará) - add saveFileObs
+ *    Marlon W. Santos (Federal University of Pará) - add observeGroup
+ *                                                      
  ******************************************************************************/
 package ufpa.facomp.gercom.iipdn;
 
