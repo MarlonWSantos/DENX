@@ -29,6 +29,7 @@ public class Controller implements Initializable{
 	private String resource;
 	private boolean loading=false;	
 	private ObservableList<String> listGroup;
+	private boolean isObserving;
 
 	@FXML private TextField textFieldURL;
 	@FXML private Text textNeighbors;
@@ -226,6 +227,7 @@ public class Controller implements Initializable{
 
 			if(checkObsGroup.isSelected()) {
 				disableObsGroup(0.5,true);
+				toggleObsGroup.setDisable(true);
 			}
 
 			ResourcesMotes res = new ResourcesMotes();
@@ -255,6 +257,8 @@ public class Controller implements Initializable{
 
 			if(checkObsGroup.isSelected()) {
 				disableObsGroup(1,false);
+				toggleObsGroup.setDisable(false);
+
 			}
 
 		}
@@ -296,9 +300,9 @@ public class Controller implements Initializable{
 		buttonAddItem.setDisable(option);
 		buttonRemoveItem.setDisable(option);
 		buttonClearGroup.setDisable(option);
-		toggleObsGroup.setDisable(option);
 		textSaveto.setOpacity(opacity);
 		texFieldSaveTo.setDisable(option);
+		
 	}
 
 
@@ -307,7 +311,8 @@ public class Controller implements Initializable{
 
 		//Se o checkbox estiver selecionado habilita o campo Observe Group
 		if(checkObsGroup.isSelected()) {
-			disableObsGroup(1, false);			 
+			disableObsGroup(1, false);
+			toggleObsGroup.setDisable(false);
 
 			listGroup = FXCollections.observableArrayList();
 
@@ -315,6 +320,7 @@ public class Controller implements Initializable{
 			//Do contrário desabilita o campo Observe Group
 		}else {
 			disableObsGroup(0.5,true);
+			toggleObsGroup.setDisable(true);
 
 			clearGroup(event);
 		}			
@@ -364,9 +370,13 @@ public class Controller implements Initializable{
 	@FXML
 	private void obsGroup(ActionEvent event) {
 
-		if(toggleObsGroup.isSelected()){
+		if(!listGroup.isEmpty() && toggleObsGroup.isSelected() && !isObserving){
 
-			if(!listGroup.isEmpty()) {
+				isObserving=true;
+				
+				disableNodes(true);
+				disableObsGroup(0.5,true);
+				toggleObs.setDisable(true);
 
 				String pathToSave = texFieldSaveTo.getText();
 				Observe obs = new Observe();
@@ -387,14 +397,23 @@ public class Controller implements Initializable{
 					url = url.replace("[", "coap://[").replace("]/", "]:5683/");
 					new ThreadsObserve(url,"Thread Observe Group");
 				}
-			}
 
-		}else {
 
+		}
+		
+		if(!listGroup.isEmpty() && !toggleObsGroup.isSelected() && isObserving){
+			
+			
+			
 			new ThreadsObserve();
 			
 			showOnGUI("\nObserve stopped!\n");
-
+			
+			isObserving=false;
+			
+			disableNodes(false);
+			disableObsGroup(1,false);
+			toggleObs.setDisable(false);
 
 		}
 
@@ -404,7 +423,8 @@ public class Controller implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		//Inicia com o campo Observe Group desabilitado
-		disableObsGroup(0.5,true);		
+		disableObsGroup(0.5,true);
+		toggleObsGroup.setDisable(true);
 	}
 
 
