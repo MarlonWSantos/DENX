@@ -39,7 +39,7 @@ public class WgetJava{
 	
 	
       //Faz pedido ao Border Router pelo IPs da rede
-	public void sendGET() throws IOException {
+	public void sendGET() /*throws IOException*/ {
 
       try{
 
@@ -87,6 +87,7 @@ public class WgetJava{
 
     }catch(Exception e){
       System.out.println("Server not responding or out of range");
+		
     }
   }
 	
