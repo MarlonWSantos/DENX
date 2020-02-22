@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 		
-	Stage screenLoading = new Stage();
+	private static Stage screenLoading = null;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -46,6 +46,7 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 		Scene loadingScene = new Scene(loading);
+		screenLoading = new Stage();
 		screenLoading.setScene(loadingScene);
 		screenLoading.show();		
 	}
