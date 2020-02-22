@@ -62,11 +62,10 @@ public class GETClient {
 	    
 		
 	  }catch (ConnectorException e) {
-	  	  // TODO Auto-generated catch block
-	    e.printStackTrace();
+		  System.out.println("Connector Exception on Get!");
+
 	  }catch (IOException e) {
-	      // TODO Auto-generated catch block
-	    e.printStackTrace();
+		  System.out.println("IO Exception on Get!");
 	  }
 			
 	  	  //Finaliza o Coapclient criado
@@ -102,11 +101,9 @@ public class GETClient {
 	    
 		
 	  }catch (ConnectorException e) {
-	  	  // TODO Auto-generated catch block
-	    e.printStackTrace();
+		  System.out.println("Connector Exception on Get!");
 	  }catch (IOException e) {
-	      // TODO Auto-generated catch block
-	    e.printStackTrace();
+		  System.out.println("IO Exception on Get!");
 	  }
 			
 	      //Finaliza o Coapclient criado
