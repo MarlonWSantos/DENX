@@ -1,14 +1,19 @@
 package ufpa.facomp.gercom.iipdn;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
 public class Main extends Application {
 
+		
+	Stage screenLoading = new Stage();
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -20,8 +25,9 @@ public class Main extends Application {
 			primaryStage.setTitle("IIPDN - GUI CoAP Client");
 			primaryStage.show();
 			
-			
 		} catch(Exception e) {
+			System.out.println("Exception main start!!");
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -29,6 +35,24 @@ public class Main extends Application {
 	public static void main(String[] args){
 		launch(args);
 
+	}
+	
+	//Cria o PopUp loading na tela do usuário
+	public void showScreenLoading() {
+		Pane loading = null;
+		try {
+			loading = (Pane)FXMLLoader.load(getClass().getResource("alert.fxml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Scene loadingScene = new Scene(loading);
+		screenLoading.setScene(loadingScene);
+		screenLoading.show();		
+	}
+	
+	//Fecha o PopUp Loading da tela do usuário
+	public void closeScreenLoading() {
+		screenLoading.close();
 	}
 
 }
