@@ -78,7 +78,7 @@ public class Observe{
 
 
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("Failed on Observe");
 		}
 
 		client.shutdown();
@@ -113,7 +113,7 @@ public class Observe{
 		try {
 			file = new PrintStream(new File(this.getSavePath()));
 		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+			System.out.println("Failed to create file");
 		}
 	}
 
@@ -132,7 +132,7 @@ public class Observe{
 			}
 			@Override
 			public void onError() {
-				System.err.println("Failed");
+				System.err.println("Failed connection");
 			}
 		});
 
@@ -146,7 +146,7 @@ public class Observe{
 
 
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("Exception on Observe Group!");
 		}
 
 		
