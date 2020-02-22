@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -124,50 +125,55 @@ public class Controller implements Initializable{
 	@FXML
 	private void showMoteResources(MouseEvent event) {
 
-		//Se a listView com IPs não estiver vazia
-		if(listViewIsNotEmpty(listViewNeighbors)) { 
+		//Se a listView com IPs não estiver vazia e se não estiver buscando recursos
+		if(listViewIsNotEmpty(listViewNeighbors) && !loading) {
 
+			//flag informa que está buscando recurso
+			loading = true;
 
-			//TODO Exibir PopUp com texto "Aguarde..." para o usuário
+			//Desabilita a listView após o clique
+			listViewNeighbors.setDisable(true);	
 
+			Main main = new Main();
 
-			ResourcesMotes res = new ResourcesMotes();
-			GETClient client = new GETClient();
+			//Exibi PopUp com texto "Loading..." para o usuário
+			Platform.runLater(new Runnable() {				
+				@Override
+				public void run() {
+					main.showScreenLoading();					
+				}
+			});
 
-			//Desabilita a listView após o primeiro clique
-			listViewNeighbors.setDisable(true);
+			//Um segundo após o PopUp ser exibido, inica a busca pelos recursos
+			Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {					
+					ResourcesMotes res = new ResourcesMotes();
+					GETClient client = new GETClient();
 
-			//Se não estiver buscando recursos, muda flag informando que estará buscando
-			if(loading==false) {
-				loading=true;
+					ObservableList<String> resources = FXCollections.observableArrayList();
+					String urlWellKnownCore;
 
-				ObservableList<String> resources = FXCollections.observableArrayList();
+					//Captura o IP clicado na lista e busca sua URL do Well-known/core
+					urlWellKnownCore = res.getURLWellKnownCore(listViewNeighbors.getSelectionModel().getSelectedItem());
 
-				String urlWellKnownCore;
+					//Faz um busca dos recursos através da URL/well-known/core e armazena na lista					
+					resources.addAll(res.setResources(client.discover(urlWellKnownCore)));
 
-				//Captura o IP clicado na lista e busca sua URL do Well-known/core
-				urlWellKnownCore = res.getURLWellKnownCore(listViewNeighbors.getSelectionModel().getSelectedItem());
+					//Exibe na GUI a lista com os recursos
+					listViewInfoMote.setItems(resources);
 
-				//Faz um busca dos recursos através da URL/well-known/core e armazena na lista					
-				resources.addAll(res.setResources(client.discover(urlWellKnownCore)));
+					//Fecha o PopUp que exibe Loading
+					main.closeScreenLoading();		
 
-				//Exibe na GUI a lista com os recursos
-				listViewInfoMote.setItems(resources);
+					//Reabilita a listView para novo clique
+					listViewNeighbors.setDisable(false);
 
-				//Cria um thead aguardando 2 segundos até a próxima busca de recursos				
-				Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-
-					@Override
-					public void handle(ActionEvent event) {
-						//muda flag informando que não está buscando recursos
-						loading=false;
-						//Reabilita a listView para novo clique
-						listViewNeighbors.setDisable(false);
-					}
-
-				}));
-				timeline.play();
-			}
+					//muda flag informando que não está buscando recursos
+					loading=false;
+				}
+			}));
+			timeline.play();						
 		}
 	}
 
@@ -302,7 +308,7 @@ public class Controller implements Initializable{
 		buttonClearGroup.setDisable(option);
 		textSaveto.setOpacity(opacity);
 		texFieldSaveTo.setDisable(option);
-		
+
 	}
 
 
@@ -372,45 +378,45 @@ public class Controller implements Initializable{
 
 		if(!listGroup.isEmpty() && toggleObsGroup.isSelected() && !isObserving){
 
-				isObserving=true;
-				
-				disableNodes(true);
-				disableObsGroup(0.5,true);
-				toggleObs.setDisable(true);
+			isObserving=true;
 
-				String pathToSave = texFieldSaveTo.getText();
-				Observe obs = new Observe();
-				
-				if(!pathToSave.isEmpty()) {
-					obs.setSavePath(pathToSave);
-					obs.saveFileObs();
-				}else {
-					obs.saveFileObs();
-				}
-				
-				
-				showOnGUI("\nSaving Obs to "+ obs.getSavePath()+"\n\nObserving ...\n");
+			disableNodes(true);
+			disableObsGroup(0.5,true);
+			toggleObs.setDisable(true);
+
+			String pathToSave = texFieldSaveTo.getText();
+			Observe obs = new Observe();
+
+			if(!pathToSave.isEmpty()) {
+				obs.setSavePath(pathToSave);
+				obs.saveFileObs();
+			}else {
+				obs.saveFileObs();
+			}
 
 
-				//TODO verificar a aceitação de URL sem prefixo coap
-				for (String url : listGroup) {
-					url = url.replace("[", "coap://[").replace("]/", "]:5683/");
-					new ThreadsObserve(url,"Thread Observe Group");
-				}
+			showOnGUI("\nSaving Obs to "+ obs.getSavePath()+"\n\nObserving ...\n");
+
+
+			//TODO verificar a aceitação de URL sem prefixo coap
+			for (String url : listGroup) {
+				url = url.replace("[", "coap://[").replace("]/", "]:5683/");
+				new ThreadsObserve(url,"Thread Observe Group");
+			}
 
 
 		}
-		
+
 		if(!listGroup.isEmpty() && !toggleObsGroup.isSelected() && isObserving){
-			
-			
-			
+
+
+
 			new ThreadsObserve();
-			
+
 			showOnGUI("\nObserve stopped!\n");
-			
+
 			isObserving=false;
-			
+
 			disableNodes(false);
 			disableObsGroup(1,false);
 			toggleObs.setDisable(false);
