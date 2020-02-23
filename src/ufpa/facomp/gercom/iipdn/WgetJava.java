@@ -24,7 +24,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 public class WgetJava{
     
@@ -38,58 +44,51 @@ public class WgetJava{
 	}
 	
 	
-      //Faz pedido ao Border Router pelo IPs da rede
-	public void sendGET() /*throws IOException*/ {
+	//Faz pedido ao Border Router pelo IPs da rede
+	public void sendGET() throws IOException {
 
-      try{
-
-          //Cria um objeto com a URL do Border Router
+		//Cria um objeto com a URL do Border Router
 		URL obj = new URL(url);
 
-          //Abre uma conexão HTTP com a URL indicada
+		//Abre uma conexão HTTP com a URL indicada
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-          //Gera uma Exception se não houver conexão ou resposta do servidor
-        con.setConnectTimeout(2000); //2segundos
+		//Gera uma Exception se não houver conexão ou resposta do servidor
+		con.setConnectTimeout(2000); //2segundos
 
-          //Envia o pedido ao servidor
+		//Envia o pedido ao servidor
 		con.setRequestMethod("GET");
 
-          //Recebe e armazena o código de resposta dada pelo servidor
+		//Recebe e armazena o código de resposta dada pelo servidor
 		int responseCode = con.getResponseCode();
 
+		//Se o código recebido for igual a HTTP_OK(200)
+		if (responseCode == HttpURLConnection.HTTP_OK) {
 
-          //Se o código recebido for igual a HTTP_OK(200)
-		if (responseCode == HttpURLConnection.HTTP_OK) { 
+			//Cria buffer para armazenar a mensagem enviada pelo servidor com os IPs dos motes
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
 
-            //Cria buffer para armazenar a mensagem enviada pelo servidor com os IPs dos motes
-		  BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		  String inputLine;
+			//Cria buffer de String que vai receber o conteúdo do buffer
+			response = new StringBuffer();
 
-            //Cria buffer de String que vai receber o conteúdo do buffer
-		  response = new StringBuffer();
+			//Enquanto linha do buffer for diferente de null,guarda uma linha da mensagem
+			while ((inputLine = in.readLine()) != null) {
 
-            //Enquanto linha do buffer for diferente de null,guarda uma linha da mensagem
-		  while ((inputLine = in.readLine()) != null) {
+				//Adiciona ao buffer de String o conteúdo da linha da mensagem
+				response.append(inputLine);
+				response.append("\n");
+			}
 
-              //Adiciona ao buffer de String o conteúdo da linha da mensagem
-			response.append(inputLine);
-            response.append("\n");
-		  }
+			//Finaliza o buffer que recebeu a mensagem
+			in.close();
 
-            //Finaliza o buffer que recebeu a mensagem
-		  in.close();
-		 
-        //Se o código recebido for diferente de HTTP_OK(200) exibe mensagem de erro
-      }else{
-			  System.out.println("Error 404: Not Found");
-		  }
-
-    }catch(Exception e){
-      System.out.println("Server not responding or out of range");
-		
-    }
-  }
+			/* Se o código recebido for diferente de HTTP_OK(200) envia exception
+			 * para exibir mensagem de erro*/
+		}else{
+			throw new UnknownHostException();
+		}
+	}
 	
     //Retorna a responsa do Border Router	
   public String getResponse() {
