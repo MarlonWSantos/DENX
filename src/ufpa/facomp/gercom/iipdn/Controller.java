@@ -1,7 +1,10 @@
 package ufpa.facomp.gercom.iipdn;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
 import javafx.animation.KeyFrame;
@@ -13,7 +16,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -60,27 +66,47 @@ public class Controller implements Initializable{
 
 
 	@FXML
-	private void mainController(ActionEvent event) throws IOException {
-		WgetJava obj = new WgetJava();
-		RoutesMotes routes = new RoutesMotes();
-		ResourcesMotes res = new ResourcesMotes();
+	private void mainController(ActionEvent event)   {
 
-		//Captura a URL do Border Router digitada
-		urlBorderRouter=textFieldURL.getText();
+		//Se o campo da URL estiver vazio, exibe alerta ao usuário pedindo que insira uma URL
+		if(textFieldURL.getText().isEmpty()) {
+
+			new AlertsDialog(Alert.AlertType.INFORMATION,"Insira uma URL válida",ButtonType.CLOSE);
+
+		}else {
+
+			WgetJava obj = new WgetJava();
+			RoutesMotes routes = new RoutesMotes();
+			ResourcesMotes res = new ResourcesMotes();
+
+			//Captura a URL do Border Router digitada
+			urlBorderRouter=textFieldURL.getText();
+
+			//Armazena  URL do Border Router
+			obj.setUrl(urlBorderRouter);
+
+			try {
+
+				//Faz o pedido ao Border Router da informação e armazena
+				obj.sendGET();
+
+				treatmentOfInformation(obj,routes);
+				showIPs(routes,res);
+				showRoutes(routes);
+
+				//Mensagens de erro para usuário
+			}catch(ProtocolException e) {
+				new AlertsDialog(AlertType.ERROR,"Falha no protocolo",ButtonType.CLOSE);			
+			}catch (MalformedURLException e) {
+				new AlertsDialog(AlertType.ERROR, "URL coap inválida",ButtonType.CLOSE);
+			}catch(UnknownHostException e) {
+				new AlertsDialog(AlertType.ERROR, "404 Not Found",ButtonType.CLOSE);
+			}catch(IOException e) {
+				new AlertsDialog(AlertType.ERROR, "Falha na comunicação", ButtonType.CLOSE);
+			}catch(Exception e) {e.printStackTrace();};
 
 
-		//TODO try..catch.. para tratamento da URL digitada pelo usuário
-
-
-		//Armazena  URL do Border Router
-		obj.setUrl(urlBorderRouter);
-
-		//Faz o pedido ao Border Router da informação e armazena
-		obj.sendGET();
-
-		treatmentOfInformation(obj,routes);
-		showIPs(routes,res);
-		showRoutes(routes);
+		}
 	}
 
 
