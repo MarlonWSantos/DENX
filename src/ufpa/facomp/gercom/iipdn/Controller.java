@@ -70,11 +70,11 @@ public class Controller implements Initializable{
 
 		//Se o campo da URL estiver vazio, exibe alerta ao usuário pedindo que insira uma URL
 		if(textFieldURL.getText().isEmpty()) {
-
+			
 			new AlertsDialog(Alert.AlertType.INFORMATION,"Insira uma URL válida",ButtonType.CLOSE);
-
+			
 		}else {
-
+			
 			WgetJava obj = new WgetJava();
 			RoutesMotes routes = new RoutesMotes();
 			ResourcesMotes res = new ResourcesMotes();
@@ -104,8 +104,6 @@ public class Controller implements Initializable{
 			}catch(IOException e) {
 				new AlertsDialog(AlertType.ERROR, "Falha na comunicação", ButtonType.CLOSE);
 			}catch(Exception e) {e.printStackTrace();};
-
-
 		}
 	}
 
@@ -217,6 +215,7 @@ public class Controller implements Initializable{
 
 
 	private boolean listViewIsNotEmpty(ListView<String> listView) {
+		
 		//Retorna TRUE se a listView não estiver vazia
 		return !listView.getSelectionModel().getSelectedItems().isEmpty();	
 	}
@@ -233,7 +232,6 @@ public class Controller implements Initializable{
 			StringBuilder urlResource = new StringBuilder();
 			StringBuilder infoResource = new StringBuilder();
 
-
 			//Captura o ip selecionado na listView
 			String ipMote = listViewNeighbors.getSelectionModel().getSelectedItem();
 
@@ -243,20 +241,32 @@ public class Controller implements Initializable{
 			//Faz uma requisição ao mote(servidor) pela informação sobre o recurso e armazena
 			infoResource = client.get(urlResource.toString());
 
+			//Exibe no terminal
 			showOnGUI(infoResource.toString());
+			
+		}else {
+			new AlertsDialog(AlertType.INFORMATION, "Select an IP in Neighbors and\n a resource in Resources Mote", ButtonType.OK);
 		}
 	}
 
 
 	@FXML
 	private void obsMote(ActionEvent event) {
-
-		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias e o botão selecionado
-		if(listViewIsNotEmpty(listViewNeighbors) && listViewIsNotEmpty(listViewInfoMote) && toggleObs.isSelected()) {
-
-
+		//Se a listView com IPs e a lista com recursos, ambas não estiverem selecionadas, exibe mensagem
+		if(!listViewIsNotEmpty(listViewNeighbors) || !listViewIsNotEmpty(listViewInfoMote)){
+			toggleObs.setSelected(false);
+			new AlertsDialog(AlertType.INFORMATION, "Select an IP in Neighbors and\n a resource to Observe", ButtonType.OK);
+		}
+		
+		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias, o botão selecionado e não estiver observando
+		if(listViewIsNotEmpty(listViewNeighbors) && listViewIsNotEmpty(listViewInfoMote) && toggleObs.isSelected() && !isObserving) {
+			//Muda flag para observando
+			isObserving=true;
+			
+			//desabilita botões
 			disableNodes(true);
 
+			//Se campo obsGroup estiver selecionado, desabilita
 			if(checkObsGroup.isSelected()) {
 				disableObsGroup(0.5,true);
 				toggleObsGroup.setDisable(true);
@@ -265,36 +275,33 @@ public class Controller implements Initializable{
 			ResourcesMotes res = new ResourcesMotes();
 			StringBuilder urlResource = new StringBuilder();
 
-
 			//Captura o ip selecionado na listView
 			String ipMote = listViewNeighbors.getSelectionModel().getSelectedItem();
 
 			//Captura o recurso selecionado na listView e armazena sua URL
 			urlResource = res.getURLResource(ipMote,resource);
 
-			//TODO Threads criados aqui não são finalizados após o fim da execução
-
-
 			//Cria uma thread para fazer requisição ao mote(servidor) solicitando observação do recurso
 			new ThreadsObserve(this,urlResource.toString(),"Thread Observe");
-
-
-		}else {
-
+		} 
+		
+		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias, o botão não selecionado e observando
+		if(listViewIsNotEmpty(listViewNeighbors) && listViewIsNotEmpty(listViewInfoMote) && !toggleObs.isSelected() && isObserving) {
+			
 			//Cria uma thread para finalizar a observação 
 			new ThreadsObserve();
-
-
+			
+			//Habilita botões
 			disableNodes(false);
 
+			//Habilita campo obsGroup se tiver desabilitado
 			if(checkObsGroup.isSelected()) {
 				disableObsGroup(1,false);
 				toggleObsGroup.setDisable(false);
-
-			}
-
-		}
-
+			}			
+			//Muda flag, não observando
+			isObserving=false;
+		}	
 	}
 
 
@@ -353,7 +360,8 @@ public class Controller implements Initializable{
 		}else {
 			disableObsGroup(0.5,true);
 			toggleObsGroup.setDisable(true);
-
+			
+			//Limpa a lista obsGroup
 			clearGroup(event);
 		}			
 	}
@@ -392,6 +400,7 @@ public class Controller implements Initializable{
 
 	@FXML
 	private void removeGroupItem(ActionEvent event) {
+		
 		//Se a lista não estiver vazia, deleta o item selecionado
 		if(listViewIsNotEmpty(listViewGroup)) {
 			listGroup.remove(listViewGroup.getSelectionModel().getSelectedIndex());
@@ -401,59 +410,71 @@ public class Controller implements Initializable{
 
 	@FXML
 	private void obsGroup(ActionEvent event) {
-
+		
+		//Se a lista de grupo não estive vazia, o botão selecionado e não observando
 		if(!listGroup.isEmpty() && toggleObsGroup.isSelected() && !isObserving){
 
+			//Muda flag para observando
 			isObserving=true;
 
+			//Desabilita botões
 			disableNodes(true);
 			disableObsGroup(0.5,true);
 			toggleObs.setDisable(true);
 
+			//Captura o caminho e nome do arquivo para salvar dados Obs
 			String pathToSave = texFieldSaveTo.getText();
 			Observe obs = new Observe();
 
+			//Se um caminho tiver sido digitado
 			if(!pathToSave.isEmpty()) {
+				
+				//salva o caminho e cria nele um arquivo para armazenar os dados
 				obs.setSavePath(pathToSave);
 				obs.saveFileObs();
+				
+				//do contrário, apenas cria um arquivo num caminho default
 			}else {
+				
 				obs.saveFileObs();
 			}
 
-
+			//Exibe no terminal o início da observação, local e arquivo usado para salvar os dados da Obs
 			showOnGUI("\nSaving Obs to "+ obs.getSavePath()+"\n\nObserving ...\n");
 
 
 			//TODO verificar a aceitação de URL sem prefixo coap
+			
+			//Lê as URL da lista grupo e cria um Thread para cada uma 
 			for (String url : listGroup) {
 				url = url.replace("[", "coap://[").replace("]/", "]:5683/");
 				new ThreadsObserve(url,"Thread Observe Group");
 			}
-
-
 		}
-
+		
+		//Se a lista grupo não estiver vazia, o botão não selecionado e estiver observando
 		if(!listGroup.isEmpty() && !toggleObsGroup.isSelected() && isObserving){
 
-
-
+			//Cria novo Thread para finalizar a observação
 			new ThreadsObserve();
-
+			
+			//Exibe na tela o fim da observação
 			showOnGUI("\nObserve stopped!\n");
 
+			//Muda a flag para não observando
 			isObserving=false;
 
+			//Habilita os botões
 			disableNodes(false);
 			disableObsGroup(1,false);
 			toggleObs.setDisable(false);
-
 		}
-
 	}
-
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+	
 		//Inicia com o campo Observe Group desabilitado
 		disableObsGroup(0.5,true);
 		toggleObsGroup.setDisable(true);
