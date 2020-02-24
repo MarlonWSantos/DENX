@@ -29,6 +29,8 @@ public class ResourcesMotes{
 
   private List<String> listResources;
   private List<String> listCoapIPs;
+  
+  
   //Armazena os IPs coap para busca de seus recursos  
   public void setIPs(List<String> listIPs){
 	  listCoapIPs = new ArrayList<>();
@@ -40,6 +42,7 @@ public class ResourcesMotes{
      }      
   }
   
+  //Retorna a lista de IPs Coap
   public List<String> getCoapIPs(){
 	  return listCoapIPs;
   }
@@ -52,7 +55,7 @@ public class ResourcesMotes{
   }
   
   
-    //Armazena todas os IPs Coaps e seus respectivos recursos
+    //Armazena e retorna todas os IPs Coaps e seus respectivos recursos
   public List<String> setResources(String infoRes){
 	  
 	  
