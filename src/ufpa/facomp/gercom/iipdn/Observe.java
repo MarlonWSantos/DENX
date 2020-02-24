@@ -37,11 +37,11 @@ public class Observe{
 
 
 	private CoapObserveRelation relation;
-	private CoapClient client = new CoapClient();
+	private CoapClient client = new CoapClient();  //CoapClient para observação dos recursos
 	private StringBuilder infoObs;	
 	protected static Controller control;
 	private static PrintStream file=null;
-	private String savePath = "/tmp/obsResult.txt";
+	private String savePath = "/tmp/obsResult.txt"; //Caminho default para salvar dados da observação
 
 
 
@@ -49,18 +49,17 @@ public class Observe{
 
 		infoObs = new StringBuilder("\nObserving ...\n\n");
 
-
+		//Inseri a URL no coapClient
 		client.setURI(url);
 
+		//Inicia processo de observação e armazena os dados
 		relation = client.observe(new CoapHandler() {
 			@Override
 			public void onLoad(CoapResponse response) {
-				infoObs.append(response.getResponseText());
+				infoObs.append(response.getResponseText());//Armazena os dados da observação
 				infoObs.append("\n");
+				//Manda exibir os dados no terminal 
 				showInfoObs(control);
-
-
-
 			}
 			@Override
 			public void onError() {
@@ -72,43 +71,44 @@ public class Observe{
 		try {
 
 			synchronized (this) {
-
+				//Trava o thread, enquanto faz a observação,esperanda a liberação de outro thread
 				wait();
-			}	
-
+			}
 
 		} catch (InterruptedException e) {
 			System.out.println("Failed on Observe");
 		}
 
+		//Finaliza o thread clientCoap
 		client.shutdown();
+		
+		//Armazena o último dado após fim da observação
 		infoObs.append("\nObserve stopped!\n\n");
 		showInfoObs(control);
-
-
 	}	
 
+	//Exibe no terminal os dados da Observação
 	private void showInfoObs(Controller control) {
 		Platform.runLater(new Runnable() {
 
 			@Override
 			public void run() {
 				control.showOnGUI(infoObs.toString());
-
 			}
 		});
 	}
 
-
+	//Salva o caminho para criar o arquivo que armazena dados da observação
 	public void setSavePath(String savePath) {
 		this.savePath=savePath;
 	}
 	
+	//Retorna o caminho onde será salvo o arquivo que guarda dados da obsrvação
 	public String getSavePath() {
 		return savePath;
 	}
 	
-	
+	//Cria o arquivo que armazenará os dados da observação
 	public void saveFileObs() {
 		try {
 			file = new PrintStream(new File(this.getSavePath()));
@@ -117,18 +117,18 @@ public class Observe{
 		}
 	}
 
-
+	
 	public void observeGroup(String url) {
 		
-
+		//Inseri a URL no coapClient
 		client.setURI(url);
-		
+
+		//Inicia processo de observação e armazena os dados
 		relation = client.observe(new CoapHandler() {
 			@Override
 			public void onLoad(CoapResponse response) {
-				System.setOut(file);
+				System.setOut(file);							//Envia para arquivo dados da observação
 				System.out.println(response.getResponseText());
-
 			}
 			@Override
 			public void onError() {
@@ -140,23 +140,17 @@ public class Observe{
 		try {
 
 			synchronized (this) {
-
+				//Trava o(s) thread(s), enquanto faz a observação,esperanda a liberação de outro thread
 				wait();
-			}	
-
+			}
 
 		} catch (InterruptedException e) {
 			System.out.println("Exception on Observe Group!");
 		}
 
-		
+		//Finaliza o thread clientCoap
 		client.shutdown();
 		
-		System.out.println("Observe stopped!");
-		
-
-		
+		System.out.println("Observe stopped!");		
 	}	
-
-
 }
