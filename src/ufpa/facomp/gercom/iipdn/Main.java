@@ -26,8 +26,6 @@ public class Main extends Application {
 			primaryStage.show();
 			
 		} catch(Exception e) {
-			System.out.println("Exception main start!!");
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}
