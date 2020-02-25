@@ -2,48 +2,43 @@ package ufpa.facomp.gercom.iipdn;
 
 
 /*     Wget Java is a non-interactive network downloader in Java
-*      Copyright (c) 2020 Marlon W. Santos <marlon.santos.santos@icen.ufpa.br>
-*
-*    This program is free software: you can redistribute it and/or modify
-*    it under the terms of the GNU General Public License as published by
-*    the Free Software Foundation, either version 3 of the License, or
-*    (at your option) any later version.
-*
-*    This program is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*    GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License
-*    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*
-*/
+ *      Copyright (c) 2020 Marlon W. Santos <marlon.santos.santos@icen.ufpa.br>
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
 
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-
 public class WgetJava{
-    
+
 	private String url;
 	private StringBuffer response;
 
-	
-	  //Armazena a URL do Border Router para buscar os IPs dos motes
+
+	//*Armazena a URL do Border Router para buscar os IPs dos motes
 	public void setUrl(String args) {
-	  url = "http://["+args+"]";		
+		url = "http://["+args+"]";		
 	}
-	
-	
+
+
 	//Faz pedido ao Border Router pelo IPs da rede
 	public void sendGET() throws IOException {
 
@@ -84,15 +79,16 @@ public class WgetJava{
 			in.close();
 
 			/* Se o código recebido for diferente de HTTP_OK(200) envia exception
-			 * para exibir mensagem de erro*/
+			 * para exibir mensagem de erro
+			 */
 		}else{
 			throw new UnknownHostException();
 		}
 	}
-	
-    //Retorna a responsa do Border Router	
-  public String getResponse() {
-    return response.toString();	  
-  }
+
+	//Retorna a responsa do Border Router	
+	public String getResponse() {
+		return response.toString();	  
+	}
 
 }

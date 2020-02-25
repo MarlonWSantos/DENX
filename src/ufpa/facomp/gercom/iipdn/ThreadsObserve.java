@@ -11,7 +11,7 @@ public class ThreadsObserve implements Runnable {
 
 	//Contrutor para criação de thread que para a observação
 	public ThreadsObserve( ) {
-		
+
 		//Cria o thread
 		Thread stopObserve = new Thread(new Runnable() {
 
@@ -29,7 +29,7 @@ public class ThreadsObserve implements Runnable {
 		stopObserve.start();
 	}
 
-	
+
 	//Contrutor para criação de thread que fará observação individual de recurso 
 	public ThreadsObserve(Controller control,String url,String nomeThread) {
 		this.nomeThread=nomeThread;
@@ -42,7 +42,7 @@ public class ThreadsObserve implements Runnable {
 		//Thread inicia execução
 		beginObserve.start();
 	}
-	
+
 
 	//Contrutor para um ou mais threads que observarão vários recursos
 	public ThreadsObserve(String url,String nomeThread) {
