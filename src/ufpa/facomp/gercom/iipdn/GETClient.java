@@ -24,91 +24,102 @@ import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.Utils;
 import org.eclipse.californium.elements.exception.ConnectorException;
 
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+
 public class GETClient {
-	
-	
-		
-  public StringBuilder get(String url) {
-	  
-	  //Declara o Coapclient de acordo com o número de URL recebidos
-	CoapClient client = new CoapClient();
-	
-	StringBuilder resourceInfo = new StringBuilder();
 
-	  
-	  //Cria os Coapclient um para cada URL recebida
-	client = new CoapClient(url);
-	
-  
-	CoapResponse response = null;   
-				
-	  try {
-		  //Cada Coapclient faz uma requisição para a URL e armazena a resposta
-		response = client.get();
-	    
-	        //Se houver conteúdo na mensagem
-	      if (response!=null) {
+	public StringBuilder get(String url) {
 
-	          //Armazena a informação do recurso do mote
-	    	  resourceInfo.append(response.getCode()+"\n");
-	    	  resourceInfo.append(response.getOptions()+"\n");
-	    	  resourceInfo.append(response.getResponseText()+"\n");
-	    	  resourceInfo.append(System.lineSeparator() + "ADVANCED" + System.lineSeparator()+"\n");
-	    	  resourceInfo.append(Utils.prettyPrint(response)+"\n");
-	    	  
-		  }else {
-		    System.out.println("No response received.");
-		  }
-	    
-		
-	  }catch (ConnectorException e) {
-		  System.out.println("Connector Exception on Get!");
+		//Declara o Coapclient de acordo com o número de URL recebidos
+		CoapClient client = new CoapClient();
 
-	  }catch (IOException e) {
-		  System.out.println("IO Exception on Get!");
-	  }
-			
-	  	  //Finaliza o Coapclient criado
+		StringBuilder resourceInfo = new StringBuilder();
+
+		//Cria os Coapclient um para cada URL recebida
+		client = new CoapClient(url);
+
+		CoapResponse response = null;   
+
+		try {
+			//Cada Coapclient faz uma requisição para a URL e armazena a resposta
+			response = client.get();
+
+			//Se houver conteúdo na mensagem
+			if (response!=null) {
+
+				//Armazena a informação do recurso do mote
+				resourceInfo.append(response.getCode()+"\n");
+				resourceInfo.append(response.getOptions()+"\n");
+				resourceInfo.append(response.getResponseText()+"\n");
+				resourceInfo.append(System.lineSeparator() + "ADVANCED" + System.lineSeparator()+"\n");
+				resourceInfo.append(Utils.prettyPrint(response)+"\n");
+
+			}else {
+				new AlertsDialog(AlertType.WARNING,"No response received",ButtonType.CLOSE);
+			}
+
+
+		}catch (ConnectorException e) {
+
+			new AlertsDialog(AlertType.ERROR,"Connector error during connection",ButtonType.CLOSE);
+
+		}catch (IOException e) {
+
+			new AlertsDialog(AlertType.ERROR,"Connection error occurred",ButtonType.CLOSE);
+
+		}catch (Exception e) {
+
+			new AlertsDialog(e);
+		}
+
+		//Finaliza o Coapclient criado
 		client.shutdown();
 		//Retorna a informação do recurso
-	  return resourceInfo;
-  }
-	
-  
-    //Retorna uma lista com o recursos dos motes da rede
-  public String discover(String url) {
-	  
-      //Declara o Coapclient de acordo com o URL recebido
-    CoapClient client = new CoapClient(url);
-	  
-  
-	CoapResponse response = null;
-	
-	  //Cria lista para armazenar os recursos
-	String listResourceInfo = new String();
+		return resourceInfo;
+	}
 
-	
-	  try {
-		    //Coapclient faz uma requisição para a URL e armazena a resposta
-	      response = client.get();
-	    
-	        //Se houver conteúdo na mensagem,adiciona na lista
-	      if (response!=null) {
-	    	  listResourceInfo=response.getResponseText();
-		  }else {
-		    System.out.println("No response received.");
-		  }
-	    
-		
-	  }catch (ConnectorException e) {
-		  System.out.println("Connector Exception on Get!");
-	  }catch (IOException e) {
-		  System.out.println("IO Exception on Get!");
-	  }
-			
-	      //Finaliza o Coapclient criado
+
+	//Retorna uma lista com o recursos dos motes da rede
+	public String discover(String url) {
+
+		//Declara o Coapclient de acordo com o URL recebido
+		CoapClient client = new CoapClient(url);
+
+		CoapResponse response = null;
+
+		//Cria lista para armazenar os recursos
+		String listResourceInfo = new String();
+
+
+		try {
+			//Coapclient faz uma requisição para a URL e armazena a resposta
+			response = client.get();
+
+			//Se houver conteúdo na mensagem,adiciona na lista
+			if (response!=null) {
+				listResourceInfo=response.getResponseText();
+			}else {
+				new AlertsDialog(AlertType.WARNING,"No response received",ButtonType.CLOSE);
+			}
+
+
+		}catch (ConnectorException e) {
+
+			new AlertsDialog(AlertType.ERROR,"Connector error during connection",ButtonType.CLOSE);
+
+		}catch (IOException e) {
+
+			new AlertsDialog(AlertType.ERROR,"Connection error occurred",ButtonType.CLOSE);
+
+		}catch (Exception e) {
+
+			new AlertsDialog(e);
+		}
+
+		//Finaliza o Coapclient criado
 		client.shutdown();
-		
-	  return listResourceInfo;
-  }
+		//Retorna a lista de recursos
+		return listResourceInfo;
+	}
 }
