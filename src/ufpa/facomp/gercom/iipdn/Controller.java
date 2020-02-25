@@ -1,5 +1,6 @@
 package ufpa.facomp.gercom.iipdn;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -21,6 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -36,7 +38,7 @@ public class Controller implements Initializable{
 	private String resource;
 	private boolean loading=false;	
 	private ObservableList<String> listGroup;
-	private boolean isObserving;
+	private static boolean isObserving;
 
 	@FXML private TextField textFieldURL;
 	@FXML private Text textNeighbors;
@@ -70,11 +72,11 @@ public class Controller implements Initializable{
 
 		//Se o campo da URL estiver vazio, exibe alerta ao usuário pedindo que insira uma URL
 		if(textFieldURL.getText().isEmpty()) {
-			
+
 			new AlertsDialog(Alert.AlertType.INFORMATION,"Insira uma URL válida",ButtonType.CLOSE);
-			
+
 		}else {
-			
+
 			WgetJava obj = new WgetJava();
 			RoutesMotes routes = new RoutesMotes();
 			ResourcesMotes res = new ResourcesMotes();
@@ -96,14 +98,25 @@ public class Controller implements Initializable{
 
 				//Mensagens de erro para usuário
 			}catch(ProtocolException e) {
-				new AlertsDialog(AlertType.ERROR,"Falha no protocolo",ButtonType.CLOSE);			
+
+				new AlertsDialog(AlertType.ERROR,"Protocol failure",ButtonType.CLOSE);	
+
 			}catch (MalformedURLException e) {
-				new AlertsDialog(AlertType.ERROR, "URL coap inválida",ButtonType.CLOSE);
+
+				new AlertsDialog(AlertType.ERROR, "Invalid CoAP URL",ButtonType.CLOSE);
+
 			}catch(UnknownHostException e) {
+
 				new AlertsDialog(AlertType.ERROR, "404 Not Found",ButtonType.CLOSE);
+
 			}catch(IOException e) {
-				new AlertsDialog(AlertType.ERROR, "Falha na comunicação", ButtonType.CLOSE);
-			}catch(Exception e) {e.printStackTrace();};
+
+				new AlertsDialog(AlertType.ERROR, "Communication failure", ButtonType.CLOSE);
+
+			}catch(Exception e) {
+
+				new AlertsDialog(e);
+			}
 		}
 	}
 
@@ -215,7 +228,7 @@ public class Controller implements Initializable{
 
 
 	private boolean listViewIsNotEmpty(ListView<String> listView) {
-		
+
 		//Retorna TRUE se a listView não estiver vazia
 		return !listView.getSelectionModel().getSelectedItems().isEmpty();	
 	}
@@ -243,9 +256,10 @@ public class Controller implements Initializable{
 
 			//Exibe no terminal
 			showOnGUI(infoResource.toString());
-			
+
 		}else {
-			new AlertsDialog(AlertType.INFORMATION, "Select an IP in Neighbors and\n a resource in Resources Mote", ButtonType.OK);
+
+			new AlertsDialog(AlertType.WARNING, "Select an IP in Neighbors and\n a resource in Resources Mote", ButtonType.OK);
 		}
 	}
 
@@ -255,14 +269,16 @@ public class Controller implements Initializable{
 		//Se a listView com IPs e a lista com recursos, ambas não estiverem selecionadas, exibe mensagem
 		if(!listViewIsNotEmpty(listViewNeighbors) || !listViewIsNotEmpty(listViewInfoMote)){
 			toggleObs.setSelected(false);
-			new AlertsDialog(AlertType.INFORMATION, "Select an IP in Neighbors and\n a resource to Observe", ButtonType.OK);
+			new AlertsDialog(AlertType.WARNING, "Select an IP in Neighbors and\n a resource to Observe", ButtonType.OK);
 		}
-		
+
 		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias, o botão selecionado e não estiver observando
 		if(listViewIsNotEmpty(listViewNeighbors) && listViewIsNotEmpty(listViewInfoMote) && toggleObs.isSelected() && !isObserving) {
 			//Muda flag para observando
 			isObserving=true;
-			
+
+			toggleObs.setSelected(true);
+
 			//desabilita botões
 			disableNodes(true);
 
@@ -284,13 +300,13 @@ public class Controller implements Initializable{
 			//Cria uma thread para fazer requisição ao mote(servidor) solicitando observação do recurso
 			new ThreadsObserve(this,urlResource.toString(),"Thread Observe");
 		} 
-		
+
 		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias, o botão não selecionado e observando
 		if(listViewIsNotEmpty(listViewNeighbors) && listViewIsNotEmpty(listViewInfoMote) && !toggleObs.isSelected() && isObserving) {
-			
+
 			//Cria uma thread para finalizar a observação 
 			new ThreadsObserve();
-			
+
 			//Habilita botões
 			disableNodes(false);
 
@@ -360,7 +376,7 @@ public class Controller implements Initializable{
 		}else {
 			disableObsGroup(0.5,true);
 			toggleObsGroup.setDisable(true);
-			
+
 			//Limpa a lista obsGroup
 			clearGroup(event);
 		}			
@@ -400,7 +416,7 @@ public class Controller implements Initializable{
 
 	@FXML
 	private void removeGroupItem(ActionEvent event) {
-		
+
 		//Se a lista não estiver vazia, deleta o item selecionado
 		if(listViewIsNotEmpty(listViewGroup)) {
 			listGroup.remove(listViewGroup.getSelectionModel().getSelectedIndex());
@@ -410,54 +426,88 @@ public class Controller implements Initializable{
 
 	@FXML
 	private void obsGroup(ActionEvent event) {
-		
+
 		//Se a lista de grupo não estive vazia, o botão selecionado e não observando
 		if(!listGroup.isEmpty() && toggleObsGroup.isSelected() && !isObserving){
 
-			//Muda flag para observando
-			isObserving=true;
+			try {
 
-			//Desabilita botões
-			disableNodes(true);
-			disableObsGroup(0.5,true);
-			toggleObs.setDisable(true);
+				//Captura o caminho e nome do arquivo para salvar dados Obs
+				String pathToSave = texFieldSaveTo.getText();
+				Observe obs = new Observe();
 
-			//Captura o caminho e nome do arquivo para salvar dados Obs
-			String pathToSave = texFieldSaveTo.getText();
-			Observe obs = new Observe();
+				//Se um caminho tiver sido digitado
+				if(!pathToSave.isEmpty()) {
 
-			//Se um caminho tiver sido digitado
-			if(!pathToSave.isEmpty()) {
-				
-				//salva o caminho e cria nele um arquivo para armazenar os dados
-				obs.setSavePath(pathToSave);
-				obs.saveFileObs();
-				
-				//do contrário, apenas cria um arquivo num caminho default
-			}else {
-				
-				obs.saveFileObs();
+					//salva o caminho e cria nele um arquivo para armazenar os dados
+					obs.setSavePath(pathToSave);
+					obs.saveFileObs();
+
+					//do contrário, apenas cria um arquivo num caminho default
+				}else {
+
+					obs.saveFileObs();
+				}
+
+				//Muda flag para observando
+				isObserving=true;
+
+				//Desabilita botões
+				disableNodes(true);
+				disableObsGroup(0.5,true);
+				toggleObs.setDisable(true);
+
+				//Exibe no terminal o início da observação, local e arquivo usado para salvar os dados da Obs
+				showOnGUI("\nSaving Obs to "+ obs.getSavePath()+"\n\nObserving ...\n");
+
+
+				//TODO verificar a aceitação de URL sem prefixo coap
+
+				//Lê as URL da lista grupo e cria um Thread para cada uma 
+				for (String url : listGroup) {
+					url = url.replace("[", "coap://[").replace("]/", "]:5683/");
+					new ThreadsObserve(url,"Thread Observe Group");
+				}
+
+			}catch(NullPointerException e) {
+
+				new AlertsDialog(AlertType.ERROR,"Invalid file path",ButtonType.CLOSE);
+
+			}catch(SecurityException e) {
+
+				new AlertsDialog(AlertType.ERROR,"Access denied to write to the file",ButtonType.CLOSE);
+
+			}catch(FileNotFoundException e) {
+
+				new AlertsDialog(AlertType.ERROR,"File path not found",ButtonType.CLOSE);
+
+			}catch(IOException e) {
+
+				new AlertsDialog(AlertType.ERROR,"Failed to access the file",ButtonType.CLOSE);
+
+			}catch(Exception e) {
+
+				new AlertsDialog(e);
+
+			}finally {
+
+				//Após uma exception, se não houver uma observação ocorrendo
+				if(!isObserving) {
+					//Não seleciona o botão Obs Group
+					toggleObsGroup.setSelected(false);
+				}
 			}
 
-			//Exibe no terminal o início da observação, local e arquivo usado para salvar os dados da Obs
-			showOnGUI("\nSaving Obs to "+ obs.getSavePath()+"\n\nObserving ...\n");
 
 
-			//TODO verificar a aceitação de URL sem prefixo coap
-			
-			//Lê as URL da lista grupo e cria um Thread para cada uma 
-			for (String url : listGroup) {
-				url = url.replace("[", "coap://[").replace("]/", "]:5683/");
-				new ThreadsObserve(url,"Thread Observe Group");
-			}
 		}
-		
+
 		//Se a lista grupo não estiver vazia, o botão não selecionado e estiver observando
 		if(!listGroup.isEmpty() && !toggleObsGroup.isSelected() && isObserving){
 
 			//Cria novo Thread para finalizar a observação
 			new ThreadsObserve();
-			
+
 			//Exibe na tela o fim da observação
 			showOnGUI("\nObserve stopped!\n");
 
@@ -469,12 +519,22 @@ public class Controller implements Initializable{
 			disableObsGroup(1,false);
 			toggleObs.setDisable(false);
 		}
+
+		//Se a lista Group estiver vazia, não seleciona o botão
+		if(listGroup.isEmpty()) {
+			toggleObsGroup.setSelected(false);
+		}
 	}
-	
+
+	//Retorna se está ocorrendo uma observação
+	public boolean isObserving() {
+		return Controller.isObserving;
+	}
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-	
+
 		//Inicia com o campo Observe Group desabilitado
 		disableObsGroup(0.5,true);
 		toggleObsGroup.setDisable(true);
