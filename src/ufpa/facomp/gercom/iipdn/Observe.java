@@ -30,6 +30,9 @@ import java.io.PrintStream;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
 import javafx.application.Platform;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
+
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
 
@@ -63,7 +66,11 @@ public class Observe{
 			}
 			@Override
 			public void onError() {
-				System.err.println("Failed");
+				infoObs.append("Failed connection");//Em caso de falha durante observação
+				infoObs.append("\n");
+				//Manda exibir os dados no terminal 
+				showInfoObs(control);
+
 			}
 		});
 
@@ -76,12 +83,14 @@ public class Observe{
 			}
 
 		} catch (InterruptedException e) {
-			System.out.println("Failed on Observe");
+			new AlertsDialog(AlertType.WARNING,"Observation stopped incorrectly\nEnd the observation by pressing Obs", ButtonType.OK);
+		} catch (Exception e) {
+			new AlertsDialog(e);
 		}
 
 		//Finaliza o thread clientCoap
 		client.shutdown();
-		
+
 		//Armazena o último dado após fim da observação
 		infoObs.append("\nObserve stopped!\n\n");
 		showInfoObs(control);
@@ -102,24 +111,20 @@ public class Observe{
 	public void setSavePath(String savePath) {
 		this.savePath=savePath;
 	}
-	
+
 	//Retorna o caminho onde será salvo o arquivo que guarda dados da obsrvação
 	public String getSavePath() {
 		return savePath;
 	}
-	
+
 	//Cria o arquivo que armazenará os dados da observação
-	public void saveFileObs() {
-		try {
-			file = new PrintStream(new File(this.getSavePath()));
-		} catch (FileNotFoundException e1) {
-			System.out.println("Failed to create file");
-		}
+	public void saveFileObs() throws Exception {
+		file = new PrintStream(new File(this.getSavePath()));
 	}
 
-	
+
 	public void observeGroup(String url) {
-		
+
 		//Inseri a URL no coapClient
 		client.setURI(url);
 
@@ -132,7 +137,7 @@ public class Observe{
 			}
 			@Override
 			public void onError() {
-				System.err.println("Failed connection");
+				System.out.println("Failed connection");
 			}
 		});
 
@@ -145,12 +150,14 @@ public class Observe{
 			}
 
 		} catch (InterruptedException e) {
-			System.out.println("Exception on Observe Group!");
+			new AlertsDialog(AlertType.WARNING,"Observation stopped incorrectly\nEnd the observation by pressing Obs Group", ButtonType.OK);
+		} catch (Exception e) {
+			new AlertsDialog(e);
 		}
 
 		//Finaliza o thread clientCoap
 		client.shutdown();
-		
+
 		System.out.println("Observe stopped!");		
 	}	
 }
