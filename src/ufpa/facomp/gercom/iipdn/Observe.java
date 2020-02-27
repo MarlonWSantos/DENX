@@ -41,13 +41,18 @@ public class Observe{
 
 	private CoapObserveRelation relation;
 	private CoapClient client = new CoapClient();  //CoapClient para observação dos recursos
-	private StringBuilder infoObs;	
+	private static StringBuilder infoObs;
 	protected static Controller control;
 	private static PrintStream file=null;
-	private String savePath = "/tmp/obsResult.txt"; //Caminho default para salvar dados da observação
+	private static String savePath = "/tmp/obsResult.txt"; //Caminho default para salvar dados da observação
 
 
 
+	public void createBufferObs() {
+		infoObs=null;
+		Observe.infoObs= new StringBuilder("\nSaving Obs to "+ getSavePath()+"\n\nObserving ...\n");
+	}
+	
 	public void observe(String url,Controller control) {
 
 		infoObs = new StringBuilder("\nObserving ...\n\n");
@@ -123,7 +128,11 @@ public class Observe{
 	}
 
 
-	public void observeGroup(String url) {
+	public void observeGroup(String url,Controller control) {
+		
+		//Exibe no terminal o início da observação, local e arquivo usado para salvar os dados da Obs
+		infoObs = new StringBuilder("\nSaving Obs to "+ getSavePath()+"\n\nObserving ...\n");
+
 
 		//Inseri a URL no coapClient
 		client.setURI(url);
@@ -134,10 +143,18 @@ public class Observe{
 			public void onLoad(CoapResponse response) {
 				System.setOut(file);							//Envia para arquivo dados da observação
 				System.out.println(response.getResponseText());
+				infoObs.append(response.getResponseText());//Armazena os dados da observação
+				infoObs.append("\n");
+				//Manda exibir os dados no terminal 
+				showInfoObs(control);
 			}
 			@Override
 			public void onError() {
 				System.out.println("Failed connection");
+				infoObs.append("Failed connection");//Em caso de falha durante observação
+				infoObs.append("\n");
+				//Manda exibir os dados no terminal 
+				showInfoObs(control);
 			}
 		});
 
@@ -158,6 +175,9 @@ public class Observe{
 		//Finaliza o thread clientCoap
 		client.shutdown();
 
-		System.out.println("Observe stopped!");		
+		System.out.println("Observe stopped!");
+		//Armazena o último dado após fim da observação
+		infoObs.append("\nObserve stopped!\n\n");
+		showInfoObs(control);
 	}	
 }
