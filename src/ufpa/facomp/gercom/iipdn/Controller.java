@@ -457,16 +457,12 @@ public class Controller implements Initializable{
 				disableObsGroup(0.5,true);
 				toggleObs.setDisable(true);
 
-				//Exibe no terminal o início da observação, local e arquivo usado para salvar os dados da Obs
-				showOnGUI("\nSaving Obs to "+ obs.getSavePath()+"\n\nObserving ...\n");
-
-
 				//TODO verificar a aceitação de URL sem prefixo coap
 
 				//Lê as URL da lista grupo e cria um Thread para cada uma 
 				for (String url : listGroup) {
 					url = url.replace("[", "coap://[").replace("]/", "]:5683/");
-					new ThreadsObserve(url,"Thread Observe Group");
+					new ThreadsObserve(this,url,"Thread Observe Group");
 				}
 
 			}catch(NullPointerException e) {
