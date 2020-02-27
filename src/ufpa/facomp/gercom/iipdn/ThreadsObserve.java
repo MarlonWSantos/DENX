@@ -30,7 +30,7 @@ public class ThreadsObserve implements Runnable {
 	}
 
 
-	//Contrutor para criação de thread que fará observação individual de recurso 
+	//Contrutor para criação de thread que fará observação de recurso 
 	public ThreadsObserve(Controller control,String url,String nomeThread) {
 		this.nomeThread=nomeThread;
 		this.url = url;
@@ -44,19 +44,6 @@ public class ThreadsObserve implements Runnable {
 	}
 
 
-	//Contrutor para um ou mais threads que observarão vários recursos
-	public ThreadsObserve(String url,String nomeThread) {
-		this.nomeThread=nomeThread;
-		this.url = url;
-
-		//Cria o thread
-		Thread beginObserveGroup = new Thread(this,nomeThread);
-
-		//Thread inicia execução
-		beginObserveGroup.start();
-	}
-
-
 	@Override
 	public void run() {
 
@@ -67,7 +54,7 @@ public class ThreadsObserve implements Runnable {
 
 		//Se o thread fizer parte de um grupo, chama a função para observar um grupo de URLs
 		if(Thread.currentThread().getName().equalsIgnoreCase("Thread Observe Group")) {
-			obs.observeGroup(url);
+			obs.observeGroup(url,control);
 		}
 	}
 }
