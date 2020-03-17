@@ -24,7 +24,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("iipdn.fxml"));
-			Scene scene = new Scene(root,924,537);
+			Scene scene = new Scene(root,1024,748);
 			scene.getStylesheets().add(getClass().getResource("iipdn.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("IIPDN - GUI CoAP Client");
