@@ -44,7 +44,7 @@ public class RoutesMotes{
 		Pattern route = Pattern.compile("aaaa:.*s");
 
 		//Define o padrão de IPs
-		Pattern ip = Pattern.compile("fe80:.*:.*:.*:[0-9]\n");
+		Pattern ip = Pattern.compile("fe80:.*:.*:.*:[1-9|a-f]?[0-9|a-f]\n");
 
 		//Busca dentra da mensagem o padrão da rota definido
 		Matcher matcherRoute = route.matcher(response);
