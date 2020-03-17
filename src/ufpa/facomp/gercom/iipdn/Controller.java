@@ -27,6 +27,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
@@ -68,6 +69,7 @@ public class Controller implements Initializable{
 	@FXML private Button buttonClearGroup;
 	@FXML private ToggleButton toggleObsGroup;
     @FXML private AnchorPane scatterChartGraphic;
+    @FXML private TextArea textAreaRoutes;
 	
 	
 	@FXML
@@ -158,7 +160,7 @@ public class Controller implements Initializable{
 		}      
 
 		//Exibe na GUI a lista com as rotas
-		labelRoutes.setText(rotas.toString().replace(",", "")); 
+		textAreaRoutes.setText(rotas.toString().replace(",", ""));
 	}
 
 
