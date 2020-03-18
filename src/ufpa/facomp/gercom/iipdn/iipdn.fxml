@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="scatterChartGraphic" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufpa.facomp.gercom.iipdn.Controller">
+<AnchorPane fx:id="Graphic" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufpa.facomp.gercom.iipdn.Controller">
    <children>
       <HBox prefHeight="26.0" prefWidth="918.0" spacing="20.0">
          <children>
@@ -97,12 +97,12 @@
       <TextField fx:id="texFieldSaveTo" layoutX="746.0" layoutY="269.0" promptText="/tmp/obsResult.txt" />
 
       <Text layoutX="693.0" layoutY="314.0" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="*Default to /tmp/obsResult.txt" />
-      <ScatterChart alternativeColumnFillVisible="true" layoutX="686.0" layoutY="326.0" prefHeight="380.0" prefWidth="332.0" title="Network Density">
+      <ScatterChart fx:id="scatterChartGraphic" alternativeColumnFillVisible="true" layoutX="686.0" layoutY="326.0" prefHeight="380.0" prefWidth="332.0" title="Network Density">
         <xAxis>
-          <NumberAxis side="BOTTOM" upperBound="99.0" />
+          <NumberAxis side="BOTTOM" upperBound="99.0" fx:id="xAxis" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" upperBound="99.0" />
+          <NumberAxis fx:id="yAxis" side="LEFT" upperBound="99.0" />
         </yAxis>
       </ScatterChart>
       <TextArea fx:id="textAreaRoutes" editable="false" layoutX="333.0" layoutY="66.0" prefHeight="200.0" prefWidth="353.0" wrapText="true">
