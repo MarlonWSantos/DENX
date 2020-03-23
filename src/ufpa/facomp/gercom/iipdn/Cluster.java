@@ -13,6 +13,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javafx.application.Platform;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
 import weka.core.converters.CSVLoader;
@@ -112,7 +113,7 @@ public class Cluster {
 		saver.writeBatch();
 	}
 /********************************************************************************/	
-	public void createClusters() throws Exception {
+	public void createClusters(Controller control) throws Exception {
 
 		SimpleKMeans kmeans = new SimpleKMeans();
 
@@ -132,19 +133,27 @@ public class Cluster {
 
 		kmeans.buildClusterer(dataForCluster);
 		
+		StringBuilder infoKmeans = new StringBuilder();
+		String infoCluster;
+		String infoMote;
+		
 		int[] assignments = kmeans.getAssignments();
 		int mote=0;
 		double coordX;
 		double coordY;
 		int i=0;
 		for(int clusterNum : assignments) {
-			System.out.printf("Instance %d -> Cluster %d \n", i, clusterNum);
-			System.out.println(motesActives.get(mote));
 
+			infoCluster=String.format("Instance %d -> Cluster %d \n", i, clusterNum);
+			infoMote=String.format("%s",motesActives.get(mote));
+		
+			infoKmeans.append(infoCluster);
+			infoKmeans.append(infoMote);
+			infoKmeans.append("\n\n");
+						
 			coordX=Double.parseDouble(motesActives.get(mote).get(1));
 			coordY=Double.parseDouble(motesActives.get(mote).get(2));
 
-			System.out.println();
 
 			switch (clusterNum) {
 			case 0:
@@ -169,6 +178,15 @@ public class Cluster {
 			i++;
 			mote++;
 		}
+		
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				control.showInformationCluster(infoKmeans);					
+			}
+		});
+
 	}
 /******************************************************************************/
 	public BufferedReader readDataFile(String filename) {
