@@ -73,7 +73,8 @@ public class Controller implements Initializable{
 	@FXML private NumberAxis xAxis;
     @FXML private NumberAxis yAxis;
     @FXML private TextArea textAreaRoutes;
-	
+    @FXML private TextArea textAreaClusters;
+    @FXML private Text textClusers;
 	
 	@FXML
 	private void mainController(ActionEvent event)   {
@@ -552,6 +553,11 @@ public class Controller implements Initializable{
         scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries5());
         scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries6());				
 	}
+	
+	public void showInformationCluster(StringBuilder infoKmeans) {
+		
+		textAreaClusters.setText(infoKmeans.toString());
+	}
 
 
 	@Override
@@ -561,32 +567,5 @@ public class Controller implements Initializable{
 		disableObsGroup(0.5,true);
 		toggleObsGroup.setDisable(true);
 		
-		//	new ThreadCluster(this);
-
-	/*	
-		XYChart.Series<Number, Number> series0 = new XYChart.Series<>();
-		XYChart.Series<Number, Number> series1 = new XYChart.Series<>();
-		XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-
-		series0.setName("Cluter 1 ");
-		series1.setName("Cluter 2 ");
-		series2.setName("Cluter 3 ");
-
-		series0.getData().add(new XYChart.Data<>(5, 5));
-		series0.getData().add(new XYChart.Data<>(3, 2));
-		series0.getData().add(new XYChart.Data<>(4, 1));
-		series0.getData().add(new XYChart.Data<>(1, 5));
-
-		series1.getData().add(new XYChart.Data<>(15, 25));
-		series1.getData().add(new XYChart.Data<>(16, 30));
-		series1.getData().add(new XYChart.Data<>(14, 26));
-		series1.getData().add(new XYChart.Data<>(11, 20));
-
-		series2.getData().add(new XYChart.Data<>(25, 35));
-		series2.getData().add(new XYChart.Data<>(30, 27));
-		series2.getData().add(new XYChart.Data<>(32, 15));
-		series2.getData().add(new XYChart.Data<>(99, 99));
-		
-		scatterChartGraphic.getData().addAll(series0,series1,series2);*/
-	}
+		}
 }
