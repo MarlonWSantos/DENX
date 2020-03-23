@@ -103,6 +103,10 @@ public class Controller implements Initializable{
 				treatmentOfInformation(obj,routes);
 				showIPs(routes,res);
 				showRoutes(routes);
+				
+				//Cria um thread para gerar clusters no gráfico
+				new ThreadCluster(this,routes);
+
 
 				//Mensagens de erro para usuário
 			}catch(ProtocolException e) {
@@ -534,6 +538,20 @@ public class Controller implements Initializable{
 	public boolean isObserving() {
 		return Controller.isObserving;
 	}
+	
+	
+	public void LoadGraphic() {
+		
+        if (!scatterChartGraphic.getData().isEmpty()) {
+        	scatterChartGraphic.getData().remove(0,scatterChartGraphic.getData().size());
+        }
+        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
+        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
+        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
+        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());
+        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries5());
+        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries6());				
+	}
 
 
 	@Override
@@ -543,8 +561,9 @@ public class Controller implements Initializable{
 		disableObsGroup(0.5,true);
 		toggleObsGroup.setDisable(true);
 		
-		
-		
+		//	new ThreadCluster(this);
+
+	/*	
 		XYChart.Series<Number, Number> series0 = new XYChart.Series<>();
 		XYChart.Series<Number, Number> series1 = new XYChart.Series<>();
 		XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
@@ -567,14 +586,7 @@ public class Controller implements Initializable{
 		series2.getData().add(new XYChart.Data<>(30, 27));
 		series2.getData().add(new XYChart.Data<>(32, 15));
 		series2.getData().add(new XYChart.Data<>(99, 99));
-
 		
-		
-		
-		scatterChartGraphic.getData().addAll(series0,series1,series2);
-		
-				
+		scatterChartGraphic.getData().addAll(series0,series1,series2);*/
 	}
-
-
 }
