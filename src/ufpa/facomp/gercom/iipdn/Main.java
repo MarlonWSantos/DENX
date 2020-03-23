@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -92,6 +93,10 @@ public class Main extends Application {
 			}else {
 				we.consume();
 			}												
+		}else {
+			// Se não houver observação e fechar janela, encerra o sistema
+			Platform.exit();
+			System.exit(0);
 		} 
 	}
 
