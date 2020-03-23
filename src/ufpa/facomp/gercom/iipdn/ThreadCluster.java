@@ -36,7 +36,7 @@ public class ThreadCluster implements Runnable{
 					obj.savingActivesMotesInCSV();
 					obj.loadCSV();
 					obj.saveARFF();
-					obj.createClusters();
+					obj.createClusters(control);
 
 					Platform.runLater(new Runnable() {
 
@@ -46,8 +46,6 @@ public class ThreadCluster implements Runnable{
 						}
 					});
 
-				}else {
-					System.out.println("No");
 				}
 
 				Thread.sleep(60000);			
