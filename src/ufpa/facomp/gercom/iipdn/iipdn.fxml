@@ -43,20 +43,23 @@
       <Separator layoutX="11.0" layoutY="45.0" prefHeight="5.0" prefWidth="903.0" />
       <HBox layoutY="52.0" prefHeight="18.0" prefWidth="896.0" AnchorPane.leftAnchor="20.0">
          <children>
-            <Text fx:id="texResourcesMote" strokeType="OUTSIDE" strokeWidth="0.0" text="Resources Mote" />
             <Text fx:id="textNeighbors" strokeType="OUTSIDE" strokeWidth="0.0" text="Neighbors">
                <HBox.margin>
-                  <Insets left="60.0" />
+                  <Insets left="5.0" />
                </HBox.margin>
             </Text>
+            <Text fx:id="texResourcesMote" strokeType="OUTSIDE" strokeWidth="0.0" text="Resources Mote">
+               <HBox.margin>
+                  <Insets left="90.0" />
+               </HBox.margin></Text>
             <Text fx:id="textRoutes" strokeType="OUTSIDE" strokeWidth="0.0" text="Routes">
                <HBox.margin>
-                  <Insets left="100.0" />
+                  <Insets left="55.0" />
                </HBox.margin>
             </Text>
             <Text fx:id="textGroups" strokeType="OUTSIDE" strokeWidth="0.0" text="Group">
                <HBox.margin>
-                  <Insets left="300.0" />
+                  <Insets left="315.0" />
                </HBox.margin>
             </Text>
          </children>
