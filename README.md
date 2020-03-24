@@ -8,6 +8,7 @@ https://www.eclipse.org/downloads/
 
 ## Download and install Scene Builder for Java 8:
 https://gluonhq.com/products/scene-builder/
+
 Direct link:
 https://gluonhq.com/products/scene-builder/download/scene-builder-linux-deb/
 
