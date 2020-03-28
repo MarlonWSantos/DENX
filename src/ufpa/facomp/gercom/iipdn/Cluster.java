@@ -29,7 +29,6 @@ public class Cluster {
 	static ArrayList<ArrayList<String>> dataFromFile;
 	static ArrayList<ArrayList<String>> motesActives;
 	protected static Graphic graphic = new Graphic();
-
 	static String[] IPs;
 
 /******************************************************************************/	
@@ -124,9 +123,11 @@ public class Cluster {
 		graphic.createSerieCluster5();
 		graphic.createSerieCluster6();
 
+		int numberClusters = calculateNumberClusters();
+		
 		kmeans.setSeed(10);
 		kmeans.setPreserveInstancesOrder(true);
-		kmeans.setNumClusters(3);
+		kmeans.setNumClusters(numberClusters);
 
 		BufferedReader datafile = readDataFile(PATH_ARFF_FILE);
 		Instances dataForCluster = new Instances(datafile);
@@ -199,5 +200,25 @@ public class Cluster {
 			System.err.println("File not found: " + filename);
 		}
 		return inputReader;
+	}
+/******************************************************************************/
+	public int calculateNumberClusters() {
+		int totalClusters = 0;
+		int totalMotesActives = motesActives.size();
+		
+		if(totalMotesActives <= 5) {
+			totalClusters = 1;
+		}else if(totalMotesActives >= 6 && totalMotesActives <= 8) {
+			totalClusters = 2;
+		}else if(totalMotesActives >= 9 && totalMotesActives <= 11) {
+			totalClusters = 3;
+		}else if(totalMotesActives >= 12 && totalMotesActives <= 14) {
+			totalClusters = 4;
+		}else if(totalMotesActives >= 15 && totalMotesActives <= 17) {
+			totalClusters = 5;
+		}else if(totalMotesActives >= 18) {
+			totalClusters = 6;
+		}		
+		return totalClusters;
 	}
 }
