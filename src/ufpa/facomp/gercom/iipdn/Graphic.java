@@ -1,8 +1,6 @@
 package ufpa.facomp.gercom.iipdn;
 
-import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Series;
 
 public class Graphic {
 	
