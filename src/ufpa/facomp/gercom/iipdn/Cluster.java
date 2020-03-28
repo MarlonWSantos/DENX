@@ -115,19 +115,14 @@ public class Cluster {
 	public void createClusters(Controller control) throws Exception {
 
 		SimpleKMeans kmeans = new SimpleKMeans();
-
-		graphic.createSerieCluster1();
-		graphic.createSerieCluster2();
-		graphic.createSerieCluster3();
-		graphic.createSerieCluster4();
-		graphic.createSerieCluster5();
-		graphic.createSerieCluster6();
-
-		int numberClusters = calculateNumberClusters();
 		
+		int numberClusters = defineNumberClusters();
+
 		kmeans.setSeed(10);
 		kmeans.setPreserveInstancesOrder(true);
 		kmeans.setNumClusters(numberClusters);
+
+		defineSeriesClusterToCreate(numberClusters);
 
 		BufferedReader datafile = readDataFile(PATH_ARFF_FILE);
 		Instances dataForCluster = new Instances(datafile);
@@ -202,7 +197,7 @@ public class Cluster {
 		return inputReader;
 	}
 /******************************************************************************/
-	public int calculateNumberClusters() {
+	public int defineNumberClusters() {
 		int totalClusters = 0;
 		int totalMotesActives = motesActives.size();
 		
@@ -220,5 +215,44 @@ public class Cluster {
 			totalClusters = 6;
 		}		
 		return totalClusters;
+	}
+/******************************************************************************/
+	public void defineSeriesClusterToCreate(int numberClusters){
+		
+		switch (numberClusters) {
+		case 1:
+			graphic.createSerieCluster1();
+			break;
+		case 2:
+			graphic.createSerieCluster1();
+			graphic.createSerieCluster2();
+			break;
+		case 3:
+			graphic.createSerieCluster1();
+			graphic.createSerieCluster2();
+			graphic.createSerieCluster3();
+			break;
+		case 4:
+			graphic.createSerieCluster1();
+			graphic.createSerieCluster2();
+			graphic.createSerieCluster3();
+			graphic.createSerieCluster4();
+			break;
+		case 5:
+			graphic.createSerieCluster1();
+			graphic.createSerieCluster2();
+			graphic.createSerieCluster3();
+			graphic.createSerieCluster4();
+			graphic.createSerieCluster5();
+			break;
+		case 6:
+			graphic.createSerieCluster1();
+			graphic.createSerieCluster2();
+			graphic.createSerieCluster3();
+			graphic.createSerieCluster4();
+			graphic.createSerieCluster5();
+			graphic.createSerieCluster6();
+			break;			
+		}		
 	}
 }
