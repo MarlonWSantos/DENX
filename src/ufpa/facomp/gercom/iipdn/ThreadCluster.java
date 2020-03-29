@@ -9,7 +9,7 @@ public class ThreadCluster implements Runnable{
 	final static String PATH_CSV_FILE = "/tmp/motes_coordinates.csv";
 	private static Controller control;
 	private static RoutesMotes routes;
-	
+
 	public ThreadCluster(Controller control,RoutesMotes routes) {
 		this.control=control;
 		this.routes=routes;
@@ -42,9 +42,12 @@ public class ThreadCluster implements Runnable{
 
 						@Override
 						public void run() {
-				control.LoadGraphic();							
+							control.LoadGraphic();							
 						}
 					});
+
+					//Cria um thread para calcular as métricas
+					//new ThreadMetrics(this);
 
 				}
 
