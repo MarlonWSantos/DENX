@@ -30,6 +30,7 @@ public class Cluster {
 	static ArrayList<ArrayList<String>> motesActives;
 	protected static Graphic graphic = new Graphic();
 	static String[] IPs;
+	protected static int numberClusters;
 
 /******************************************************************************/	
 	public void getIPsActivesMotes(RoutesMotes routes) {		
@@ -116,7 +117,7 @@ public class Cluster {
 
 		SimpleKMeans kmeans = new SimpleKMeans();
 		
-		int numberClusters = defineNumberClusters();
+		numberClusters = defineNumberClusters();
 
 		kmeans.setSeed(10);
 		kmeans.setPreserveInstancesOrder(true);
