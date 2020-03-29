@@ -3,12 +3,12 @@ package ufpa.facomp.gercom.iipdn;
 import java.util.*;	
 
 public class ConvexHull{ 
-	float x, y;
-	float angle;
+	double x, y;
+	double angle;
 	static Vector<ConvexHull> hull = new Vector<ConvexHull>(); 
-	static float centerX=0, centerY=0;
+	static double centerX=0, centerY=0;
 
-	public ConvexHull(int x, int y){ 
+	public ConvexHull(double x, double y){ 
 		this.x=x; 
 		this.y=y; 
 	} 
@@ -37,16 +37,16 @@ public class ConvexHull{
 		} while (p != l); 		
 	} 
 
-	public void setAngle(float angle) {
+	public void setAngle(double angle) {
 		this.angle=angle;
 	}
 
-	public float getAngle() {
+	public double getAngle() {
 		return this.angle;
 	}
 
 	public static int orientation(ConvexHull p, ConvexHull q, ConvexHull r) { 
-		float val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y); 
+		double val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y); 
 
 		if (val == 0) return 0; 
 		return (val > 0)? 1: 2; 
@@ -85,7 +85,7 @@ public class ConvexHull{
 			System.out.println(temp.angle ); 
 	}
 
-	public static float calculateAngle(float x, float y, float refX, float refY) {
+	public static double calculateAngle(double x, double y, double refX, double refY) {
 		float angle = (float) Math.toDegrees(Math.atan2(y - refY, x - refX));
 
 		if(angle < 0){
