@@ -75,6 +75,8 @@ public class Controller implements Initializable{
     @FXML private TextArea textAreaRoutes;
     @FXML private TextArea textAreaClusters;
     @FXML private Text textClusers;
+    @FXML private TextArea textAreaMetrics;
+    @FXML private Text textMetrics;
 	
 	@FXML
 	private void mainController(ActionEvent event)   {
@@ -106,10 +108,9 @@ public class Controller implements Initializable{
 				showRoutes(routes);
 				
 				//Cria um thread para gerar clusters no gráfico
-				new ThreadCluster(this,routes);
+			//	new ThreadCluster(this,routes);
 
-
-				//Mensagens de erro para usuário
+				//Mensagens de erro para usuário			
 			}catch(ProtocolException e) {
 
 				new AlertsDialog(AlertType.ERROR,"Protocol failure",ButtonType.CLOSE);	
@@ -121,10 +122,14 @@ public class Controller implements Initializable{
 			}catch(UnknownHostException e) {
 
 				new AlertsDialog(AlertType.ERROR, "404 Not Found",ButtonType.CLOSE);
-
+			
 			}catch(IOException e) {
 
 				new AlertsDialog(AlertType.ERROR, "Communication failure", ButtonType.CLOSE);
+			
+			//}catch(InterruptedException e) {
+
+		//		new AlertsDialog(AlertType.ERROR, "Thread Interrupted", ButtonType.CLOSE);
 
 			}catch(Exception e) {
 
@@ -559,6 +564,11 @@ public class Controller implements Initializable{
 		textAreaClusters.setText(infoKmeans.toString());
 	}
 
+	public void showInformationMetrics(StringBuilder infoMetrics) {
+		
+		textAreaMetrics.setText(infoMetrics.toString());
+	}
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
