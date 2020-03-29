@@ -40,7 +40,7 @@
             <Insets left="20.0" right="20.0" top="10.0" />
          </padding>
       </HBox>
-      <Separator layoutX="11.0" layoutY="45.0" prefHeight="5.0" prefWidth="903.0" />
+      <Separator layoutX="11.0" layoutY="45.0" prefHeight="5.0" prefWidth="995.0" />
       <HBox layoutY="52.0" prefHeight="18.0" prefWidth="896.0" AnchorPane.leftAnchor="20.0">
          <children>
             <Text fx:id="textNeighbors" strokeType="OUTSIDE" strokeWidth="0.0" text="Neighbors">
@@ -115,5 +115,9 @@
       </TextArea>
       <TextArea fx:id="textAreaClusters" editable="false" layoutX="14.0" layoutY="525.0" prefHeight="200.0" prefWidth="493.0" wrapText="true" />
       <Text fx:id="textClusers" layoutX="20.0" layoutY="523.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clusters" />
+      <TextArea fx:id="textAreaMetrics" editable="false" layoutX="515.0" layoutY="525.0" prefHeight="200.0" prefWidth="189.0" wrapText="true" />
+      <Separator layoutX="699.0" layoutY="325.0" prefWidth="320.0" />
+      <Separator layoutX="11.0" layoutY="500.0" prefWidth="680.0" />
+      <Text fx:id="textMetrics" layoutX="524.0" layoutY="521.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Metrics" />
    </children>
 </AnchorPane>
