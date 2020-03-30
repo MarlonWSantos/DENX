@@ -108,7 +108,7 @@ public class Controller implements Initializable{
 				showRoutes(routes);
 				
 				//Cria um thread para gerar clusters no gráfico
-			//	new ThreadCluster(this,routes);
+				new ThreadCluster(this,routes);
 
 				//Mensagens de erro para usuário			
 			}catch(ProtocolException e) {
@@ -126,10 +126,6 @@ public class Controller implements Initializable{
 			}catch(IOException e) {
 
 				new AlertsDialog(AlertType.ERROR, "Communication failure", ButtonType.CLOSE);
-			
-			//}catch(InterruptedException e) {
-
-		//		new AlertsDialog(AlertType.ERROR, "Thread Interrupted", ButtonType.CLOSE);
 
 			}catch(Exception e) {
 
@@ -545,25 +541,57 @@ public class Controller implements Initializable{
 		return Controller.isObserving;
 	}
 	
-	
+	//Carrega os dados dos clusters e insere no gráfico na GUI
 	public void LoadGraphic() {
 		
+		//Se o gráfico não estiver vazio, remove todos os dados dele
         if (!scatterChartGraphic.getData().isEmpty()) {
         	scatterChartGraphic.getData().remove(0,scatterChartGraphic.getData().size());
         }
-        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
-        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
-        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
-        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());
-        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries5());
-        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries6());				
+        
+        //Carrega o número de clusters criado
+        int numberClusters = Cluster.numberClusters;
+        
+        //De acordo com o número de clusters, carrega os dados de cada um
+		switch (numberClusters) {
+		case 1:
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
+			break;
+		case 2:
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());			break;
+		case 3:
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());			break;
+		case 4:
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());			break;
+		case 5:
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries5());			break;	
+		case 6:
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries5());
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries6());				break;	
+		}
 	}
 	
+	//Mostra na GUI as informações dos IPs(coordenadas) alocados em seus respectivos clusters
 	public void showInformationCluster(StringBuilder infoKmeans) {
 		
 		textAreaClusters.setText(infoKmeans.toString());
 	}
 
+	//Mostra na GUI as informações do cálculo da métrica de cada cluster
 	public void showInformationMetrics(StringBuilder infoMetrics) {
 		
 		textAreaMetrics.setText(infoMetrics.toString());
