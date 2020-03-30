@@ -47,13 +47,14 @@ public class Cluster {
 		try{
 			Scanner scanner=new Scanner(new FileReader(PATH_CSV_FILE));
 			scanner.useDelimiter(",");
-
 			while(scanner.hasNext())
 			{
 				String line=scanner.nextLine();
-				String []dataLineInArray=line.split(",");
-				ArrayList<String> rowDataFromFile=new ArrayList<String>(Arrays.asList(dataLineInArray));
-				dataFromFile.add(rowDataFromFile);
+				if(!line.equalsIgnoreCase("onServerStarted")) {
+					String []dataLineInArray=line.split(",");
+					ArrayList<String> rowDataFromFile=new ArrayList<String>(Arrays.asList(dataLineInArray));
+					dataFromFile.add(rowDataFromFile);
+				}
 			}
 			scanner.close();
 		}catch (FileNotFoundException e){
@@ -66,7 +67,7 @@ public class Cluster {
 		
 		motesActives=new ArrayList<ArrayList<String>>();
 
-		String pattern = "fe80::200:0:0:[1-9a-f]?[1-9a-f]";
+		String pattern = "fe80::200:0:0:[1-9a-f]?[0-9a-f]";
 
 		Pattern EndIP = Pattern.compile(pattern);
 
@@ -92,7 +93,6 @@ public class Cluster {
 			sb.append(element.toString().replaceFirst("^.","").replaceFirst(".$",""));
 			sb.append("\n");
 		}
-
 		br.write(sb.toString());
 		br.close();
 	}
