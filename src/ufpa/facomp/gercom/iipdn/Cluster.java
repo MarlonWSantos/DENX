@@ -138,7 +138,7 @@ public class Cluster {
 		int mote=0;
 		double coordX;
 		double coordY;
-		int i=0;
+		int i=1;
 		for(int clusterNum : assignments) {
 
 			infoCluster=String.format("Instance %d -> Cluster %d \n", i, clusterNum);
