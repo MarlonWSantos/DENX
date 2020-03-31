@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
 
 public class ThreadMetrics implements Runnable {
-	private static Controller control;
+	protected Controller control;
 	private static Thread ClusterMetric1;		
 	private static Thread ClusterMetric2;
 	private static Thread ClusterMetric3;
@@ -16,14 +16,14 @@ public class ThreadMetrics implements Runnable {
 	int motesOnCluster;	
 	double coordX;
 	double coordY;
-	static StringBuilder infoMetrics;
-	
+	static StringBuilder infoMetrics = new StringBuilder();;
+
 
 	public ThreadMetrics(Controller control) throws InterruptedException {
 		this.control=control;
 
 		createThreadsToCalculateMetrics();
-		
+
 		defineThreadStarts();
 	}
 
@@ -66,9 +66,9 @@ public class ThreadMetrics implements Runnable {
 			break;			
 		}
 	}
-	
+
 	public void defineThreadStarts() throws InterruptedException{
-		
+
 		if(numberClusters==1) {
 			ClusterMetric1.start();
 			ClusterMetric1.join();
@@ -158,57 +158,68 @@ public class ThreadMetrics implements Runnable {
 
 	@Override
 	public void run() {
-		
+
 		series = loadDataSeries();
 
 		motesOnCluster = series.getData().size();
 
-		//Cria os pontos do convex
-		ConvexHull cluster_points[] = new ConvexHull[motesOnCluster]; 
-
-		//Fórmula: N * wireless / área		
-
-		for(int i=0;i<motesOnCluster;i++) {
-			coordX = (double) series.getData().get(i).getXValue();
-			coordY = (double) series.getData().get(i).getYValue();
-			cluster_points[i] = new ConvexHull(coordX, coordY);
-		}
-		
-		int n = cluster_points.length;
-
-		//Calcula o poligono
-		ConvexHull.convexHull(cluster_points, n); 
-
-		ConvexHull.showPolygon();
-
-		ConvexHull.calculateCenterPolygon();
-
-		ConvexHull.calculateAnglePoints();
-
-		ConvexHull.showAngles();
-
-		double areaCluster;
-		
-		areaCluster = AreaConvex.computeArea();
-		
-		Metrics metric = new Metrics();
-		
-		metric.setMotesOnCluster(motesOnCluster);
-		metric.setArea(areaCluster);
-		double resultMetric = metric.calculateMetrics();
-		
-		infoMetrics.append(series.getName()+"\n");
-		infoMetrics.append("Motes on Cluster: "+motesOnCluster+"\n");
-		infoMetrics.append("Range Wireless:  "+metric.getRangeWireless());
-		infoMetrics.append("Cluster's area: "+areaCluster);
-		infoMetrics.append("Result Metric: "+resultMetric+"\n");
-		
-		Platform.runLater(new Runnable() {
+		if(motesOnCluster < 3 ) {
 			
-			@Override
-			public void run() {
-				control.showInformationMetrics(infoMetrics);				
+			infoMetrics.append(series.getName()+"\n");
+			infoMetrics.append("Motes on Cluster: "+motesOnCluster+"\n");
+			infoMetrics.append("Insuficients to metric!\n\n");
+
+		}else {
+
+			//Cria os pontos do convex
+			ConvexHull cluster_points[] = new ConvexHull[motesOnCluster]; 
+
+			//Fórmula: N * wireless / área		
+
+			for(int i=0;i<motesOnCluster;i++) {
+				coordX = (double) series.getData().get(i).getXValue();
+				coordY = (double) series.getData().get(i).getYValue();
+				cluster_points[i] = new ConvexHull(coordX, coordY);
 			}
-		});		
+
+			int n = cluster_points.length;
+
+			//Calcula o poligono
+			ConvexHull.convexHull(cluster_points, n); 
+
+			ConvexHull.showPolygon();
+
+			ConvexHull.calculateCenterPolygon();
+
+			ConvexHull.calculateAnglePoints();
+
+			ConvexHull.showAngles();
+
+			double areaCluster;
+
+			areaCluster = AreaConvex.computeArea();
+			
+			ConvexHull.clearHull();
+
+			Metrics metric = new Metrics();
+
+			metric.setMotesOnCluster(motesOnCluster);
+			metric.setArea(areaCluster);
+			double resultMetric = metric.calculateMetrics();
+			
+			infoMetrics.append(series.getName()+"\n");
+			infoMetrics.append("Motes on Cluster: "+motesOnCluster+"\n");
+			infoMetrics.append("Range Wireless:  "+metric.getRangeWireless()+"\n");
+			infoMetrics.append("Cluster's area: "+areaCluster+"\n");
+			infoMetrics.append("Result Metric: "+resultMetric+"\n\n");
+
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					control.showInformationMetrics(infoMetrics);				
+				}
+			});		
+		}
 	}
 }
