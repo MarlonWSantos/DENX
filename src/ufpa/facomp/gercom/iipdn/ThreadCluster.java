@@ -70,7 +70,7 @@ public class ThreadCluster implements Runnable{
 					});
 
 					//Cria um thread para calcular as métricas
-					//new ThreadMetrics(this);
+					new ThreadMetrics(control);
 
 				}
 
