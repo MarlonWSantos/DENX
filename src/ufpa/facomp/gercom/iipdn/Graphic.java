@@ -4,12 +4,19 @@ import javafx.scene.chart.XYChart;
 
 public class Graphic {
 
+	private XYChart.Series<Number, Number> seriesNetwork;
 	private XYChart.Series<Number, Number> series1;
 	private XYChart.Series<Number, Number> series2;
 	private XYChart.Series<Number, Number> series3;
 	private XYChart.Series<Number, Number> series4;
 	private XYChart.Series<Number, Number> series5;
 	private XYChart.Series<Number, Number> series6;
+
+	//Cria série que armazena coordenadas da rede ativa inteira
+	public void createSerieNetwork() {
+		seriesNetwork = new XYChart.Series<>();
+		seriesNetwork.setName("Network ");
+	}
 
 	//Cria série que armazena coordenadas do cluster 1
 	public void createSerieCluster1() {
@@ -47,6 +54,11 @@ public class Graphic {
 		series6.setName("Cluster 6 ");
 	}
 
+	//Insere coordenadas da rede ativa inteira na serie
+	public void setCoordinatesSeriesNetwork(double X,double Y) {
+		seriesNetwork.getData().add(new XYChart.Data<>(X, Y));
+	}
+
 	//Insere coordenadas do cluster 1 na série 1
 	public void setCoordinatesSeries1(double X,double Y) {
 		series1.getData().add(new XYChart.Data<>(X, Y));
@@ -75,6 +87,11 @@ public class Graphic {
 	//Insere coordenadas do cluster 6 na série 6
 	public void setCoordinatesSeries6(double X,double Y) {
 		series6.getData().add(new XYChart.Data<>(X, Y));
+	}
+
+	//Retorna as coordenadas da rede ativa inteira
+	public XYChart.Series<Number, Number> getCoordinateSeriesNetwork() {
+		return seriesNetwork;
 	}
 
 	//Retorna as coordenadas dentro do cluster 1
