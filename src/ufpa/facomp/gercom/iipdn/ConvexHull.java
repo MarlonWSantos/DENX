@@ -22,7 +22,8 @@ public class ConvexHull{
 				l = i; 
 
 		int p = l, q; 
-		do{ 
+		do{
+			
 			hull.add(points[p]); 
 
 			q = (p + 1) % n; 
@@ -93,6 +94,10 @@ public class ConvexHull{
 		}
 
 		return angle;
+	}
+	
+	public static void clearHull() {
+		hull.clear();
 	}
 
 } 
