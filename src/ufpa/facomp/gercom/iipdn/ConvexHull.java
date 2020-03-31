@@ -6,7 +6,8 @@ public class ConvexHull{
 	double x, y;
 	double angle;
 	static Vector<ConvexHull> hull = new Vector<ConvexHull>(); 
-	static double centerX=0, centerY=0;
+	static double centerX;
+	static double centerY;
 
 	public ConvexHull(double x, double y){ 
 		this.x=x; 
@@ -62,6 +63,9 @@ public class ConvexHull{
 
 	//Calcula o centro do poligono
 	public static void calculateCenterPolygon() {
+		centerX=0;
+		centerY=0;
+		
 		for (ConvexHull temp : ConvexHull.hull) {
 			centerX = centerX + temp.x;
 			centerY = centerY + temp.y;
