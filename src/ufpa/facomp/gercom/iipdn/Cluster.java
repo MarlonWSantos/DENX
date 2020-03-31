@@ -32,14 +32,16 @@ public class Cluster {
 	static String[] IPs;
 	protected static int numberClusters;
 
-/******************************************************************************/	
+	/******************************************************************************/
+	//Pega a lista de IPs ativos já armazenados na plataforma
 	public void getIPsActivesMotes(RoutesMotes routes) {		
 		List<String> lista = new ArrayList<String>();
 		lista = routes.getListIPs();
 		IPs = new String[lista.size()];
 		lista.toArray(IPs);	
 	}
-/******************************************************************************/	
+	/******************************************************************************/
+	//Converte de CSV para um array na memória a lista de IPs gerados pelo cooja 
 	public void convertCSV2Array() throws FileNotFoundException {
 
 		dataFromFile=new ArrayList<ArrayList<String>>();
@@ -61,10 +63,11 @@ public class Cluster {
 			e.printStackTrace();
 		}
 	}
-/******************************************************************************/
+	/******************************************************************************/
+	//Lê o IP ativo da lista e busca no arquivo gerado pelo cooja suas coordenadas
 	public void readEndAddressFindData( ) throws FileNotFoundException  {
 		int posicao=0;
-		
+
 		motesActives=new ArrayList<ArrayList<String>>();
 
 		String pattern = "fe80::200:0:0:[1-9a-f]?[0-9a-f]";
@@ -80,7 +83,8 @@ public class Cluster {
 			}
 		}
 	}
-/******************************************************************************/
+	/******************************************************************************/
+	//Salva em CSV a lista com os IPs ativos e respectivas coordenadas
 	public void savingActivesMotesInCSV() throws IOException {
 
 		BufferedWriter br = new BufferedWriter(new FileWriter(PATH_CSV_FILE_ACTIVES));
@@ -96,14 +100,16 @@ public class Cluster {
 		br.write(sb.toString());
 		br.close();
 	}
-/******************************************************************************/	
+	/******************************************************************************/
+	//Carrega o arquivo CSV com os IPs ativos e suas coordenadas e converte para ARFF
 	public void loadCSV() throws IOException {
 
 		CSVLoader loader = new CSVLoader();
 		loader.setSource(new File(PATH_CSV_FILE_ACTIVES));
 		data = loader.getDataSet();
 	}
-/******************************************************************************/
+	/******************************************************************************/
+	//Carrega os dados com os IPs ativos e salva em formato ARFF
 	public void saveARFF() throws IOException {
 
 		ArffSaver saver = new ArffSaver();
@@ -112,11 +118,12 @@ public class Cluster {
 		saver.setDestination(new File(PATH_ARFF_FILE));
 		saver.writeBatch();
 	}
-/********************************************************************************/	
+	/********************************************************************************/
+	//Carrega o arquivo ARFF e cria os clusters com base nos dados dos IPs e coordenadas 
 	public void createClusters(Controller control) throws Exception {
 
 		SimpleKMeans kmeans = new SimpleKMeans();
-		
+
 		numberClusters = defineNumberClusters();
 
 		kmeans.setSeed(10);
@@ -129,11 +136,11 @@ public class Cluster {
 		Instances dataForCluster = new Instances(datafile);
 
 		kmeans.buildClusterer(dataForCluster);
-		
+
 		StringBuilder infoKmeans = new StringBuilder();
 		String infoCluster;
 		String infoMote;
-		
+
 		int[] assignments = kmeans.getAssignments();
 		int mote=0;
 		double coordX;
@@ -143,11 +150,11 @@ public class Cluster {
 
 			infoCluster=String.format("Instance %d -> Cluster %d \n", i, clusterNum);
 			infoMote=String.format("%s",motesActives.get(mote));
-		
+
 			infoKmeans.append(infoCluster);
 			infoKmeans.append(infoMote);
 			infoKmeans.append("\n\n");
-						
+
 			coordX=Double.parseDouble(motesActives.get(mote).get(1));
 			coordY=Double.parseDouble(motesActives.get(mote).get(2));
 
@@ -175,9 +182,9 @@ public class Cluster {
 			i++;
 			mote++;
 		}
-		
+
 		Platform.runLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				control.showInformationCluster(infoKmeans);					
@@ -185,7 +192,8 @@ public class Cluster {
 		});
 
 	}
-/******************************************************************************/
+	/******************************************************************************/
+	//Cria um buffer para ler os dados de um arquivo
 	public BufferedReader readDataFile(String filename) {
 
 		BufferedReader inputReader = null;
@@ -197,11 +205,12 @@ public class Cluster {
 		}
 		return inputReader;
 	}
-/******************************************************************************/
+	/******************************************************************************/
+	//Define quantos clusters serão criados de acordo com total de motes ativos
 	public int defineNumberClusters() {
 		int totalClusters = 0;
 		int totalMotesActives = motesActives.size();
-		
+
 		if(totalMotesActives <= 5) {
 			totalClusters = 1;
 		}else if(totalMotesActives >= 6 && totalMotesActives <= 8) {
@@ -217,9 +226,10 @@ public class Cluster {
 		}		
 		return totalClusters;
 	}
-/******************************************************************************/
+	/******************************************************************************/
+	//Define quais séries que armazenarão os dados dos clusters serão criadas
 	public void defineSeriesClusterToCreate(int numberClusters){
-		
+
 		switch (numberClusters) {
 		case 1:
 			graphic.createSerieCluster1();

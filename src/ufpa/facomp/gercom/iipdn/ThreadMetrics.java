@@ -18,7 +18,7 @@ public class ThreadMetrics implements Runnable {
 	double coordY;
 	static StringBuilder infoMetrics = new StringBuilder();;
 
-
+	//Construtor
 	public ThreadMetrics(Controller control) throws InterruptedException {
 		this.control=control;
 
@@ -27,6 +27,7 @@ public class ThreadMetrics implements Runnable {
 		defineThreadStarts();
 	}
 
+	//Cria os Threads que farão o cálculo da métrica de acordo com número de clusters
 	public void createThreadsToCalculateMetrics() {
 		numberClusters = Cluster.numberClusters;
 
@@ -67,6 +68,7 @@ public class ThreadMetrics implements Runnable {
 		}
 	}
 
+	//Define quantos e quais threads serão executados
 	public void defineThreadStarts() throws InterruptedException{
 
 		if(numberClusters==1) {
@@ -125,6 +127,7 @@ public class ThreadMetrics implements Runnable {
 		}		
 	}
 
+	//Carrega as coordenadas de cada cluster de acordo com Thread em execução
 	public XYChart.Series<Number, Number> loadDataSeries() {
 
 		XYChart.Series<Number, Number> dataSeries = null;
@@ -159,54 +162,70 @@ public class ThreadMetrics implements Runnable {
 	@Override
 	public void run() {
 
+		//Busca as séries que armazenam as coordenadas
 		series = loadDataSeries();
 
+		//Armazena o número de motes em cada cluster
 		motesOnCluster = series.getData().size();
 
+		//Se houver menos de 3 motes no cluster
 		if(motesOnCluster < 3 ) {
-			
+
 			infoMetrics.append(series.getName()+"\n");
 			infoMetrics.append("Motes on Cluster: "+motesOnCluster+"\n");
 			infoMetrics.append("Insuficients to metric!\n\n");
 
+			//Se houver 3 motes ou mais no cluster
 		}else {
 
-			//Cria os pontos do convex
+			//Cria array que armazena os pontos do convex
 			ConvexHull cluster_points[] = new ConvexHull[motesOnCluster]; 
 
-			//Fórmula: N * wireless / área		
-
+			//Transfere as coordenadas armazenadas na série para o array do convexHull
 			for(int i=0;i<motesOnCluster;i++) {
 				coordX = (double) series.getData().get(i).getXValue();
 				coordY = (double) series.getData().get(i).getYValue();
 				cluster_points[i] = new ConvexHull(coordX, coordY);
 			}
 
+			//Tamanho do array convexHull
 			int n = cluster_points.length;
 
-			//Calcula o poligono
+			//Calcula o polígono
 			ConvexHull.convexHull(cluster_points, n); 
 
+			//Exibe as coordenadas que forma o polígono
 			ConvexHull.showPolygon();
 
+			//Calcula o centro do polígono
 			ConvexHull.calculateCenterPolygon();
 
+			//Calcula os ângulos do polígono
 			ConvexHull.calculateAnglePoints();
 
+			//Exibe os ângulos do polígono
 			ConvexHull.showAngles();
 
 			double areaCluster;
 
+			//Armazena o resultado do cálculo da área do cluster
 			areaCluster = AreaConvex.computeArea();
-			
+
+			//Limpa o array que armazena as coordenadas durante o cálculo do convexHull
 			ConvexHull.clearHull();
 
 			Metrics metric = new Metrics();
 
+			//Envia o número de motes para usar no cálculo da métrica
 			metric.setMotesOnCluster(motesOnCluster);
+
+			//Envia a área do cluster para usar no cálculo da métrica
 			metric.setArea(areaCluster);
+
+			//Recebe e armazena o resultado do cálculo da métrica
 			double resultMetric = metric.calculateMetrics();
-			
+
+			//Armazena as informações da métrica
 			infoMetrics.append(series.getName()+"\n");
 			infoMetrics.append("Motes on Cluster: "+motesOnCluster+"\n");
 			infoMetrics.append("Range Wireless:  "+metric.getRangeWireless()+"\n");
@@ -217,6 +236,7 @@ public class ThreadMetrics implements Runnable {
 
 				@Override
 				public void run() {
+					//Envia as informações da métrica para a GUI
 					control.showInformationMetrics(infoMetrics);				
 				}
 			});		
