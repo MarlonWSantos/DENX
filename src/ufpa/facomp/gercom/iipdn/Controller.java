@@ -559,29 +559,34 @@ public class Controller implements Initializable{
 			break;
 		case 2:
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());			break;
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
+	        break;
 		case 3:
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());			break;
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
+	        break;
 		case 4:
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());			break;
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());
+	        break;
 		case 5:
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries5());			break;	
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries5());
+	        break;	
 		case 6:
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());
 	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries5());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries6());				break;	
+	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries6());
+	        break;	
 		}
 	}
 	
