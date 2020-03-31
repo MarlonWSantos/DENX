@@ -5,6 +5,7 @@ import javafx.scene.chart.XYChart;
 
 public class ThreadMetrics implements Runnable {
 	protected Controller control;
+	private static Thread NetworkMetric;
 	private static Thread ClusterMetric1;		
 	private static Thread ClusterMetric2;
 	private static Thread ClusterMetric3;
@@ -22,9 +23,21 @@ public class ThreadMetrics implements Runnable {
 	public ThreadMetrics(Controller control) throws InterruptedException {
 		this.control=control;
 
+		createThreadToCalculateNetworkMetric();
+
 		createThreadsToCalculateMetrics();
 
 		defineThreadStarts();
+	}
+
+	//Cria Thread para calcular a métrica da rede inteira
+	public void createThreadToCalculateNetworkMetric() throws InterruptedException {
+
+		NetworkMetric = new Thread(this,"Thread NetworkMetric");
+
+		NetworkMetric.start();
+		NetworkMetric.join();
+
 	}
 
 	//Cria os Threads que farão o cálculo da métrica de acordo com número de clusters
@@ -132,7 +145,11 @@ public class ThreadMetrics implements Runnable {
 
 		XYChart.Series<Number, Number> dataSeries = null;
 
-		if(Thread.currentThread().getName()=="Thread ClusterMetric 1") {
+		if(Thread.currentThread().getName()=="Thread NetworkMetric") {
+
+			dataSeries =  Cluster.graphic.getCoordinateSeriesNetwork();
+
+		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 1") {
 
 			dataSeries =  Cluster.graphic.getCoordinateSeries1();
 
