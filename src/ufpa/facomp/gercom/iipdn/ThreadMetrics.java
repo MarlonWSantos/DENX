@@ -20,12 +20,16 @@ public class ThreadMetrics implements Runnable {
 	int motesOnCluster;	
 	double coordX;
 	double coordY;
-	static StringBuilder infoMetrics = new StringBuilder();;
+	static StringBuilder infoMetrics = new StringBuilder();
+
 
 	//Construtor
 	public ThreadMetrics(Controller control) throws InterruptedException {
 		this.control=control;
 
+		//Apaga se houve alguma informação
+		infoMetrics.delete(0, infoMetrics.length());
+		
 		createThreadToCalculateNetworkMetric();
 
 		createThreadsToCalculateMetrics();
