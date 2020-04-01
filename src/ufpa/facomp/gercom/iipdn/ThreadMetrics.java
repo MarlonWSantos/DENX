@@ -1,5 +1,8 @@
 package ufpa.facomp.gercom.iipdn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
 
@@ -28,6 +31,8 @@ public class ThreadMetrics implements Runnable {
 		createThreadsToCalculateMetrics();
 
 		defineThreadStarts();
+
+
 	}
 
 	//Cria Thread para calcular a métrica da rede inteira
@@ -189,7 +194,7 @@ public class ThreadMetrics implements Runnable {
 		if(motesOnCluster < 3 ) {
 
 			infoMetrics.append(series.getName()+"\n");
-			infoMetrics.append("Motes on Cluster: "+motesOnCluster+"\n");
+			infoMetrics.append("Number of Motes: "+motesOnCluster+"\n");
 			infoMetrics.append("Insuficients to metric!\n\n");
 
 			//Se houver 3 motes ou mais no cluster
@@ -243,11 +248,7 @@ public class ThreadMetrics implements Runnable {
 			double resultMetric = metric.calculateMetrics();
 
 			//Armazena as informações da métrica
-			infoMetrics.append(series.getName()+"\n");
-			infoMetrics.append("Motes on Cluster: "+motesOnCluster+"\n");
-			infoMetrics.append("Range Wireless:  "+metric.getRangeWireless()+"\n");
-			infoMetrics.append("Cluster's area: "+areaCluster+"\n");
-			infoMetrics.append("Result Metric: "+resultMetric+"\n\n");
+			saveInformationMetric(metric,areaCluster,resultMetric);
 
 			Platform.runLater(new Runnable() {
 
@@ -257,6 +258,23 @@ public class ThreadMetrics implements Runnable {
 					control.showInformationMetrics(infoMetrics);				
 				}
 			});		
+		}
+	}
+
+	public void saveInformationMetric(Metrics metric, double areaCluster, double resultMetric) {
+
+		if(Thread.currentThread().getName()=="Thread NetworkMetric") {
+			infoMetrics.append(series.getName()+"\n");
+			infoMetrics.append("Motes on Network: "+motesOnCluster+"\n");
+			infoMetrics.append("Range Wireless:  "+metric.getRangeWireless()+"\n");
+			infoMetrics.append("Network's area: "+areaCluster+"\n");
+			infoMetrics.append("Result Metric for Network: "+resultMetric+"\n\n");	
+		}else {
+			infoMetrics.append(series.getName()+"\n");
+			infoMetrics.append("Motes on Cluster: "+motesOnCluster+"\n");
+			infoMetrics.append("Range Wireless:  "+metric.getRangeWireless()+"\n");
+			infoMetrics.append("Cluster's area: "+areaCluster+"\n");
+			infoMetrics.append("Result Metric for Cluster: "+resultMetric+"\n\n");
 		}
 	}
 }
