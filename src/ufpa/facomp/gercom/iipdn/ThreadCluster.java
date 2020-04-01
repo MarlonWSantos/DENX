@@ -48,6 +48,9 @@ public class ThreadCluster implements Runnable{
 					//Lê o IP ativo da lista e busca no arquivo gerado pelo cooja suas coordenadas
 					cluster.readEndAddressFindData();
 
+					//Busca e armazena IPs e coordenadas de toda a rede de motes ativos
+					cluster.calculateMetricNetwork();
+
 					//Salva em CSV a lista com os IPs ativos e respectivas coordenadas
 					cluster.savingActivesMotesInCSV();
 
@@ -59,6 +62,7 @@ public class ThreadCluster implements Runnable{
 
 					//Carrega o arquivo ARFF e cria os clusters com base nos dados dos IPs e coordenadas 
 					cluster.createClusters(control);
+
 
 					Platform.runLater(new Runnable() {
 
