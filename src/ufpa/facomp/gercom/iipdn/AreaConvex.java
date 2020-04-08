@@ -4,7 +4,7 @@ package ufpa.facomp.gercom.iipdn;
 public class AreaConvex {
 
 	public static double polygonArea(double [] X, double [] Y,int n){ 
-		System.out.println("Length "+X[2]);
+		//System.out.println("Length "+X[2]);
 		double area = 0.0; 
 
 		int h = n - 1; 
@@ -38,11 +38,11 @@ public class AreaConvex {
 			X[i]=ConvexHull.hull.get(greaterAngleIndex).x;
 			Y[i]=ConvexHull.hull.get(greaterAngleIndex).y;
 			ConvexHull.hull.remove(greaterAngleIndex);
-			System.out.println("("+X[i]+","+Y[i]+")");
+			//System.out.println("("+X[i]+","+Y[i]+")");
 			i++;
 		}		
 		computedArea=AreaConvex.polygonArea(X, Y, n);
-		System.out.println("A area calculada é: "+computedArea);
+		//System.out.println("A area calculada é: "+computedArea);
 		
 		return computedArea;
 	}

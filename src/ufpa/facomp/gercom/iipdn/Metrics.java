@@ -36,7 +36,7 @@ public class Metrics{
 		double result = 0;
 
 		result = (getMotesOnCluster() * getRangeWireless())/getAreaCluster();
-		System.out.println("Result Metrics: "+result);
+		//System.out.println("Result Metrics: "+result);
 
 		return result;
 	}

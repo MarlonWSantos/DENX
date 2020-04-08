@@ -56,7 +56,7 @@ public class ConvexHull{
 
 	//Printa o poligono
 	public static void showPolygon() {
-		System.out.println("Convex:");
+	//	System.out.println("Convex:");
 		for (ConvexHull temp : ConvexHull.hull)
 			System.out.println("(" + temp.x + ", " +  temp.y + ")"); 
 	}
@@ -73,7 +73,7 @@ public class ConvexHull{
 		centerX=centerX/ConvexHull.hull.size();
 		centerY=centerY/ConvexHull.hull.size();
 
-		System.out.println("O centro do poligono é ("+centerX+","+centerY+")"); 
+		//System.out.println("O centro do poligono é ("+centerX+","+centerY+")"); 
 	}
 
 	//Calcula os angulos dos pontos do poligono
