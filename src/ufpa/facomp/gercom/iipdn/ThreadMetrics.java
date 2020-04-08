@@ -221,7 +221,7 @@ public class ThreadMetrics implements Runnable {
 			ConvexHull.convexHull(cluster_points, n); 
 
 			//Exibe as coordenadas que forma o polígono
-			ConvexHull.showPolygon();
+			//ConvexHull.showPolygon();
 
 			//Calcula o centro do polígono
 			ConvexHull.calculateCenterPolygon();
@@ -230,7 +230,7 @@ public class ThreadMetrics implements Runnable {
 			ConvexHull.calculateAnglePoints();
 
 			//Exibe os ângulos do polígono
-			ConvexHull.showAngles();
+			//ConvexHull.showAngles();
 
 			double areaCluster;
 
