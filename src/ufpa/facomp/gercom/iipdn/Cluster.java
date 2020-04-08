@@ -123,17 +123,17 @@ public class Cluster {
 	public void createClusters(Controller control) throws Exception {
 
 		SimpleKMeans kmeans = new SimpleKMeans();
+		
+		BufferedReader datafile = readDataFile(PATH_ARFF_FILE);
+		Instances dataForCluster = new Instances(datafile);
 
-		numberClusters = defineNumberClusters();
+		numberClusters = elbow(dataForCluster);
 
 		kmeans.setSeed(10);
 		kmeans.setPreserveInstancesOrder(true);
 		kmeans.setNumClusters(numberClusters);
 
 		defineSeriesClusterToCreate(numberClusters);
-
-		BufferedReader datafile = readDataFile(PATH_ARFF_FILE);
-		Instances dataForCluster = new Instances(datafile);
 
 		kmeans.buildClusterer(dataForCluster);
 
@@ -206,26 +206,73 @@ public class Cluster {
 		return inputReader;
 	}
 	/******************************************************************************/
-	//Define quantos clusters serão criados de acordo com total de motes ativos
-	public int defineNumberClusters() {
-		int totalClusters = 0;
-		int totalMotesActives = motesActives.size();
+	//Define quantos clusters serão criados de acordo com o elbow method
+	public static int elbow(Instances data) {
+		int maxClusterNum=10;
+		
+		double[] meanClusterErro = new double [maxClusterNum];
+		double p, start, end;
+		double distanceToLine;
+		int bestClusterNum=0;
+		
+		SimpleKMeans kmeans = new SimpleKMeans();
+		kmeans.setSeed(10);
+		kmeans.setPreserveInstancesOrder(true);
+		
+		
+		for(int i=1;i<=maxClusterNum;i++) {
+			try {
+				kmeans.setNumClusters(i);
+				kmeans.buildClusterer(data);
+				meanClusterErro[i-1]=kmeans.getSquaredError()/i;
+				//System.out.println(meanClusterErro[i-1]);
+				
+			} catch (Exception e) {
+				System.out.println("Erro no elbow\n");
+				e.printStackTrace();
+			}
+		}
+		
 
-		if(totalMotesActives <= 5) {
-			totalClusters = 1;
-		}else if(totalMotesActives >= 6 && totalMotesActives <= 8) {
-			totalClusters = 2;
-		}else if(totalMotesActives >= 9 && totalMotesActives <= 11) {
-			totalClusters = 3;
-		}else if(totalMotesActives >= 12 && totalMotesActives <= 14) {
-			totalClusters = 4;
-		}else if(totalMotesActives >= 15 && totalMotesActives <= 17) {
-			totalClusters = 5;
-		}else if(totalMotesActives >= 18) {
-			totalClusters = 6;
-		}		
-		return totalClusters;
+		start=meanClusterErro[0];//first point
+		end=meanClusterErro[maxClusterNum-1];//last point
+		distanceToLine=0;
+		
+		for(int i=0;i<maxClusterNum;i++) {//get the max distance
+			p=meanClusterErro[i];
+			if(distanceToLine<pDistance(i,p,0,start,maxClusterNum-1,end)) {
+				distanceToLine=pDistance(i,p,0,start,maxClusterNum-1,end);
+				bestClusterNum=i+1;
+			}
+		}
+		//System.out.println("The best cluster num according to Elbow is "+ bestClusterNum);
+		return bestClusterNum;
 	}
+	
+	
+	public static double pDistance(double x, double y, double x1, double y1, double x2, double y2) {
+		//x,y is the point
+		//x1,y1 is the beginning of the line
+		//x2,y2 is the end of the line
+		double distance;
+
+	      double A = x - x1; // position of point rel one end of line
+	      double B = y - y1;
+	      double C = x2 - x1; // vector along line
+	      double D = y2 - y1;
+	      double E = -D; // orthogonal vector
+	      double F = C;
+
+	      double dot = A * E + B * F;
+	      double len_sq = E * E + F * F;
+
+	      distance =  Math.abs(dot) / Math.sqrt(len_sq);
+	      
+	      //System.out.println("The computed distance is "+distance);
+	      
+	      return distance;
+	    }
+
 	/******************************************************************************/
 	//Define quais séries que armazenarão os dados dos clusters serão criadas
 	public void defineSeriesClusterToCreate(int numberClusters){
