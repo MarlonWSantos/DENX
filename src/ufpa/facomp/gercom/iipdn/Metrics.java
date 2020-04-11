@@ -10,6 +10,7 @@ public class Metrics{
 	private int countMetrics;
 	private double movingAverage;
 	private List<Double> metricList;
+	final static int MOVING_AVG_LAST_MINUTES = 3; 
 	
 	public Metrics() {
 		metricList = new ArrayList<Double>();
@@ -48,14 +49,13 @@ public class Metrics{
 		double result = 0;
 
 		result = (getMotesOnCluster() * getRangeWireless())/getAreaCluster();
-		//System.out.println("Result Metrics: "+result);
 
 		return result;
 	}
 	
 	public double movingAverage(double metric) {				
 		
-		if(countMetrics <= 2) {
+		if(countMetrics <= MOVING_AVG_LAST_MINUTES-1 ) {
 			metricList.add(metric);
 			++countMetrics;
 		}else {
@@ -72,7 +72,7 @@ public class Metrics{
 	}
 
 	public boolean metricListIsFull() {		
-		if(metricList.size() == 3) {
+		if(metricList.size() == MOVING_AVG_LAST_MINUTES) {
 			return true;
 		}else {
 			return false;	
