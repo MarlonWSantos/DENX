@@ -1,9 +1,21 @@
 package ufpa.facomp.gercom.iipdn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Metrics{
 	private int motesOnCluster;
 	final static int RANGE_WIRELESS=100;
 	private double areaCluster;
+	private int countMetrics;
+	private double movingAverage;
+	private List<Double> metricList;
+	
+	public Metrics() {
+		metricList = new ArrayList<Double>();
+		countMetrics=0;
+		movingAverage=0.0;
+	}
 
 	//Armazena o número de motes no cluster
 	public void setMotesOnCluster(int motesOnCluster){
@@ -40,6 +52,49 @@ public class Metrics{
 
 		return result;
 	}
+	
+	public double movingAverage(double metric) {				
+		
+		if(countMetrics <= 2) {
+			metricList.add(metric);
+			++countMetrics;
+		}else {
+			updateListMetric(metric);
+		}
+		
+		boolean isFull = metricListIsFull();
+		
+		if(isFull) {
+			this.movingAverage = calcMovingAverage();
+		}
+		
+		return this.movingAverage;
+	}
 
+	public boolean metricListIsFull() {		
+		if(metricList.size() == 3) {
+			return true;
+		}else {
+			return false;	
+		}
+	}
+	
+	public void updateListMetric(double metric) {
+		metricList.remove(0);
+		metricList.add(metric);
+	}
+	
+	public double calcMovingAverage() {		
+		double sum=0.0;	
+		
+		for (double arr : metricList) {
+			sum += arr;
+		}
+		System.out.println(metricList.toString());
+		System.out.println("Result moving Average: "+sum/metricList.size());
+		movingAverage=sum/metricList.size();
+		
+		return movingAverage;
+	}
 }
 
