@@ -18,7 +18,7 @@ public class ThreadMetrics implements Runnable {
 	private static Metrics[] metric;
 	static int numberClusters;
 	static int indexMetric;
-	static boolean hasMetricSaved = false;
+	static boolean hasNoMetricSaved = true;
 	XYChart.Series<Number, Number> series;
 	int motesOnCluster;	
 	double coordX;
@@ -50,11 +50,10 @@ public class ThreadMetrics implements Runnable {
 
 		NetworkMetric = new Thread(this,"Thread NetworkMetric");
 
-		if(!hasMetricSaved) {
+		if(hasNoMetricSaved) {
 			int tam = numberClusters+1;
 			metric = new Metrics[tam];
 			metric[0] = new Metrics();
-			hasMetricSaved = true;
 		}
 
 		NetworkMetric.start();
@@ -64,7 +63,6 @@ public class ThreadMetrics implements Runnable {
 
 	//Cria os Threads que farão o cálculo da métrica de acordo com número de clusters
 	public void createThreadsToCalculateMetrics() {
-		//numberClusters = Cluster.numberClusters;
 
 		switch (numberClusters) {
 		case 1:
@@ -206,11 +204,13 @@ public class ThreadMetrics implements Runnable {
 	}
 	
 	public void createMetricsObjects() {
-		int tam = Cluster.numberClusters;
-		//metric = new Metrics[tam];
-		
-		for(int i=1;i<=tam;i++) {
-			metric[i] = new Metrics();
+		int tam = numberClusters;
+
+		if(hasNoMetricSaved) {
+			for(int i=1;i<=tam;i++) {
+				metric[i] = new Metrics();
+				hasNoMetricSaved = false;
+			}
 		}
 	}
 	
