@@ -15,7 +15,10 @@ public class ThreadMetrics implements Runnable {
 	private static Thread ClusterMetric4;
 	private static Thread ClusterMetric5;
 	private static Thread ClusterMetric6;
+	private static Metrics[] metric;
 	static int numberClusters;
+	static int indexMetric;
+	static boolean hasMetricSaved = false;
 	XYChart.Series<Number, Number> series;
 	int motesOnCluster;	
 	double coordX;
@@ -30,12 +33,15 @@ public class ThreadMetrics implements Runnable {
 		//Apaga se houve alguma informação
 		infoMetrics.delete(0, infoMetrics.length());
 		
+		numberClusters = Cluster.numberClusters;
+		
 		createThreadToCalculateNetworkMetric();
+		
+		createMetricsObjects();
 
 		createThreadsToCalculateMetrics();
 
-		defineThreadStarts();
-
+		defineThreadStarts();	
 
 	}
 
@@ -44,6 +50,13 @@ public class ThreadMetrics implements Runnable {
 
 		NetworkMetric = new Thread(this,"Thread NetworkMetric");
 
+		if(!hasMetricSaved) {
+			int tam = numberClusters+1;
+			metric = new Metrics[tam];
+			metric[0] = new Metrics();
+			hasMetricSaved = true;
+		}
+
 		NetworkMetric.start();
 		NetworkMetric.join();
 
@@ -51,7 +64,7 @@ public class ThreadMetrics implements Runnable {
 
 	//Cria os Threads que farão o cálculo da métrica de acordo com número de clusters
 	public void createThreadsToCalculateMetrics() {
-		numberClusters = Cluster.numberClusters;
+		//numberClusters = Cluster.numberClusters;
 
 		switch (numberClusters) {
 		case 1:
@@ -149,7 +162,7 @@ public class ThreadMetrics implements Runnable {
 		}		
 	}
 
-	//Carrega as coordenadas de cada cluster de acordo com Thread em execução
+	//Carrega as coordenadas e index de cada cluster de acordo com Thread em execução
 	public XYChart.Series<Number, Number> loadDataSeries() {
 
 		XYChart.Series<Number, Number> dataSeries = null;
@@ -157,33 +170,50 @@ public class ThreadMetrics implements Runnable {
 		if(Thread.currentThread().getName()=="Thread NetworkMetric") {
 
 			dataSeries =  Cluster.graphic.getCoordinateSeriesNetwork();
+			indexMetric = 0;
 
 		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 1") {
 
 			dataSeries =  Cluster.graphic.getCoordinateSeries1();
+			indexMetric = 1;
 
 		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 2") {
 
 			dataSeries =  Cluster.graphic.getCoordinateSeries2();
+			indexMetric = 2;
 
 		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 3") {
 
 			dataSeries =  Cluster.graphic.getCoordinateSeries3();
+			indexMetric = 3;
 
 		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 4") {
 
 			dataSeries =  Cluster.graphic.getCoordinateSeries4();
+			indexMetric = 4;
 
 		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 5") {
 
 			dataSeries =  Cluster.graphic.getCoordinateSeries5();
+			indexMetric = 5;
 
 		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 6") {
 
 			dataSeries =  Cluster.graphic.getCoordinateSeries6();
+			indexMetric = 6;
 		}
 		return dataSeries;
 	}
+	
+	public void createMetricsObjects() {
+		int tam = Cluster.numberClusters;
+		//metric = new Metrics[tam];
+		
+		for(int i=1;i<=tam;i++) {
+			metric[i] = new Metrics();
+		}
+	}
+	
 
 	@Override
 	public void run() {
@@ -239,21 +269,21 @@ public class ThreadMetrics implements Runnable {
 
 			//Limpa o array que armazena as coordenadas durante o cálculo do convexHull
 			ConvexHull.clearHull();
-
-			Metrics metric = new Metrics();
+			
 
 			//Envia o número de motes para usar no cálculo da métrica
-			metric.setMotesOnCluster(motesOnCluster);
+			metric[indexMetric].setMotesOnCluster(motesOnCluster);
 
 			//Envia a área do cluster para usar no cálculo da métrica
-			metric.setArea(areaCluster);
+			metric[indexMetric].setArea(areaCluster);
 
 			//Recebe e armazena o resultado do cálculo da métrica
-			double resultMetric = metric.calculateMetrics();
+			double resultMetric = metric[indexMetric].calculateMetrics();
+			double resultMovAVG = metric[indexMetric].movingAverage(resultMetric);
 
 			//Armazena as informações da métrica
-			saveInformationMetric(metric,areaCluster,resultMetric);
-
+			saveInformationMetric(metric[indexMetric],areaCluster,resultMetric,resultMovAVG);
+			
 			Platform.runLater(new Runnable() {
 
 				@Override
@@ -265,20 +295,22 @@ public class ThreadMetrics implements Runnable {
 		}
 	}
 
-	public void saveInformationMetric(Metrics metric, double areaCluster, double resultMetric) {
+	public void saveInformationMetric(Metrics metric, double areaCluster, double resultMetric, double movingAverage) {
 
 		if(Thread.currentThread().getName()=="Thread NetworkMetric") {
 			infoMetrics.append(series.getName()+"\n");
 			infoMetrics.append("Motes on Network: "+motesOnCluster+"\n");
 			infoMetrics.append("Range Wireless:  "+metric.getRangeWireless()+"\n");
 			infoMetrics.append("Network's area: "+areaCluster+"\n");
-			infoMetrics.append("Result Metric for Network: "+resultMetric+"\n\n");	
+			infoMetrics.append("Result Metric for Network: "+resultMetric+"\n");
+			infoMetrics.append("Moving Average(Last 5 min.): "+movingAverage+"\n\n");
 		}else {
 			infoMetrics.append(series.getName()+"\n");
 			infoMetrics.append("Motes on Cluster: "+motesOnCluster+"\n");
 			infoMetrics.append("Range Wireless:  "+metric.getRangeWireless()+"\n");
 			infoMetrics.append("Cluster's area: "+areaCluster+"\n");
-			infoMetrics.append("Result Metric for Cluster: "+resultMetric+"\n\n");
+			infoMetrics.append("Result Metric for Cluster: "+resultMetric+"\n");
+			infoMetrics.append("Moving Average(Last 5 min.): "+movingAverage+"\n\n");
 		}
 	}
 }
