@@ -147,8 +147,8 @@ public class Cluster {
 		double coordY;
 		int i=1;
 		for(int clusterNum : assignments) {
-
-			infoCluster=String.format("Instance %d -> Cluster %d \n", i, clusterNum);
+			
+			infoCluster=String.format("Instance %d -> Cluster %d \n", i, clusterNum+1);
 			infoMote=String.format("%s",motesActives.get(mote));
 
 			infoKmeans.append(infoCluster);
