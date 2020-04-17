@@ -24,14 +24,24 @@ import java.util.regex.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Classe responsável pelo manuseio das informações dos IPs da rede
+ * e dos seus respectivos recursos.
+ */
 public class ResourcesMotes{
 
+	/** Armazena a lista de recursos. */
 	private List<String> listResources;
+	
+	/** Armazena a lista com IPs CoAP da rede. */
 	private List<String> listCoapIPs;
 
 
-	//Armazena os IPs coap para busca de seus recursos  
+	/**
+	 * Armazena os IPs coap para busca de seus recursos.
+	 *  
+	 * @param listIPs lista de IPs da rede
+	 */
 	public void setIPs(List<String> listIPs){
 		listCoapIPs = new ArrayList<>();
 
@@ -42,20 +52,35 @@ public class ResourcesMotes{
 		}      
 	}
 
-	//Retorna a lista de IPs Coap
+
+	/**
+	 * Retorna a lista de IPs Coap.
+	 *  
+	 * @return listCoapIPs lista de IPs com prefixo CoAP
+	 */
 	public List<String> getCoapIPs(){
 		return listCoapIPs;
 	}
 
 
-	//Retorna a URL Well-kwown/core dos motes
+	/**
+	 * Retorna a URL Well-kwown/core dos motes. 
+	 * 
+	 * @param ip IP do mote
+	 * @return IP do mote em formato CoAP
+	 */
 	public String getURLWellKnownCore(String ip) {
 
 		return ip.replace("[aaaa", "coap://[aaaa").replace("]", "]:5683/.well-known/core");
 	}
 
 
-	//Armazena e retorna todas os IPs Coaps e seus respectivos recursos
+	/**
+	 * Armazena e retorna todas os IPs Coaps e seus respectivos recursos. 
+	 * 
+	 * @param infoRes informação dos recursos em formato HTML
+	 * @return listResources lista com todos os recursos do mote
+	 */
 	public List<String> setResources(String infoRes){
 
 
@@ -75,8 +100,13 @@ public class ResourcesMotes{
 		return listResources;
 	}
 
-
-	//Retorna URL do recurso para busca
+	/**
+	 * Retorna URL do recurso para busca. 
+	 * 
+	 * @param ipMote IP do mote
+	 * @param resource nome do recurso do mote
+	 * @return URL do recurso
+	 */
 	public StringBuilder getURLResource(String ipMote, String resource) {
 
 		StringBuilder URLResMote = new StringBuilder();

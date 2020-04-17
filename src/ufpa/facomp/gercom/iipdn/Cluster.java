@@ -20,20 +20,47 @@ import weka.core.converters.CSVLoader;
 import weka.core.converters.ArffSaver;
 import java.io.File;
 
+/**
+ * Classe responsável pela leitura das coordenadas vindas do cooja,
+ * leitura delas pelo weka e passando as informações dos clusters
+ * para dentro da plataforma. 
+ */
 public class Cluster {
 
+	/** Informação dos motes. */
 	static Instances data;
+	
+	/** Arquivo com as coordenadas dos motes. */
 	final static String PATH_CSV_FILE = "/tmp/motes_coordinates.csv";
+	
+	/** Arquivo com as coordenads somente dos motes ativos. */
 	final static String PATH_CSV_FILE_ACTIVES = "/tmp/actives_motes_coordinates.csv";
+	
+	/** Arquivo com as coordenadas dos motes ativos a ser lido no weka. */
 	final static String PATH_ARFF_FILE = "/tmp/motes_coordinates.arff";
+	
+	/** Armazena as informações carregadas do arquivo. */
 	static ArrayList<ArrayList<String>> dataFromFile;
+	
+	/** Armazena os IPs dos motes ativos. */
 	static ArrayList<ArrayList<String>> motesActives;
+	
+	/** Cria as séries e armazena as coordenadas dos motes de cada cluster nelas. */
 	protected static Graphic graphic = new Graphic();
+	
+	/** Lista de IPs dos motes. */
 	static String[] IPs;
+	
+	/** Número de clusters. */
 	protected static int numberClusters;
 
 	/******************************************************************************/
-	//Pega a lista de IPs ativos já armazenados na plataforma
+	
+	/**
+	 * Pega a lista de IPs ativos já armazenados na plataforma.
+	 * 
+	 * @param routes rotas dos motes
+	 */
 	public void getIPsActivesMotes(RoutesMotes routes) {		
 		List<String> lista = new ArrayList<String>();
 		lista = routes.getListIPs();
@@ -41,7 +68,12 @@ public class Cluster {
 		lista.toArray(IPs);	
 	}
 	/******************************************************************************/
-	//Converte de CSV para um array na memória a lista de IPs gerados pelo cooja 
+	
+	/** 
+	 * Converte de CSV para um array na memória a lista de IPs gerados pelo cooja. 
+	 *  
+	 * @throws FileNotFoundException em caso de erro na leitura do arquivo
+	 */
 	public void convertCSV2Array() throws FileNotFoundException {
 
 		dataFromFile=new ArrayList<ArrayList<String>>();
@@ -64,8 +96,13 @@ public class Cluster {
 		}
 	}
 	/******************************************************************************/
-	//Lê o IP ativo da lista e busca no arquivo gerado pelo cooja suas coordenadas
-	public void readEndAddressFindData( ) throws FileNotFoundException  {
+	
+	/**
+	 * Lê o IP ativo da lista e busca no arquivo gerado pelo cooja suas coordenadas
+	 * 
+	 * @throws FileNotFoundException em caso de erro na leitura do arquivo
+	 */
+	public void readEndAddressFindData( )  {
 		int posicao=0;
 
 		motesActives=new ArrayList<ArrayList<String>>();
@@ -84,7 +121,12 @@ public class Cluster {
 		}
 	}
 	/******************************************************************************/
-	//Salva em CSV a lista com os IPs ativos e respectivas coordenadas
+	
+	/**
+	 * Salva em CSV a lista com os IPs ativos e respectivas coordenadas.
+	 * 	
+	 * @throws IOException em caso de erro na escrita do arquivo
+	 */
 	public void savingActivesMotesInCSV() throws IOException {
 
 		BufferedWriter br = new BufferedWriter(new FileWriter(PATH_CSV_FILE_ACTIVES));
@@ -101,7 +143,12 @@ public class Cluster {
 		br.close();
 	}
 	/******************************************************************************/
-	//Carrega o arquivo CSV com os IPs ativos e suas coordenadas e converte para ARFF
+	
+	/**
+	 * Carrega o arquivo CSV com os IPs ativos e suas coordenadas e converte para ARFF. 
+	 * 
+	 * @throws IOException em caso de erro na leitura do arquivo
+	 */
 	public void loadCSV() throws IOException {
 
 		CSVLoader loader = new CSVLoader();
@@ -109,7 +156,12 @@ public class Cluster {
 		data = loader.getDataSet();
 	}
 	/******************************************************************************/
-	//Carrega os dados com os IPs ativos e salva em formato ARFF
+	
+	/**
+	 * Carrega os dados com os IPs ativos e salva em formato ARFF. 
+	 * 
+	 * @throws IOException em caso de erro na escrita do arquivo
+	 */
 	public void saveARFF() throws IOException {
 
 		ArffSaver saver = new ArffSaver();
@@ -119,7 +171,13 @@ public class Cluster {
 		saver.writeBatch();
 	}
 	/********************************************************************************/
-	//Carrega o arquivo ARFF e cria os clusters com base nos dados dos IPs e coordenadas 
+
+	/**
+	 * Carrega o arquivo ARFF e cria os clusters com base nos dados dos IPs e coordenadas.
+	 * 
+	 * @param control permite o envio da informação para GUI
+	 * @throws Exception em caso de erro na leitura do arquivo
+	 */
 	public void createClusters(Controller control) throws Exception {
 
 		SimpleKMeans kmeans = new SimpleKMeans();
@@ -193,7 +251,13 @@ public class Cluster {
 
 	}
 	/******************************************************************************/
-	//Cria um buffer para ler os dados de um arquivo
+	
+	/**
+	 * Cria um buffer para ler os dados de um arquivo. 
+	 * 
+	 * @param filename nome e caminho para o arquivo
+	 * @return inputReader buffer com as informações do arquivo
+	 */
 	public BufferedReader readDataFile(String filename) {
 
 		BufferedReader inputReader = null;
@@ -206,7 +270,13 @@ public class Cluster {
 		return inputReader;
 	}
 	/******************************************************************************/
-	//Define quantos clusters serão criados de acordo com o elbow method
+	
+	/**
+	 * Define quantos clusters serão criados de acordo com o elbow method. 
+	 * 
+	 * @param data dados do motes
+	 * @return melhor número de cluster
+	 */
 	public static int elbow(Instances data) {
 		int maxClusterNum=10;
 		
@@ -225,10 +295,9 @@ public class Cluster {
 				kmeans.setNumClusters(i);
 				kmeans.buildClusterer(data);
 				meanClusterErro[i-1]=kmeans.getSquaredError()/i;
-				//System.out.println(meanClusterErro[i-1]);
 				
 			} catch (Exception e) {
-				System.out.println("Erro no elbow\n");
+				System.out.println("Error on elbow\n");
 				e.printStackTrace();
 			}
 		}
@@ -245,11 +314,20 @@ public class Cluster {
 				bestClusterNum=i+1;
 			}
 		}
-		//System.out.println("The best cluster num according to Elbow is "+ bestClusterNum);
 		return bestClusterNum;
 	}
 	
-	
+	/**
+	 * Calcula a distância entre um ponto e a linha do elbow method.
+	 * 
+	 * @param x coordenada do número de clusters da elbow
+	 * @param y coordenada da média de erros da elbow 
+	 * @param x1 coordenada x no início do elbow
+	 * @param y1 coordenada y no início do elbow
+	 * @param x2 coordenada x no fim do elbow
+	 * @param y2 coordenada y no fim do elbow  
+	 * @return distance distância entre coordenada e linha 
+	 */
 	public static double pDistance(double x, double y, double x1, double y1, double x2, double y2) {
 		//x,y is the point
 		//x1,y1 is the beginning of the line
@@ -268,13 +346,16 @@ public class Cluster {
 
 	      distance =  Math.abs(dot) / Math.sqrt(len_sq);
 	      
-	      //System.out.println("The computed distance is "+distance);
-	      
 	      return distance;
 	    }
 
 	/******************************************************************************/
-	//Define quais séries que armazenarão os dados dos clusters serão criadas
+	
+	/**
+	 * Define quais séries que armazenarão os dados dos clusters serão criadas.
+	 * 
+	 * @param numberClusters número de clusters que existem
+	 */
 	public void defineSeriesClusterToCreate(int numberClusters){
 
 		switch (numberClusters) {
@@ -314,6 +395,9 @@ public class Cluster {
 		}		
 	}
 
+	/**
+	 * Calcula a métrica da rede inteira. 
+	 */
 	public void calculateMetricNetwork(){
 		double coordX=0;
 		double coordY=0;

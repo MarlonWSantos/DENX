@@ -2,16 +2,30 @@ package ufpa.facomp.gercom.iipdn;
 
 import java.io.File;
 import java.io.IOException;
-
 import javafx.application.Platform;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * Classe responsável por criar threads para cada cluster.
+ */
 public class ThreadCluster implements Runnable{
+	
+	/** Arquivo com as coordenadas dos motes. */
 	final static String PATH_CSV_FILE = "/tmp/motes_coordinates.csv";
+	
+	/** Objeto da classe Controller. */
 	protected Controller control;
+	
+	/** Objeto da classe Routes Motes. */
 	protected RoutesMotes routes;
 
+	/**
+	 * Construtor cria um thread e o inícia em seguida.
+	 *  
+	 * @param control Objeto da classe Controller
+	 * @param routes Objeto da classe Routes Motes
+	 */
 	public ThreadCluster(Controller control,RoutesMotes routes) {
 		this.control=control;
 		this.routes=routes;

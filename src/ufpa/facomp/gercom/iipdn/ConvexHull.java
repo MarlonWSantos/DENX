@@ -1,19 +1,45 @@
 package ufpa.facomp.gercom.iipdn;
 
-import java.util.*;	
+import java.util.*;
 
+/**
+ * Classe responsável por organizar as coordenadas do motes de cada cluster
+ * em forma de convex hull.
+ */
 public class ConvexHull{ 
+	
+	/** Coordenadas x e y. */
 	double x, y;
+	
+	/** Ângulos. */
 	double angle;
+	
+	/** Armazena todas as coordenadas que formarão um convex/cluster. */
 	static Vector<ConvexHull> hull = new Vector<ConvexHull>(); 
+	
+	/** Coordenada x do centro do convex/cluster. */
 	static double centerX;
+	
+	/** Coordenada y do centro do convex/cluster. */
 	static double centerY;
 
+	/**
+	 * Construtor para pontos dentro do convex/cluster.
+	 * 
+	 * @param x coordenada x de um mote
+	 * @param y coordenada y de um mote
+	 */
 	public ConvexHull(double x, double y){ 
 		this.x=x; 
 		this.y=y; 
 	} 
 
+	/**
+	 * Constroi o convex/cluster a partir da lista de coordenadas.
+	 * 
+	 * @param points lista de coordenadas
+	 * @param n tamanho da lista de coordenadas
+	 */
 	public static void convexHull(ConvexHull points[], int n){ 
 		if (n < 3) return; 
 
@@ -39,14 +65,34 @@ public class ConvexHull{
 		} while (p != l); 		
 	} 
 
+	/**
+	 * Armazena o ângulo.
+	 * 
+	 * @param angle ângulo
+	 */
 	public void setAngle(double angle) {
 		this.angle=angle;
 	}
 
+	/**
+	 * Retorna um ângulo.
+	 * 
+	 * @return angle ângulo
+	 */
 	public double getAngle() {
 		return this.angle;
 	}
 
+	/**
+	 * Retorna a orientação do convex/cluster.
+	 * 
+	 * @param p posição de um mote pertencente ao grupo
+	 * @param q posição de um mote pertencente ao grupo
+	 * @param r posição de um mote pertencente ao grupo
+	 * @return 0 se são colinares
+	 * @return 1 se no sentido horário
+	 * @return 2 se no sentido anti-horário
+	 */
 	public static int orientation(ConvexHull p, ConvexHull q, ConvexHull r) { 
 		double val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y); 
 
@@ -54,14 +100,19 @@ public class ConvexHull{
 		return (val > 0)? 1: 2; 
 	}
 
-	//Printa o poligono
+
+	/**
+	 * Printa o poligono 
+	 */
 	public static void showPolygon() {
-	//	System.out.println("Convex:");
 		for (ConvexHull temp : ConvexHull.hull)
 			System.out.println("(" + temp.x + ", " +  temp.y + ")"); 
 	}
 
-	//Calcula o centro do poligono
+	
+	/**
+	 * Calcula o centro do poligono 
+	 */
 	public static void calculateCenterPolygon() {
 		centerX=0;
 		centerY=0;
@@ -72,24 +123,38 @@ public class ConvexHull{
 		}
 		centerX=centerX/ConvexHull.hull.size();
 		centerY=centerY/ConvexHull.hull.size();
-
-		//System.out.println("O centro do poligono é ("+centerX+","+centerY+")"); 
+	 
 	}
 
-	//Calcula os angulos dos pontos do poligono
+	
+	/**
+	 * Calcula os ângulos dos pontos do poligono 
+	 */
 	public static void calculateAnglePoints() {
 		for (int i=0;i<ConvexHull.hull.size();i++) {
 			ConvexHull.hull.get(i).setAngle(calculateAngle( ConvexHull.hull.get(i).x, ConvexHull.hull.get(i).y, centerX, centerY));
 		}
 	}
 
-	//Printa os angulos
+	
+	/**
+	 * Exibe os ângulos 
+	 */
 	public static void showAngles() {
 		System.out.println("Angulos:");
 		for (ConvexHull temp : ConvexHull.hull)
 			System.out.println(temp.angle ); 
 	}
 
+	/**
+	 * Calcula o ângulo entre uma coordenada e outra.
+	 * 
+	 * @param x coordenada x de um mote
+	 * @param y coordenada y de um mote
+	 * @param refX coordenada x do centro do convex/cluster
+	 * @param refY coordenada y do centro do convex/cluster
+	 * @return angle 
+	 */
 	public static double calculateAngle(double x, double y, double refX, double refY) {
 		float angle = (float) Math.toDegrees(Math.atan2(y - refY, x - refX));
 
@@ -100,6 +165,9 @@ public class ConvexHull{
 		return angle;
 	}
 	
+	/**
+	 * Limpa a lista com as coordenadas 
+	 */
 	public static void clearHull() {
 		hull.clear();
 	}

@@ -6,27 +6,69 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
 
+/**
+ * Classe responsável por criar threads para calculo da métrica de cada cluster.
+ */
 public class ThreadMetrics implements Runnable {
+	
+	/** Objeto da classe Controller. */
 	protected Controller control;
+	
+	/** Thread para cálculo da métrica da rede. */
 	private static Thread NetworkMetric;
-	private static Thread ClusterMetric1;		
+	
+	/** Thread para cálculo da métrica no cluster 1. */
+	private static Thread ClusterMetric1;
+	
+	/** Thread para cálculo da métrica no cluster 2. */
 	private static Thread ClusterMetric2;
+	
+	/** Thread para cálculo da métrica no cluster 3. */
 	private static Thread ClusterMetric3;
+	
+	/** Thread para cálculo da métrica no cluster 4. */
 	private static Thread ClusterMetric4;
+	
+	/** Thread para cálculo da métrica no cluster 5. */
 	private static Thread ClusterMetric5;
+	
+	/** Thread para cálculo da métrica no cluster 6. */
 	private static Thread ClusterMetric6;
+	
+	/** Armazena conjunto de objetos Metrics. */
 	private static Metrics[] metric;
+	
+	/** Número de clusters criados. */
 	static int numberClusters;
+	
+	/** Posição no array de objetos Metrics. */
 	static int indexMetric;
+	
+	/** Flag informa se já há dados sobre métricas salvas. */
 	static boolean hasNoMetricSaved = true;
+	
+	/** Armazena séries de coordenadas. */
 	XYChart.Series<Number, Number> series;
+	
+	/** Número de motes dentro do cluster. */
 	int motesOnCluster;	
+	
+	/** Coordenada X. */
 	double coordX;
+	
+	/** Coordenada Y. */
 	double coordY;
+	
+	/** Armazena as informações das métricas. */	
 	static StringBuilder infoMetrics = new StringBuilder();
 
 
-	//Construtor
+	/**
+	 * Construtor para criar thread para calcular as métricas.
+	 * 
+	 * @param control objeto da classe Controller
+	 * @throws InterruptedException em caso de interrupção do thread
+	 */
 	public ThreadMetrics(Controller control) throws InterruptedException {
 		this.control=control;
 
@@ -45,7 +87,11 @@ public class ThreadMetrics implements Runnable {
 
 	}
 
-	//Cria Thread para calcular a métrica da rede inteira
+	/**
+	 * Cria Thread para calcular a métrica da rede inteira.
+	 *  
+	 * @throws InterruptedException em caso de interrupção do thread
+	 */
 	public void createThreadToCalculateNetworkMetric() throws InterruptedException {
 
 		NetworkMetric = new Thread(this,"Thread NetworkMetric");
@@ -61,7 +107,9 @@ public class ThreadMetrics implements Runnable {
 
 	}
 
-	//Cria os Threads que farão o cálculo da métrica de acordo com número de clusters
+	/**
+	 * Cria os Threads que farão o cálculo da métrica de acordo com número de clusters. 
+	 */
 	public void createThreadsToCalculateMetrics() {
 
 		switch (numberClusters) {
@@ -101,7 +149,11 @@ public class ThreadMetrics implements Runnable {
 		}
 	}
 
-	//Define quantos e quais threads serão executados
+	/**
+	 * Define quantos e quais threads serão executados.
+	 *  
+	 * @throws InterruptedException em caso de interrupção do thread
+	 */
 	public void defineThreadStarts() throws InterruptedException{
 
 		if(numberClusters==1) {
@@ -160,7 +212,11 @@ public class ThreadMetrics implements Runnable {
 		}		
 	}
 
-	//Carrega as coordenadas e index de cada cluster de acordo com Thread em execução
+	/**
+	 * Carrega as coordenadas e index de cada cluster de acordo com Thread em execução. 
+	 * 
+	 * @return dataSeries todas as coordenadas armazenadas na série
+	 */
 	public XYChart.Series<Number, Number> loadDataSeries() {
 
 		XYChart.Series<Number, Number> dataSeries = null;
@@ -203,6 +259,9 @@ public class ThreadMetrics implements Runnable {
 		return dataSeries;
 	}
 	
+	/**
+	 * Cria os objetos da classe Metrics de acordo com o número de clusters.
+	 */
 	public void createMetricsObjects() {
 		int tam = numberClusters;
 
@@ -295,6 +354,14 @@ public class ThreadMetrics implements Runnable {
 		}
 	}
 
+	/**
+	 * Armazena a informação da métrica que será exibida na GUI.
+	 * 
+	 * @param metric objeto da classe Metrics
+	 * @param areaCluster área do cluster
+	 * @param resultMetric resultado do cálculo da métrica 
+	 * @param movingAverage resultado da média móvel 
+	 */
 	public void saveInformationMetric(Metrics metric, double areaCluster, double resultMetric, double movingAverage) {
 
 		if(Thread.currentThread().getName()=="Thread NetworkMetric") {

@@ -23,21 +23,35 @@ import java.util.regex.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Classe responsável por armazenar as rotas e IPs da rede.
+ */
 public class RoutesMotes{
 
+	/** Armazena a informação da rede. */
 	private String response;
+	
+	/** Armazena a lista de rotas. */
 	private List<String> listRoutes;
+	
+	/** Armazena a lista de IPs da rede. */
 	private List<String> listIPs;
 
 
-	//Armazena as informações dos IPs e das rotas dos motes
+
+	/**
+	 * Armazena as informações dos IPs e das rotas dos motes. 
+	 * 
+	 * @param args armazena a informação da rede
+	 */
 	public void setResponse(String args){
 		response = args;
 	}
 
 
-	//Filtra e elimina os ruídos das informações dos IPs e das Rotas
+	/**
+	 * Filtra e elimina os ruídos das informações dos IPs e das Rotas 
+	 */
 	public void filterResponse(){
 
 		//Define o padrão de rotas
@@ -70,18 +84,33 @@ public class RoutesMotes{
 		}
 	}
 
-	//Retorna o IP do mote
+
+	/**
+	 * Retorna o IP do mote.
+	 *  
+	 * @param i posição na lista de IPs
+	 * @return o IP na respectiva posição na lista
+	 */
 	public String getIP(int i){
 		return listIPs.get(i);
 	}
 
 
-	//Retorna a lista de IPs
+	/**
+	 * Retorna a lista de IPs.
+	 *  
+	 * @return lista com os IPs
+	 */
 	public List<String> getListIPs(){
 		return listIPs;
 	}
 
-	//Retorna a lista de rotas
+	
+	/**
+	 * Retorna a lista de rotas.
+	 * 
+	 * @return listRoutes lista com as rotas
+	 */
 	public List<String> getListRoutes(){
 		return listRoutes;	  
 	}

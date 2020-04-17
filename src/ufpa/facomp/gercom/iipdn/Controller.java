@@ -37,14 +37,26 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+/**
+ * Classe responsável pela interação entre a GUI e as demais classes.
+ */
 public class Controller implements Initializable{
 
+	/** URL do border router. */
 	private String urlBorderRouter;
-	private String resource;
-	private boolean loading=false;	
-	private ObservableList<String> listGroup;
-	private static boolean isObserving;
 
+	/** Recursos dos motes. */
+	private String resource;
+	
+	/** Flag informa se está se conectando com os motes. */
+	private boolean loading=false;
+	
+	/** Lista de IPs que serão observados em simultâneo. */
+	private ObservableList<String> listGroup;
+	
+	/** Flag informa se há motes sendo observados. */
+	private static boolean isObserving;
+	
 	@FXML private TextField textFieldURL;
 	@FXML private Text textNeighbors;
 	@FXML private Text textInfoMote;
@@ -60,7 +72,6 @@ public class Controller implements Initializable{
 	@FXML private ListView<String> listViewGroup;
 	@FXML private Label labelTerminal;
 	@FXML private ScrollPane scrollTerminal;
-
 	@FXML private CheckBox checkObsGroup;
 	@FXML private Text textGroups;
 	@FXML private Text textSaveto;
@@ -77,7 +88,12 @@ public class Controller implements Initializable{
     @FXML private Text textClusers;
     @FXML private TextArea textAreaMetrics;
     @FXML private Text textMetrics;
-	
+
+    /**
+     * Controla e chama as demais funções da aplicação.
+     * 
+     * @param event um clique no botão discover na GUI
+     */
 	@FXML
 	private void mainController(ActionEvent event)   {
 
@@ -135,6 +151,13 @@ public class Controller implements Initializable{
 	}
 
 
+	/**
+	 * Transforma as informações recebidas do border router, do formato HTML
+	 * para um formato legível.
+	 * 
+	 * @param obj objeto da classe WgetJava
+	 * @param routes objeto da classe RoutesMotes
+	 */
 	private void treatmentOfInformation(WgetJava obj,RoutesMotes routes) {
 
 		//Armazena as informações das Rotas e IP
@@ -144,7 +167,12 @@ public class Controller implements Initializable{
 		routes.filterResponse();
 	}
 
-
+	/**
+	 * Exibe os IPs dos motes na GUI.
+	 * 
+	 * @param routes
+	 * @param res
+	 */
 	private void showIPs(RoutesMotes routes,ResourcesMotes res) {
 		ObservableList<String> ips = FXCollections.observableArrayList ();
 
@@ -159,6 +187,11 @@ public class Controller implements Initializable{
 	}
 
 
+	/**
+	 * Exibe as rotas dos motes na GUI.
+	 * 
+	 * @param routes objeto da classe RoutesMotes
+	 */
 	private void showRoutes(RoutesMotes routes) {
 
 		StringBuilder rotas = new StringBuilder();
@@ -173,6 +206,11 @@ public class Controller implements Initializable{
 	}
 
 
+	/**
+	 * Exibe os recursos dos motes na GUI.
+	 * 
+	 * @param event clique do mouse na GUI
+	 */
 	@FXML
 	private void showMoteResources(MouseEvent event) {
 
@@ -229,6 +267,11 @@ public class Controller implements Initializable{
 	}
 
 
+	/**
+	 * Captura o nome do recurso clicado na GUI.
+	 * 
+	 * @param event clique do mouse na GUI.
+	 */
 	@FXML
 	private void moteResource(MouseEvent event) {
 
@@ -240,14 +283,24 @@ public class Controller implements Initializable{
 		}
 	}
 
-
+	/**
+	 * Verifica se a lista na GUI não está vazia, se não exibe informação.
+	 * 
+	 * @param listView lista dos IPs ou dos recursos 
+	 * @return true se estiver com informação,
+	 * 		   false se estiver sem informação
+	 */
 	private boolean listViewIsNotEmpty(ListView<String> listView) {
 
 		//Retorna TRUE se a listView não estiver vazia
 		return !listView.getSelectionModel().getSelectedItems().isEmpty();	
 	}
 
-
+	/**
+	 * Faz requisição ao mote buscando informação sobre o recurso.
+	 * 
+	 * @param event clique do mouse no botão GET na GUI.
+	 */
 	@FXML
 	private void getMoteResource(ActionEvent event) {
 
@@ -277,7 +330,11 @@ public class Controller implements Initializable{
 		}
 	}
 
-
+	/**
+	 * Faz a observação do recurso do mote.
+	 * 
+	 * @param event clique do mouse no botão OBS na GUI.
+	 */
 	@FXML
 	private void obsMote(ActionEvent event) {
 		//Se a listView com IPs e a lista com recursos, ambas não estiverem selecionadas, exibe mensagem
@@ -335,7 +392,12 @@ public class Controller implements Initializable{
 	}
 
 
-	//Desabilita botões e listViews
+	/**
+	 * Desabilita botões e listViews 
+	 * 
+	 * @param option true para ocultar parte da GUI
+	 * @param option false para exibir parte da GUI
+	 */
 	public void disableNodes(boolean option ) {
 		buttonDiscover.setDisable(option);
 		buttonGet.setDisable(option);
@@ -345,7 +407,11 @@ public class Controller implements Initializable{
 	}
 
 
-
+	/**
+	 * Exibe as informações no saída da GUI.
+	 * 
+	 * @param info informação a ser exibido no terminal da GUI
+	 */
 	public void showOnGUI(String info) {
 
 		//Insere a informação do recurso do mote na label
@@ -362,7 +428,15 @@ public class Controller implements Initializable{
 	}
 
 
-	//Desabilita o campo Observe Group
+	
+	/**
+	 * Desabilita o campo Observe Group
+	 *  
+	 * @param opacity 1  para exibir parta da GUI
+	 * @param opacity 0.5 para ocultar parta da GUI
+	 * @param option true para ocultar parte da GUI
+ 	 * @param option false para exibir parte da GUI
+	 */
 	public void disableObsGroup(double opacity,boolean option) {
 		textGroups.setOpacity(opacity);
 		listViewGroup.setDisable(option);
@@ -374,7 +448,11 @@ public class Controller implements Initializable{
 
 	}
 
-
+	/**
+	 * Exibe ou oculta o campo ObsGroup na GUI.
+	 * 
+	 * @param event clique no checkbox Observe Group
+	 */
 	@FXML
 	private void visibleObsGroup(ActionEvent event) {
 
@@ -396,7 +474,11 @@ public class Controller implements Initializable{
 		}			
 	}
 
-
+	/**
+	 * Adiciona um IP da GUI para a lista de observação de grupos.
+	 * 
+	 * @param event clique no botão Add
+	 */
 	@FXML
 	private void addGroupItem(ActionEvent event) {
 
@@ -415,7 +497,11 @@ public class Controller implements Initializable{
 		}
 	}
 
-
+	/**
+	 * Limpa a lista Group.
+	 * 
+	 * @param event clique no botão Clear na GUI
+	 */
 	@FXML
 	private void clearGroup(ActionEvent event) {
 
@@ -427,7 +513,11 @@ public class Controller implements Initializable{
 		}
 	}
 
-
+	/**
+	 * Remove um item da lista Group.
+	 * 
+	 * @param event clique no botão Del na GUI
+	 */
 	@FXML
 	private void removeGroupItem(ActionEvent event) {
 
@@ -437,7 +527,11 @@ public class Controller implements Initializable{
 		}		
 	}
 
-
+	/**
+	 *  Faz a observação de um grupo de motes.
+	 *   
+	 * @param event clique do mouse no botão Obs Group na GUI
+	 */
 	@FXML
 	private void obsGroup(ActionEvent event) {
 
@@ -536,12 +630,20 @@ public class Controller implements Initializable{
 		}
 	}
 
-	//Retorna se está ocorrendo uma observação
+	
+	/**
+	 * Retorna se está ocorrendo uma observação. 
+	 * 
+	 * @return true se houver observação em andamento,
+	 *         false se não houver observação em andamento
+	 */
 	public boolean isObserving() {
 		return Controller.isObserving;
 	}
 	
-	//Carrega os dados dos clusters e insere no gráfico na GUI
+	/**
+	 * Carrega os dados dos clusters e insere no gráfico na GUI. 
+	 */
 	public void LoadGraphic() {
 		
 		//Se o gráfico não estiver vazio, remove todos os dados dele
@@ -590,19 +692,31 @@ public class Controller implements Initializable{
 		}
 	}
 	
-	//Mostra na GUI as informações dos IPs(coordenadas) alocados em seus respectivos clusters
+	
+	/**
+	 * Exibe na GUI as informações dos IPs(coordenadas) alocados em seus respectivos clusters. 
+	 * 
+	 * @param infoKmeans informações sobre os clusters 
+	 */
 	public void showInformationCluster(StringBuilder infoKmeans) {
 		
 		textAreaClusters.setText(infoKmeans.toString());
 	}
 
-	//Mostra na GUI as informações do cálculo da métrica de cada cluster
+	
+	/**
+	 * Exibe na GUI as informações do cálculo da métrica de cada cluster. 
+	 * 
+	 * @param infoMetrics resultado das métricas
+	 */
 	public void showInformationMetrics(StringBuilder infoMetrics) {
 		
 		textAreaMetrics.setText(infoMetrics.toString());
 	}
 	
-
+	/**
+	 * Inicializa a plataforma com o campo Observe Group desabilitado.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 

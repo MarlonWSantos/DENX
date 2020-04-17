@@ -36,23 +36,44 @@ import javafx.scene.control.Alert.AlertType;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
 
+/**
+ * Classe responsável por executar as observações dos motes.
+ */
 public class Observe{
 
-
+	/** Objeto da classe CoapObserveRelation. (Californium) */
 	private CoapObserveRelation relation;
+	
+	/** Objeto da classe CoapClient. (Californium) */
 	private CoapClient client = new CoapClient();  //CoapClient para observação dos recursos
+	
+	/** Armazena a informação durante a observação. */
 	private static StringBuilder infoObs;
+	
+	/** Objeto da classe Controller. */
 	protected static Controller control;
+	
+	/** Objeto da classe PrintStream. */
 	private static PrintStream file=null;
+	
+	/** Arquivo com as informações da observação. */
 	private static String savePath = "/tmp/obsResult.txt"; //Caminho default para salvar dados da observação
 
 
-
+	/**
+	 * Cria buffer para armazenar informações durante observação.
+	 */
 	public void createBufferObs() {
 		infoObs=null;
 		Observe.infoObs= new StringBuilder("\nSaving Obs to "+ getSavePath()+"\n\nObserving ...\n");
 	}
 	
+	/**
+	 * Executa a observação de um mote.
+	 * 
+	 * @param url URL do mote
+	 * @param control objeto da classe Controller
+	 */
 	public void observe(String url,Controller control) {
 
 		infoObs = new StringBuilder("\nObserving ...\n\n");
@@ -101,7 +122,12 @@ public class Observe{
 		showInfoObs(control);
 	}	
 
-	//Exibe no terminal os dados da Observação
+
+	/**
+	 * Exibe no terminal na GUI os dados da observação.
+	 *  
+	 * @param control objeto da classe Controller
+	 */
 	private void showInfoObs(Controller control) {
 		Platform.runLater(new Runnable() {
 
@@ -112,22 +138,42 @@ public class Observe{
 		});
 	}
 
-	//Salva o caminho para criar o arquivo que armazena dados da observação
+	
+	/**
+	 * Salva o caminho para criar o arquivo que armazena dados da observação. 
+	 * 
+	 * @param savePath caminho para salvar o arquivo
+	 */
 	public void setSavePath(String savePath) {
 		this.savePath=savePath;
 	}
 
-	//Retorna o caminho onde será salvo o arquivo que guarda dados da obsrvação
+	
+	/**
+	 * Retorna o caminho onde será salvo o arquivo que guarda dados da obsrvação.
+	 *  
+	 * @return savePath caminho onde o arquivo será salvo
+	 */
 	public String getSavePath() {
 		return savePath;
 	}
 
-	//Cria o arquivo que armazenará os dados da observação
+	
+	/**
+	 * Cria o arquivo que armazenará os dados da observação.
+	 *  
+	 * @throws Exception em caso erro de escrita do arquivo
+	 */
 	public void saveFileObs() throws Exception {
 		file = new PrintStream(new File(this.getSavePath()));
 	}
 
-
+	/**
+	 * Executa a observação de grupo de motes.
+	 * 
+	 * @param url URL do mote
+	 * @param control objeto da classe Controller
+	 */
 	public void observeGroup(String url,Controller control) {
 		
 		//Exibe no terminal o início da observação, local e arquivo usado para salvar os dados da Obs

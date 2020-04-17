@@ -12,23 +12,48 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+/**
+ *  Classe responsável por gerar caixas de diálogos exibidas para o usuário,
+ *  usadas no tratamento e captura de exceptions. 
+ */
 public class AlertsDialog extends Alert {
 
+	/** Cabeçalho da caixa de diálogo. */
 	private String headerText;
+	
+	/** A exception já tratada. */
 	private Exception ex;
+	
+	/** Texto da stacktrace da exception. */
 	private String exceptionText;
+	
+	/** Texto simples da caixa de diálogo. */
 	private Label label;
-	private TextArea textArea;
+	
+	/**  Área que vai exibir o stacktrace na caixa de diálogo. */
+	private TextArea textArea;	
+	
+	/** Grid que armazenará todos os elementos da caixa de diálogo. */
 	private GridPane expContent;
 
 
-	//Construtor para caixas de diálgos simples
+	/** 
+	 * Construtor para caixas de diálgos simples.
+	 *
+	 * @param alertType tipo de alerta (error,warning,etc)
+	 */
 	public AlertsDialog(AlertType alertType) {
 		super(alertType);		
 	}
 
 
-	//Contrutor para caixas de diálogos com conteúdo em texto editável 
+	/** 
+	 * Contrutor para caixas de diálogos com conteúdo em texto editável.
+	 * 
+	 * @param alertType tipo de alerta (error,warning,etc)
+	 * @param contentText texto que será exibido na caixa de diálogo
+	 * @param buttons tipo de botão (ok,cancel,close,etc)
+	 */ 
 	public AlertsDialog(AlertType alertType, String contentText, ButtonType... buttons) {
 		super(alertType, contentText, buttons);
 
@@ -37,7 +62,14 @@ public class AlertsDialog extends Alert {
 	}
 
 
-	//Contrutor para caixas de diálogos com texto editável na header e no conteúdo 
+	/** 
+	 * Construtor para caixas de diálogos com texto editável na header e no conteúdo.
+	 * 
+	 * @param alertType tipo de alerta (error,warning,etc)
+	 * @param headerText texto que será exibido no cabeçalho da caixa de diálogo
+	 * @param contentText texto que será exibido no corpo da caixa de diálogo
+	 * @param buttons tipo de botão (ok,cancel,close,etc)
+	 */ 
 	public AlertsDialog(AlertType alertType,String headerText,String contentText,ButtonType... buttons) {
 		super(alertType, contentText, buttons);
 
@@ -52,7 +84,10 @@ public class AlertsDialog extends Alert {
 	}
 
 
-	//construtor para caixas de diálogos com Exceptions como conteúdo
+	/** 
+	 * Construtor para caixas de diálogos com stacktrace como conteúdo.
+	 *  @param e exception tratada
+	 */
 	public AlertsDialog(Exception e) {
 		super(AlertType.ERROR);
 
@@ -86,7 +121,7 @@ public class AlertsDialog extends Alert {
 	}
 
 
-	//Coleta o conteúdo da stacktrace
+	/** Coleta o conteúdo da stacktrace. */
 	public void createStackTrace( ) {
 
 		StringWriter sw = new StringWriter();
@@ -100,7 +135,7 @@ public class AlertsDialog extends Alert {
 	}
 
 
-	//Constroi área que vai receber a stacktrace
+	/** Constroi área que vai receber a stacktrace. */
 	public void createContent() {
 
 		label = new Label("The stacktrace:");
@@ -118,7 +153,7 @@ public class AlertsDialog extends Alert {
 	}
 
 
-	//Constroi grid para exibir a stacktrace
+	/** Constroi grid para exibir a stacktrace. */
 	public void createGridContent() {
 
 		//Define prioridade de exibição na vertical e horizontal do componente

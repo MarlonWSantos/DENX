@@ -27,8 +27,18 @@ import org.eclipse.californium.elements.exception.ConnectorException;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
+/**
+ * Classe responsável por fazer comunicação entre a plataforma e os motes
+ * da rede através do border router.
+ */
 public class GETClient {
 
+	/**
+	 * Faz a comunicação com a url do mote ou border router.
+	 * 
+	 * @param url URL
+	 * @return resourceInfo
+	 */
 	public StringBuilder get(String url) {
 
 		//Declara o Coapclient de acordo com o número de URL recebidos
@@ -80,7 +90,12 @@ public class GETClient {
 	}
 
 
-	//Retorna uma lista com o recursos dos motes da rede
+	/**
+	 * Retorna uma lista com o recursos dos motes da rede
+	 *  
+	 * @param url URL
+	 * @return listResourceInfo lista de recursos que um mote possui
+	 */
 	public String discover(String url) {
 
 		//Declara o Coapclient de acordo com o URL recebido

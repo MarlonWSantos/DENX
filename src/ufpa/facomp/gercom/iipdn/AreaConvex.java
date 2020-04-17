@@ -1,10 +1,19 @@
 package ufpa.facomp.gercom.iipdn;
 
-
+/**
+ *  Classe responsável pelo cálculo da área dentro do convex/cluster.
+ */
 public class AreaConvex {
 
+	/** 
+	 * Calcula a área do convex/cluster.
+	 * 
+	 * @param X coordenadas x dos membros do cluster
+	 * @param Y coordenadas y dos membros do cluster
+	 * @param n número de membros do cluster
+	 * @return área do convex/cluster
+	 */
 	public static double polygonArea(double [] X, double [] Y,int n){ 
-		//System.out.println("Length "+X[2]);
 		double area = 0.0; 
 
 		int h = n - 1; 
@@ -16,6 +25,11 @@ public class AreaConvex {
 		return Math.abs(area / 2.0); 
 	}
 
+	/**
+	 * Calcula a área do convex/cluster.
+	 * 
+	 * @return área do convex/cluster
+	 */
 	public static double computeArea() {
 		double computedArea;
 		double greaterAngle;
@@ -38,11 +52,9 @@ public class AreaConvex {
 			X[i]=ConvexHull.hull.get(greaterAngleIndex).x;
 			Y[i]=ConvexHull.hull.get(greaterAngleIndex).y;
 			ConvexHull.hull.remove(greaterAngleIndex);
-			//System.out.println("("+X[i]+","+Y[i]+")");
 			i++;
 		}		
 		computedArea=AreaConvex.polygonArea(X, Y, n);
-		//System.out.println("A area calculada é: "+computedArea);
 		
 		return computedArea;
 	}

@@ -27,19 +27,33 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+/**
+ * Classe responsável por fazer a comunicação entre cliente e border router.
+ */
 public class WgetJava{
 
+	/** Armazena a URL do border router. */
 	private String url;
+	
+	/** Armazena a resposta do border router. */
 	private StringBuffer response;
 
 
-	//*Armazena a URL do Border Router para buscar os IPs dos motes
+	/**
+	 * Armazena a URL do Border Router para buscar os IPs dos motes
+	 * 
+	 * @param args número IP do border router
+	 */
 	public void setUrl(String args) {
 		url = "http://["+args+"]";		
 	}
 
 
-	//Faz pedido ao Border Router pelo IPs da rede
+	/**
+	 * Pede ao Border Router a lista de IPs da rede
+	 * 
+	 * @throws IOException erro na comunicação entre cliente e border router
+	 */
 	public void sendGET() throws IOException {
 
 		//Cria um objeto com a URL do Border Router
@@ -86,7 +100,12 @@ public class WgetJava{
 		}
 	}
 
-	//Retorna a responsa do Border Router	
+
+	/**
+	 * Retorna as informações que o border router possui da rede.
+	 * 
+	 * @return response resposta do Border Router
+	 */
 	public String getResponse() {
 		return response.toString();	  
 	}

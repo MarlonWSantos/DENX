@@ -15,10 +15,12 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-
+/**
+ * Classe responsável por iniciar o programa e a parte gráfica.
+ */
 public class Main extends Application {
 
-
+	/** Armazena da tela de loading da aplicação. */
 	private static Stage screenLoading = null;
 
 	@Override
@@ -50,7 +52,10 @@ public class Main extends Application {
 
 	}
 
-	//Cria o PopUp loading na tela do usuário
+	
+	/**
+	 * Cria o PopUp loading na tela do usuário
+	 */
 	public void showScreenLoading() {
 		Pane loading = null;
 
@@ -67,12 +72,20 @@ public class Main extends Application {
 
 	}
 
-	//Fecha o PopUp Loading da tela do usuário
+
+	/**
+	 * Fecha o PopUp Loading da tela do usuário 
+	 */
 	public void closeScreenLoading() {
 		screenLoading.close();
 	}
 
-	//Verifica se não está ocorrendo observação
+	
+	/**
+	 * Verifica se não está ocorrendo observação
+	 * 
+	 * @param we clique no botão fechar da GUI
+	 */
 	public void verifyIsObserving(WindowEvent we) {
 
 		Controller ctrl = new Controller();
