@@ -21,7 +21,7 @@
  *    Marlon W. Santos (Federal University of Pará) - add observeGroup
  *                                                      
  ******************************************************************************/
-package ufpa.facomp.gercom.iipdn;
+package ufpa.facomp.gercom.denx;
 
 import java.io.File;
 import java.io.FileNotFoundException;

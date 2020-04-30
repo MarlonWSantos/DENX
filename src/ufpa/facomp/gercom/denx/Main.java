@@ -1,4 +1,4 @@
-package ufpa.facomp.gercom.iipdn;
+package ufpa.facomp.gercom.denx;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -26,9 +26,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("iipdn.fxml"));
+			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("denx.fxml"));
 			Scene scene = new Scene(root,1024,748);
-			scene.getStylesheets().add(getClass().getResource("iipdn.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("denx.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("IIPDN - GUI CoAP Client");
 			primaryStage.show();

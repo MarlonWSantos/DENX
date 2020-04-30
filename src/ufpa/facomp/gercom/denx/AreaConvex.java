@@ -1,4 +1,4 @@
-package ufpa.facomp.gercom.iipdn;
+package ufpa.facomp.gercom.denx;
 
 /**
  *  Classe responsável pelo cálculo da área dentro do convex/cluster.

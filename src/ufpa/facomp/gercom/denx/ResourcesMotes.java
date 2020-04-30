@@ -1,4 +1,4 @@
-package ufpa.facomp.gercom.iipdn;
+package ufpa.facomp.gercom.denx;
 
 
 /*     Resources Motes - It store the resources of each mote

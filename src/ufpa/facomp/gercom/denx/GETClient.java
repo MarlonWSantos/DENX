@@ -16,7 +16,7 @@
  *    Marlon W. Santos (Federal University of Pará) - add discover                                                  
  *     
  ******************************************************************************/
-package ufpa.facomp.gercom.iipdn;
+package ufpa.facomp.gercom.denx;
 
 import java.io.IOException;
 import org.eclipse.californium.core.CoapClient;

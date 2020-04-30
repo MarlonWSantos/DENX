@@ -18,7 +18,7 @@
 *.zip
 *.tar.gz
 *.rar
-!IIPDN.jar
+!DENX.jar
 
 # Dependences
 !slf4j/slf4j-api-1.7.9.jar

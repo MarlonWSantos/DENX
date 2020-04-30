@@ -1,4 +1,4 @@
-package ufpa.facomp.gercom.iipdn;
+package ufpa.facomp.gercom.denx;
 
 import javafx.collections.ObservableList;
 
