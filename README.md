@@ -1,4 +1,4 @@
-# IIPDN
+# DENX
 GUI Coap client
 
 
