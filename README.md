@@ -19,12 +19,16 @@ At eclipse installed, go to:
 In the terminal:
  sudo apt install openjfx openjdk-8-jdk
 
-# Install dependences
+# Add dependences
 - weka/weka.jar
+- slf4j/slf4j-api-1.7.9.jar
+- slf4j/slf4j-nop-1.7.9.jar
+- Select the src of the Project and with menu mouse (click right button mouse), in Build path, click in Configure Build Path.
 
-- Select the src of the Project and with menu mouse, in Build path, click in Configure Build Path.
 - Select Libraries > Add External JARs...
-- Select the dependences in file.ja
+
+- Select the dependences (weka, slf4j)
+
 - Apply and Close
 
 # Vídeo
