@@ -17,24 +17,9 @@ public class ThreadMetrics implements Runnable {
 	/** Thread para cálculo da métrica da rede. */
 	private static Thread NetworkMetric;
 	
-	/** Thread para cálculo da métrica no cluster 1. */
-	private static Thread ClusterMetric1;
-	
-	/** Thread para cálculo da métrica no cluster 2. */
-	private static Thread ClusterMetric2;
-	
-	/** Thread para cálculo da métrica no cluster 3. */
-	private static Thread ClusterMetric3;
-	
-	/** Thread para cálculo da métrica no cluster 4. */
-	private static Thread ClusterMetric4;
-	
-	/** Thread para cálculo da métrica no cluster 5. */
-	private static Thread ClusterMetric5;
-	
-	/** Thread para cálculo da métrica no cluster 6. */
-	private static Thread ClusterMetric6;
-	
+	/** Armazena threads para cálculo da métrica no(s) cluster(s). */
+	private static Thread[] ClusterMetric;
+		
 	/** Armazena conjunto de objetos Metrics. */
 	private static Metrics[] metric;
 	
@@ -67,6 +52,7 @@ public class ThreadMetrics implements Runnable {
 	 * Construtor para criar thread para calcular as métricas.
 	 * 
 	 * @param control objeto da classe Controller
+	 * 
 	 * @throws InterruptedException em caso de interrupção do thread
 	 */
 	public ThreadMetrics(Controller control) throws InterruptedException {
@@ -81,9 +67,9 @@ public class ThreadMetrics implements Runnable {
 		
 		createMetricsObjects();
 
-		createThreadsToCalculateMetrics();
+		createThreadsToCalculateMetrics(numberClusters);
 
-		defineThreadStarts();	
+		defineThreadStarts(numberClusters);	
 
 	}
 
@@ -108,107 +94,31 @@ public class ThreadMetrics implements Runnable {
 	}
 
 	/**
-	 * Cria os Threads que farão o cálculo da métrica de acordo com número de clusters. 
+	 * Cria os Threads que farão o cálculo da métrica de acordo com número de clusters.
+	 * 
+	 * @param numberClusters número de clusters que foram criados
 	 */
-	public void createThreadsToCalculateMetrics() {
+	public void createThreadsToCalculateMetrics(int numberClusters) {
 
-		switch (numberClusters) {
-		case 1:
-			ClusterMetric1 = new Thread(this,"Thread ClusterMetric 1");
-			break;
-		case 2:
-			ClusterMetric1 = new Thread(this,"Thread ClusterMetric 1");
-			ClusterMetric2 = new Thread(this,"Thread ClusterMetric 2");
-			break;
-		case 3:
-			ClusterMetric1 = new Thread(this,"Thread ClusterMetric 1");		
-			ClusterMetric2 = new Thread(this,"Thread ClusterMetric 2");
-			ClusterMetric3 = new Thread(this,"Thread ClusterMetric 3");
-			break;
-		case 4:
-			ClusterMetric1 = new Thread(this,"Thread ClusterMetric 1");		
-			ClusterMetric2 = new Thread(this,"Thread ClusterMetric 2");
-			ClusterMetric3 = new Thread(this,"Thread ClusterMetric 3");
-			ClusterMetric4 = new Thread(this,"Thread ClusterMetric 4");
-			break;
-		case 5:
-			ClusterMetric1 = new Thread(this,"Thread ClusterMetric 1");		
-			ClusterMetric2 = new Thread(this,"Thread ClusterMetric 2");
-			ClusterMetric3 = new Thread(this,"Thread ClusterMetric 3");
-			ClusterMetric4 = new Thread(this,"Thread ClusterMetric 4");
-			ClusterMetric5 = new Thread(this,"Thread ClusterMetric 5");
-			break;
-		case 6:
-			ClusterMetric1 = new Thread(this,"Thread ClusterMetric 1");		
-			ClusterMetric2 = new Thread(this,"Thread ClusterMetric 2");
-			ClusterMetric3 = new Thread(this,"Thread ClusterMetric 3");
-			ClusterMetric4 = new Thread(this,"Thread ClusterMetric 4");
-			ClusterMetric5 = new Thread(this,"Thread ClusterMetric 5");
-			ClusterMetric6 = new Thread(this,"Thread ClusterMetric 6");
-			break;			
+		int count=1;
+		for(int i=0;i<numberClusters;i++) {
+			ClusterMetric[i] = new Thread(this,"Thread ClusterMetric "+count);
+			count++;
 		}
 	}
 
 	/**
 	 * Define quantos e quais threads serão executados.
+	 * 
+	 * @param numberClusters número de clusters que foram criados
 	 *  
 	 * @throws InterruptedException em caso de interrupção do thread
 	 */
-	public void defineThreadStarts() throws InterruptedException{
+	public void defineThreadStarts(int numberClusters ) throws InterruptedException{
 
-		if(numberClusters==1) {
-			ClusterMetric1.start();
-			ClusterMetric1.join();
-		}
-		if(numberClusters==2) {
-			ClusterMetric1.start();
-			ClusterMetric1.join();
-			ClusterMetric2.start();
-			ClusterMetric2.join();
-		}
-		if(numberClusters==3) {
-			ClusterMetric1.start();
-			ClusterMetric1.join();
-			ClusterMetric2.start();
-			ClusterMetric2.join();
-			ClusterMetric3.start();
-			ClusterMetric3.join();
-		}
-		if(numberClusters==4) {
-			ClusterMetric1.start();
-			ClusterMetric1.join();
-			ClusterMetric2.start();
-			ClusterMetric2.join();
-			ClusterMetric3.start();
-			ClusterMetric3.join();
-			ClusterMetric4.start();
-			ClusterMetric4.join();
-		}
-		if(numberClusters==5) {
-			ClusterMetric1.start();
-			ClusterMetric1.join();
-			ClusterMetric2.start();
-			ClusterMetric2.join();
-			ClusterMetric3.start();
-			ClusterMetric3.join();
-			ClusterMetric4.start();
-			ClusterMetric4.join();
-			ClusterMetric5.start();
-			ClusterMetric5.join();
-		}
-		if(numberClusters==6) {
-			ClusterMetric1.start();
-			ClusterMetric1.join();
-			ClusterMetric2.start();
-			ClusterMetric2.join();
-			ClusterMetric3.start();
-			ClusterMetric3.join();
-			ClusterMetric4.start();
-			ClusterMetric4.join();
-			ClusterMetric5.start();
-			ClusterMetric5.join();
-			ClusterMetric6.start();
-			ClusterMetric6.join();
+		for(int i=0;i<numberClusters;i++) {
+			ClusterMetric[i].start();
+			ClusterMetric[i].join();
 		}		
 	}
 
@@ -221,40 +131,51 @@ public class ThreadMetrics implements Runnable {
 
 		XYChart.Series<Number, Number> dataSeries = null;
 
-		if(Thread.currentThread().getName()=="Thread NetworkMetric") {
-
+		switch(Thread.currentThread().getName()) {
+		case "Thread NetworkMetric":
 			dataSeries =  Cluster.graphic.getCoordinateSeriesNetwork();
 			indexMetric = 0;
-
-		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 1") {
-
-			dataSeries =  Cluster.graphic.getCoordinateSeries1();
+			break;
+		case "Thread ClusterMetric 1":
+			dataSeries =  Cluster.graphic.getCoordinateSeries(1);
 			indexMetric = 1;
-
-		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 2") {
-
-			dataSeries =  Cluster.graphic.getCoordinateSeries2();
-			indexMetric = 2;
-
-		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 3") {
-
-			dataSeries =  Cluster.graphic.getCoordinateSeries3();
-			indexMetric = 3;
-
-		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 4") {
-
-			dataSeries =  Cluster.graphic.getCoordinateSeries4();
-			indexMetric = 4;
-
-		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 5") {
-
-			dataSeries =  Cluster.graphic.getCoordinateSeries5();
-			indexMetric = 5;
-
-		}else if(Thread.currentThread().getName()=="Thread ClusterMetric 6") {
-
-			dataSeries =  Cluster.graphic.getCoordinateSeries6();
-			indexMetric = 6;
+			break;
+		case "Thread ClusterMetric 2":
+			dataSeries =  Cluster.graphic.getCoordinateSeries(2);
+			indexMetric = 2;			
+			break;
+		case "Thread ClusterMetric 3":
+			dataSeries =  Cluster.graphic.getCoordinateSeries(3);
+			indexMetric = 3;			
+			break;
+		case "Thread ClusterMetric 4":
+			dataSeries =  Cluster.graphic.getCoordinateSeries(4);
+			indexMetric = 4;			
+			break;
+		case "Thread ClusterMetric 5":
+			dataSeries =  Cluster.graphic.getCoordinateSeries(5);
+			indexMetric = 5;			
+			break;
+		case "Thread ClusterMetric 6":
+			dataSeries =  Cluster.graphic.getCoordinateSeries(6);
+			indexMetric = 6;			
+			break;
+		case "Thread ClusterMetric 7":
+			dataSeries =  Cluster.graphic.getCoordinateSeries(7);
+			indexMetric = 7;			
+			break;
+		case "Thread ClusterMetric 8":
+			dataSeries =  Cluster.graphic.getCoordinateSeries(8);
+			indexMetric = 8;			
+			break;
+		case "Thread ClusterMetric 9":
+			dataSeries =  Cluster.graphic.getCoordinateSeries(9);
+			indexMetric = 9;			
+			break;
+		case "Thread ClusterMetric 10":
+			dataSeries =  Cluster.graphic.getCoordinateSeries(10);
+			indexMetric = 10;			
+			break;
 		}
 		return dataSeries;
 	}

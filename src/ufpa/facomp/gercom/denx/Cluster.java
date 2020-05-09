@@ -25,6 +25,7 @@ import java.io.File;
  * leitura delas pelo weka e passando as informações dos clusters
  * para dentro da plataforma. 
  */
+
 public class Cluster {
 
 	/** Informação dos motes. */
@@ -191,8 +192,8 @@ public class Cluster {
 		kmeans.setPreserveInstancesOrder(true);
 		kmeans.setNumClusters(numberClusters);
 
-		defineSeriesClusterToCreate(numberClusters);
-
+		graphic.createSerieCluster(numberClusters);
+		
 		kmeans.buildClusterer(dataForCluster);
 
 		StringBuilder infoKmeans = new StringBuilder();
@@ -216,27 +217,8 @@ public class Cluster {
 			coordX=Double.parseDouble(motesActives.get(mote).get(1));
 			coordY=Double.parseDouble(motesActives.get(mote).get(2));
 
-
-			switch (clusterNum) {
-			case 0:
-				graphic.setCoordinatesSeries1(coordX, coordY);
-				break;
-			case 1:
-				graphic.setCoordinatesSeries2(coordX, coordY);
-				break;
-			case 2:
-				graphic.setCoordinatesSeries3(coordX, coordY);
-				break;
-			case 3:
-				graphic.setCoordinatesSeries4(coordX, coordY);
-				break;
-			case 4:
-				graphic.setCoordinatesSeries5(coordX, coordY);
-				break;
-			case 5:
-				graphic.setCoordinatesSeries6(coordX, coordY);
-				break;			
-			}
+			graphic.setCoordinatesSeries(coordX, coordY,clusterNum);
+				
 			i++;
 			mote++;
 		}
@@ -297,8 +279,7 @@ public class Cluster {
 				meanClusterErro[i-1]=kmeans.getSquaredError()/i;
 				
 			} catch (Exception e) {
-				System.out.println("Error on elbow\n");
-				e.printStackTrace();
+				new AlertsDialog(e);
 			}
 		}
 		
@@ -351,50 +332,6 @@ public class Cluster {
 
 	/******************************************************************************/
 	
-	/**
-	 * Define quais séries que armazenarão os dados dos clusters serão criadas.
-	 * 
-	 * @param numberClusters número de clusters que existem
-	 */
-	public void defineSeriesClusterToCreate(int numberClusters){
-
-		switch (numberClusters) {
-		case 1:
-			graphic.createSerieCluster1();
-			break;
-		case 2:
-			graphic.createSerieCluster1();
-			graphic.createSerieCluster2();
-			break;
-		case 3:
-			graphic.createSerieCluster1();
-			graphic.createSerieCluster2();
-			graphic.createSerieCluster3();
-			break;
-		case 4:
-			graphic.createSerieCluster1();
-			graphic.createSerieCluster2();
-			graphic.createSerieCluster3();
-			graphic.createSerieCluster4();
-			break;
-		case 5:
-			graphic.createSerieCluster1();
-			graphic.createSerieCluster2();
-			graphic.createSerieCluster3();
-			graphic.createSerieCluster4();
-			graphic.createSerieCluster5();
-			break;
-		case 6:
-			graphic.createSerieCluster1();
-			graphic.createSerieCluster2();
-			graphic.createSerieCluster3();
-			graphic.createSerieCluster4();
-			graphic.createSerieCluster5();
-			graphic.createSerieCluster6();
-			break;			
-		}		
-	}
-
 	/**
 	 * Calcula a métrica da rede inteira. 
 	 */

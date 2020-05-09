@@ -5,32 +5,19 @@ import javafx.scene.chart.XYChart;
 /**
  * Classe responsável por armazenar em séries as coordenadas de cada cluster
  * gerado e retornado pelo weka na classe Cluster.
- * @see Cluster
+ * @see Cluster.java
  */
+
 public class Graphic {
 
+	
 	/** Armazena coordenadas de todos os motes ativos da rede. */
 	private XYChart.Series<Number, Number> seriesNetwork;
 	
-	/** Armazena coordenadas dos motes do cluster 1. */
-	private XYChart.Series<Number, Number> series1;
-	
-	/** Armazena coordenadas dos motes do cluster 2. */
-	private XYChart.Series<Number, Number> series2;
-	
-	/** Armazena coordenadas dos motes do cluster 3. */
-	private XYChart.Series<Number, Number> series3;
-	
-	/** Armazena coordenadas dos motes do cluster 4. */
-	private XYChart.Series<Number, Number> series4;
-	
-	/** Armazena coordenadas dos motes do cluster 5. */
-	private XYChart.Series<Number, Number> series5;
-	
-	/** Armazena coordenadas dos motes do cluster 6. */
-	private XYChart.Series<Number, Number> series6;
+	/** Array armazena coordenadas dos motes dos clusters. */
+	private XYChart.Series<Number,Number>[] series;
 
-
+	
 	/**
 	 * Cria série que armazena coordenadas de todos motes ativos da rede. 
 	 */
@@ -40,53 +27,18 @@ public class Graphic {
 	}
 
 	/**
-	 * Cria série que armazena coordenadas dos motes do cluster 1. 
+	 * Cria série(s) que armazena(m) coordenadas dos motes do(s) respectivo(s) cluster(s).
+	 * 
+	 *  @param numberClusters número de cluster
 	 */
-	public void createSerieCluster1() {
-		series1 = new XYChart.Series<>();
-		series1.setName("Cluster 1 ");
+	public void createSerieCluster(int numberClusters) {
+		int count=1;
+		for(int i=0;i<numberClusters;i++) {
+			series[i] = new XYChart.Series<>();
+			series[i].setName("Cluster "+count+" ");
+			count++;
+		}
 	}
-
-	/**
-	 * Cria série que armazena coordenadas dos motes do cluster 2. 
-	 */
-	public void createSerieCluster2() {
-		series2 = new XYChart.Series<>();
-		series2.setName("Cluster 2 ");
-	}
-
-	/**
-	 * Cria série que armazena coordenadas dos motes do cluster 3. 
-	 */
-	public void createSerieCluster3() {
-		series3 = new XYChart.Series<>();
-		series3.setName("Cluster 3 ");
-	}
-
-	/**
-	 * Cria série que armazena coordenadas dos motes do cluster 4. 
-	 */
-	public void createSerieCluster4() {
-		series4 = new XYChart.Series<>();
-		series4.setName("Cluster 4 ");
-	}
-
-	/**
-	 * Cria série que armazena coordenadas dos motes do cluster 5. 
-	 */
-	public void createSerieCluster5() {
-		series5 = new XYChart.Series<>();
-		series5.setName("Cluster 5 ");
-	}
-
-	/**
-	 * Cria série que armazena coordenadas dos motes do cluster 6. 
-	 */
-	public void createSerieCluster6() {
-		series6 = new XYChart.Series<>();
-		series6.setName("Cluster 6 ");
-	}
-
 
 	/**
 	 * Insere coordenadas dos motes ativos da rede.
@@ -100,67 +52,15 @@ public class Graphic {
 
 
 	/**
-	 * Insere coordenadas do cluster 1 na série 1 
+	 * Insere coordenadas do(s) cluster(s) na(s) série(s) 
 	 * 
 	 * @param X coordenada x do mote
 	 * @param Y coordenada y do mote
+	 * @param clusterNum index do cluster criado pela classe Cluster
 	 */
-	public void setCoordinatesSeries1(double X,double Y) {
-		series1.getData().add(new XYChart.Data<>(X, Y));
-	}
-
-	/**
-	 * Insere coordenadas do cluster 2 na série 2 
-	 * 
-	 * @param X coordenada x do mote
-	 * @param Y coordenada y do mote
-	 */
-	public void setCoordinatesSeries2(double X,double Y) {
-		series2.getData().add(new XYChart.Data<>(X, Y));
-	}
-
-
-	/**
-	 * Insere coordenadas do cluster 3 na série 3 
-	 * 
-	 * @param X coordenada x do mote
-	 * @param Y coordenada y do mote
-	 */
-	public void setCoordinatesSeries3(double X,double Y) {
-		series3.getData().add(new XYChart.Data<>(X, Y));
-	}
-
-	
-	/**
-	 * Insere coordenadas do cluster 4 na série 4 
-	 * 
-	 * @param X coordenada x do mote
-	 * @param Y coordenada y do mote
-	 */
-	public void setCoordinatesSeries4(double X,double Y) {
-		series4.getData().add(new XYChart.Data<>(X, Y));
-	}
-
-
-	/**
-	 * Insere coordenadas do cluster 5 na série 5 
-	 * 
-	 * @param X coordenada x do mote
-	 * @param Y coordenada y do mote
-	 */
-	public void setCoordinatesSeries5(double X,double Y) {
-		series5.getData().add(new XYChart.Data<>(X, Y));
-	}
-
-
-	/**
-	 * Insere coordenadas do cluster 6 na série 6 
-	 * 
-	 * @param X coordenada x do mote
-	 * @param Y coordenada y do mote
-	 */
-	public void setCoordinatesSeries6(double X,double Y) {
-		series6.getData().add(new XYChart.Data<>(X, Y));
+	public void setCoordinatesSeries(double X,double Y,int clusterNum) {
+		series[clusterNum].getData().add(new XYChart.Data<>(X, Y));
+		
 	}
 
 
@@ -174,56 +74,57 @@ public class Graphic {
 	}
 
 	/**
-	 * Retorna as coordenadas do cluster 1.
+	 * Retorna as coordenadas do cluster definido.
+	 * 
+	 * @param clusterNum número do respectivo cluster
 	 *  
-	 * @return series1 coordenadas dentro do cluster 1 
-	 */
-	public XYChart.Series<Number, Number> getCoordinateSeries1() {
-		return series1;
-	}
-
-	/**
-	 * Retorna as coordenadas do cluster 2.
-	 *  
+	 * @return series1 coordenadas dentro do cluster 1
 	 * @return series2 coordenadas dentro do cluster 2 
-	 */
-	public XYChart.Series<Number, Number> getCoordinateSeries2() {
-		return series2;
-	}
-
-	/**
-	 * Retorna as coordenadas do cluster 3.
-	 *  
-	 * @return series3 coordenadas dentro do cluster 3
-	 */
-	public XYChart.Series<Number, Number> getCoordinateSeries3() {
-		return series3;
-	}
-
-	/**
-	 * Retorna as coordenadas do cluster 4.
-	 *  
+	 * @return series3 coordenadas dentro do cluster 3 
 	 * @return series4 coordenadas dentro do cluster 4 
-	 */
-	public XYChart.Series<Number, Number> getCoordinateSeries4() {
-		return series4;
-	}
-
-	/**
-	 * Retorna as coordenadas do cluster 5.
-	 *  
 	 * @return series5 coordenadas dentro do cluster 5 
-	 */
-	public XYChart.Series<Number, Number> getCoordinateSeries5() {
-		return series5;
-	}
-
-	/**
-	 * Retorna as coordenadas do cluster 6.
-	 *  
 	 * @return series6 coordenadas dentro do cluster 6 
+	 * @return series7 coordenadas dentro do cluster 7 
+	 * @return series8 coordenadas dentro do cluster 8 
+	 * @return series9 coordenadas dentro do cluster 9
+ 	 * @return series10 coordenadas dentro do cluster 10 
 	 */
-	public XYChart.Series<Number, Number> getCoordinateSeries6() {
-		return series6;
+	public XYChart.Series<Number, Number> getCoordinateSeries(int clusterNum) {
+		
+		XYChart.Series<Number, Number> dataSeries = null;
+		
+		switch(clusterNum) {
+		case 1:
+			dataSeries = series[0];
+			break;
+		case 2:
+			dataSeries =  series[1];
+			break;
+		case 3:
+			dataSeries =  series[2];
+			break;
+		case 4:
+			dataSeries =  series[3];
+			break;
+		case 5:
+			dataSeries =  series[4];
+			break;
+		case 6:
+			dataSeries =  series[5];
+			break;
+		case 7:
+			dataSeries =  series[6];
+			break;
+		case 8:
+			dataSeries =  series[7];
+			break;
+		case 9:
+			dataSeries =  series[8];
+			break;
+		case 10:
+			dataSeries =  series[9];
+			break;
+		}		
+		return dataSeries;
 	}
 }

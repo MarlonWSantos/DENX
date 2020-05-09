@@ -655,40 +655,18 @@ public class Controller implements Initializable{
         int numberClusters = Cluster.numberClusters;
         
         //De acordo com o número de clusters, carrega os dados de cada um
-		switch (numberClusters) {
-		case 1:
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
-			break;
-		case 2:
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
-	        break;
-		case 3:
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
-	        break;
-		case 4:
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());
-	        break;
-		case 5:
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries5());
-	        break;	
-		case 6:
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries1());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries2());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries3());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries4());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries5());
-	        scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries6());
-	        break;	
+		LoadSeries(numberClusters);
+	}
+	
+	/**
+	 * Carrega os dados de cada cluster.
+	 * 
+	 * @param numberCluster número de clusters que terão as informações carregadas
+	 */
+	public void LoadSeries(int numberClusters) {
+		for(int i=1;i<=numberClusters;i++) {
+			//Insere os dados dentro do gráfico
+			scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries(i));
 		}
 	}
 	
@@ -722,7 +700,6 @@ public class Controller implements Initializable{
 
 		//Inicia com o campo Observe Group desabilitado
 		disableObsGroup(0.5,true);
-		toggleObsGroup.setDisable(true);
-		
-		}
+		toggleObsGroup.setDisable(true);		
+	}
 }

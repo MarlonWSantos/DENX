@@ -27,7 +27,7 @@ public class Metrics{
 	private List<Double> metricList;
 	
 	/** Quanto minutos serão armazenados na lista. */
-	final static int MOVING_AVG_LAST_MINUTES = 3; 
+	final static int MOVING_AVG_LAST_MINUTES = 5; 
 	
 	/**
 	 * Construtor para calcular as métricas.
@@ -162,8 +162,6 @@ public class Metrics{
 		for (double arr : metricList) {
 			sum += arr;
 		}
-		System.out.println(metricList.toString());
-		System.out.println("Result moving Average: "+sum/metricList.size());
 		movingAverage=sum/metricList.size();
 		
 		return movingAverage;
