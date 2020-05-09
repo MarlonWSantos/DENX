@@ -157,12 +157,38 @@ public class Controller implements Initializable{
 	 */
 	private void getInformation(WgetJava obj, RoutesMotes routes, ResourcesMotes res) throws IOException{
 		
-		//Faz o pedido ao Border Router da informação e armazena
-		obj.sendGET();
+		Thread getData = new Thread(new Runnable() {
 
-		treatmentOfInformation(obj,routes);
-		showIPs(routes,res);
-		showRoutes(routes);
+			@Override
+			public void run() {
+
+				while(true) {
+					try {
+						//Faz o pedido ao Border Router da informação e armazena
+						obj.sendGET();
+
+						treatmentOfInformation(obj,routes);
+						showIPs(routes,res);
+						showRoutes(routes);
+
+						//Thread pausa por 1 minuto e volta ao começo
+						Thread.sleep(60000);
+						
+					}catch(IOException e) {
+						
+						throw new RuntimeException("Communication failure",e);
+						
+					} catch (InterruptedException e) {
+						
+						throw new RuntimeException("Thread Interrupted",e);						
+					}
+
+				}
+			}
+		});
+
+		//Inicia o thread
+		getData.start();
 	}
 	
 	/**
