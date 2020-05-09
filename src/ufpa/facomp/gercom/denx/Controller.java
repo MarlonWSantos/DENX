@@ -110,21 +110,17 @@ public class Controller implements Initializable{
 
 			//Captura a URL do Border Router digitada
 			urlBorderRouter=textFieldURL.getText();
-
+			
 			//Armazena  URL do Border Router
 			obj.setUrl(urlBorderRouter);
 
 			try {
 
-				//Faz o pedido ao Border Router da informação e armazena
-				obj.sendGET();
-
-				treatmentOfInformation(obj,routes);
-				showIPs(routes,res);
-				showRoutes(routes);
+				//Busca  informações dos motes e rotas via GET
+				getInformation(obj, routes, res);
 				
 				//Cria um thread para gerar clusters no gráfico
-				new ThreadCluster(this,routes);
+				//new ThreadCluster(this,routes);
 
 				//Mensagens de erro para usuário			
 			}catch(ProtocolException e) {
@@ -150,7 +146,25 @@ public class Controller implements Initializable{
 		}
 	}
 
+	/**
+	 * Cria um thread e faz requisições sobre os motes e rotas a cada minuto.
+	 * 
+	 * @param obj objeto da classe WgetJava
+	 * @param routes objeto da classe RoutesMotes
+	 * @param res objeto da classe ResourcesMotes
+	 * 
+	 * @throws IOException 
+	 */
+	private void getInformation(WgetJava obj, RoutesMotes routes, ResourcesMotes res) throws IOException{
+		
+		//Faz o pedido ao Border Router da informação e armazena
+		obj.sendGET();
 
+		treatmentOfInformation(obj,routes);
+		showIPs(routes,res);
+		showRoutes(routes);
+	}
+	
 	/**
 	 * Transforma as informações recebidas do border router, do formato HTML
 	 * para um formato legível.
