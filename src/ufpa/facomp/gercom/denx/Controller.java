@@ -7,7 +7,6 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -110,39 +109,15 @@ public class Controller implements Initializable{
 
 			//Captura a URL do Border Router digitada
 			urlBorderRouter=textFieldURL.getText();
-			
+
 			//Armazena  URL do Border Router
 			obj.setUrl(urlBorderRouter);
-
-			try {
-
-				//Busca  informações dos motes e rotas via GET
-				getInformation(obj, routes, res);
-				
-				//Cria um thread para gerar clusters no gráfico
-				//new ThreadCluster(this,routes);
-
-				//Mensagens de erro para usuário			
-			}catch(ProtocolException e) {
-
-				new AlertsDialog(AlertType.ERROR,"Protocol failure",ButtonType.CLOSE);	
-
-			}catch (MalformedURLException e) {
-
-				new AlertsDialog(AlertType.ERROR, "Invalid CoAP URL",ButtonType.CLOSE);
-
-			}catch(UnknownHostException e) {
-
-				new AlertsDialog(AlertType.ERROR, "404 Not Found",ButtonType.CLOSE);
 			
-			}catch(IOException e) {
-
-				new AlertsDialog(AlertType.ERROR, "Communication failure", ButtonType.CLOSE);
-
-			}catch(Exception e) {
-
-				new AlertsDialog(e);
-			}
+			//Busca  informações dos motes e rotas via GET
+			getInformation(obj, routes, res);
+							
+				//Cria um thread para gerar clusters no gráfico
+				//new ThreadCluster(this,routes);			
 		}
 	}
 
@@ -153,42 +128,75 @@ public class Controller implements Initializable{
 	 * @param routes objeto da classe RoutesMotes
 	 * @param res objeto da classe ResourcesMotes
 	 * 
-	 * @throws IOException 
 	 */
-	private void getInformation(WgetJava obj, RoutesMotes routes, ResourcesMotes res) throws IOException{
-		
+	private void getInformation(WgetJava obj, RoutesMotes routes, ResourcesMotes res) {
+
 		Thread getData = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-
-				while(true) {
-					try {
+				try {
+					while(true) {
 						//Faz o pedido ao Border Router da informação e armazena
 						obj.sendGET();
-
 						treatmentOfInformation(obj,routes);
 						showIPs(routes,res);
-						showRoutes(routes);
+						showRoutes(routes);	
 
 						//Thread pausa por 1 minuto e volta ao começo
 						Thread.sleep(60000);
-						
-					}catch(IOException e) {
-						
-						throw new RuntimeException("Communication failure",e);
-						
-					} catch (InterruptedException e) {
-						
-						throw new RuntimeException("Thread Interrupted",e);						
 					}
 
+				}catch(ProtocolException e) {
+
+					DefineAlertsDialog("Protocol failure",e);
+
+				}catch (MalformedURLException e) {
+
+					DefineAlertsDialog("Invalid CoAP URL",e);
+
+				}catch(UnknownHostException e) {
+
+					DefineAlertsDialog("404 Not Found",e);
+
+				}catch(IOException e) {
+					
+					DefineAlertsDialog("Communication failure",e);
+
+				}catch(Exception e) {
+
+					DefineAlertsDialog("Exception",e);
+				}
+
+			}
+		},"Thread Discover") {
+
+		}; 
+
+		//Inicia o thread
+		getData.start();				
+
+
+	}
+	
+	/**
+	 * Define o tipo de alerta que será exibido ao usuário.
+	 *  
+	 * @param error tipo da exception ocorrida
+	 * @param e 		conteúdo da exception
+	 */
+	private void DefineAlertsDialog(String error,Exception e) {
+
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				if(error.equalsIgnoreCase("Exception")) {
+					new AlertsDialog(e);
+				}else {
+					new AlertsDialog(AlertType.ERROR, error,ButtonType.CLOSE);
 				}
 			}
 		});
-
-		//Inicia o thread
-		getData.start();
 	}
 	
 	/**
