@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,13 +19,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -32,7 +31,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -46,16 +44,16 @@ public class Controller implements Initializable{
 
 	/** Recursos dos motes. */
 	private String resource;
-	
+
 	/** Flag informa se está se conectando com os motes. */
 	private boolean loading=false;
-	
+
 	/** Lista de IPs que serão observados em simultâneo. */
 	private ObservableList<String> listGroup;
-	
+
 	/** Flag informa se há motes sendo observados. */
 	private static boolean isObserving;
-	
+
 	@FXML private TextField textFieldURL;
 	@FXML private Text textNeighbors;
 	@FXML private Text textInfoMote;
@@ -81,18 +79,18 @@ public class Controller implements Initializable{
 	@FXML private ToggleButton toggleObsGroup;
 	@FXML private ScatterChart<Number, Number> scatterChartGraphic;
 	@FXML private NumberAxis xAxis;
-    @FXML private NumberAxis yAxis;
-    @FXML private TextArea textAreaRoutes;
-    @FXML private TextArea textAreaClusters;
-    @FXML private Text textClusers;
-    @FXML private TextArea textAreaMetrics;
-    @FXML private Text textMetrics;
+	@FXML private NumberAxis yAxis;
+	@FXML private TextArea textAreaRoutes;
+	@FXML private TextArea textAreaClusters;
+	@FXML private Text textClusers;
+	@FXML private TextArea textAreaMetrics;
+	@FXML private Text textMetrics;
 
-    /**
-     * Controla e chama as demais funções da aplicação.
-     * 
-     * @param event um clique no botão discover na GUI
-     */
+	/**
+	 * Controla e chama as demais funções da aplicação.
+	 * 
+	 * @param event um clique no botão discover na GUI
+	 */
 	@FXML
 	private void mainController(ActionEvent event)   {
 
@@ -112,12 +110,12 @@ public class Controller implements Initializable{
 
 			//Armazena  URL do Border Router
 			obj.setUrl(urlBorderRouter);
-			
+
 			//Busca  informações dos motes e rotas via GET
 			getInformation(obj, routes, res);
-							
-				//Cria um thread para gerar clusters no gráfico
-				//new ThreadCluster(this,routes);			
+
+			//Cria um thread para gerar clusters no gráfico
+			//new ThreadCluster(this,routes);			
 		}
 	}
 
@@ -160,7 +158,7 @@ public class Controller implements Initializable{
 					DefineAlertsDialog("404 Not Found",e);
 
 				}catch(IOException e) {
-					
+
 					DefineAlertsDialog("Communication failure",e);
 
 				}catch(Exception e) {
@@ -178,7 +176,7 @@ public class Controller implements Initializable{
 
 
 	}
-	
+
 	/**
 	 * Define o tipo de alerta que será exibido ao usuário.
 	 *  
@@ -198,7 +196,7 @@ public class Controller implements Initializable{
 			}
 		});
 	}
-	
+
 	/**
 	 * Transforma as informações recebidas do border router, do formato HTML
 	 * para um formato legível.
@@ -418,6 +416,7 @@ public class Controller implements Initializable{
 
 			//Cria uma thread para fazer requisição ao mote(servidor) solicitando observação do recurso
 			new ThreadsObserve(this,urlResource.toString(),"Thread Observe");
+
 		} 
 
 		//Se a listView com IPs e a lista com recursos, ambas não estiverem vazias, o botão não selecionado e observando
@@ -476,14 +475,14 @@ public class Controller implements Initializable{
 	}
 
 
-	
+
 	/**
 	 * Desabilita o campo Observe Group
 	 *  
 	 * @param opacity 1  para exibir parta da GUI
 	 * @param opacity 0.5 para ocultar parta da GUI
 	 * @param option true para ocultar parte da GUI
- 	 * @param option false para exibir parte da GUI
+	 * @param option false para exibir parte da GUI
 	 */
 	public void disableObsGroup(double opacity,boolean option) {
 		textGroups.setOpacity(opacity);
@@ -615,11 +614,21 @@ public class Controller implements Initializable{
 
 				//TODO verificar a aceitação de URL sem prefixo coap
 
-				//Lê as URL da lista grupo e cria um Thread para cada uma 
-				for (String url : listGroup) {
-					url = url.replace("[", "coap://[").replace("]/", "]:5683/");
-					new ThreadsObserve(this,url,"Thread Observe Group");
+				ArrayList<String> listURL = new ArrayList<String>();
+
+				//Lê as URL da lista grupo da interface e converte para formato coap://URI 
+				for (String uri : listGroup) {					
+					String url = uri.replace("[", "coap://[").replace("]/", "]:5683/");
+					listURL.add(url);
 				}
+
+				//Envia pra classe a lista com URL onde será criada os threads de observação
+				new ThreadsObserve(this,listURL,"Thread Observe Group");
+
+
+			}catch(InterruptedException e) {
+
+				new AlertsDialog(AlertType.ERROR,"Thread Interrupted",ButtonType.CLOSE);
 
 			}catch(NullPointerException e) {
 
@@ -678,7 +687,7 @@ public class Controller implements Initializable{
 		}
 	}
 
-	
+
 	/**
 	 * Retorna se está ocorrendo uma observação. 
 	 * 
@@ -688,24 +697,24 @@ public class Controller implements Initializable{
 	public boolean isObserving() {
 		return Controller.isObserving;
 	}
-	
+
 	/**
 	 * Carrega os dados dos clusters e insere no gráfico na GUI. 
 	 */
 	public void LoadGraphic() {
-		
+
 		//Se o gráfico não estiver vazio, remove todos os dados dele
-        if (!scatterChartGraphic.getData().isEmpty()) {
-        	scatterChartGraphic.getData().remove(0,scatterChartGraphic.getData().size());
-        }
-        
-        //Carrega o número de clusters criado
-        int numberClusters = Cluster.numberClusters;
-        
-        //De acordo com o número de clusters, carrega os dados de cada um
+		if (!scatterChartGraphic.getData().isEmpty()) {
+			scatterChartGraphic.getData().remove(0,scatterChartGraphic.getData().size());
+		}
+
+		//Carrega o número de clusters criado
+		int numberClusters = Cluster.numberClusters;
+
+		//De acordo com o número de clusters, carrega os dados de cada um
 		LoadSeries(numberClusters);
 	}
-	
+
 	/**
 	 * Carrega os dados de cada cluster.
 	 * 
@@ -717,29 +726,29 @@ public class Controller implements Initializable{
 			scatterChartGraphic.getData().add(Cluster.graphic.getCoordinateSeries(i));
 		}
 	}
-	
-	
+
+
 	/**
 	 * Exibe na GUI as informações dos IPs(coordenadas) alocados em seus respectivos clusters. 
 	 * 
 	 * @param infoKmeans informações sobre os clusters 
 	 */
 	public void showInformationCluster(StringBuilder infoKmeans) {
-		
+
 		textAreaClusters.setText(infoKmeans.toString());
 	}
 
-	
+
 	/**
 	 * Exibe na GUI as informações do cálculo da métrica de cada cluster. 
 	 * 
 	 * @param infoMetrics resultado das métricas
 	 */
 	public void showInformationMetrics(StringBuilder infoMetrics) {
-		
+
 		textAreaMetrics.setText(infoMetrics.toString());
 	}
-	
+
 	/**
 	 * Inicializa a plataforma com o campo Observe Group desabilitado.
 	 */

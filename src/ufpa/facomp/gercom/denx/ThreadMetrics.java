@@ -1,8 +1,5 @@
 package ufpa.facomp.gercom.denx;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
 

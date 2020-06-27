@@ -24,7 +24,6 @@
 package ufpa.facomp.gercom.denx;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
 import org.eclipse.californium.core.CoapClient;
@@ -43,19 +42,19 @@ public class Observe{
 
 	/** Objeto da classe CoapObserveRelation. (Californium) */
 	private CoapObserveRelation relation;
-	
+
 	/** Objeto da classe CoapClient. (Californium) */
 	private CoapClient client = new CoapClient();  //CoapClient para observação dos recursos
-	
+
 	/** Armazena a informação durante a observação. */
 	private static StringBuilder infoObs;
-	
+
 	/** Objeto da classe Controller. */
 	protected static Controller control;
-	
+
 	/** Objeto da classe PrintStream. */
 	private static PrintStream file=null;
-	
+
 	/** Arquivo com as informações da observação. */
 	private static String savePath = "/tmp/obsResult.txt"; //Caminho default para salvar dados da observação
 
@@ -67,7 +66,7 @@ public class Observe{
 		infoObs=null;
 		Observe.infoObs= new StringBuilder("\nSaving Obs to "+ getSavePath()+"\n\nObserving ...\n");
 	}
-	
+
 	/**
 	 * Executa a observação de um mote.
 	 * 
@@ -114,6 +113,9 @@ public class Observe{
 			new AlertsDialog(e);
 		}
 
+		//Finaliza a conexão com recurso
+		relation.proactiveCancel();
+
 		//Finaliza o thread clientCoap
 		client.shutdown();
 
@@ -138,7 +140,7 @@ public class Observe{
 		});
 	}
 
-	
+
 	/**
 	 * Salva o caminho para criar o arquivo que armazena dados da observação. 
 	 * 
@@ -148,7 +150,7 @@ public class Observe{
 		this.savePath=savePath;
 	}
 
-	
+
 	/**
 	 * Retorna o caminho onde será salvo o arquivo que guarda dados da obsrvação.
 	 *  
@@ -158,7 +160,7 @@ public class Observe{
 		return savePath;
 	}
 
-	
+
 	/**
 	 * Cria o arquivo que armazenará os dados da observação.
 	 *  
@@ -175,16 +177,15 @@ public class Observe{
 	 * @param control objeto da classe Controller
 	 */
 	public void observeGroup(String url,Controller control) {
-		
+
 		//Exibe no terminal o início da observação, local e arquivo usado para salvar os dados da Obs
 		infoObs = new StringBuilder("\nSaving Obs to "+ getSavePath()+"\n\nObserving ...\n");
 
-
 		//Inseri a URL no coapClient
-		client.setURI(url);
+		CoapClient client = new CoapClient(url);		
 
 		//Inicia processo de observação e armazena os dados
-		relation = client.observe(new CoapHandler() {
+		CoapObserveRelation relation = client.observe(new CoapHandler() {
 			@Override
 			public void onLoad(CoapResponse response) {
 				System.setOut(file);							//Envia para arquivo dados da observação
@@ -211,12 +212,14 @@ public class Observe{
 				//Trava o(s) thread(s), enquanto faz a observação,esperanda a liberação de outro thread
 				wait();
 			}
-
 		} catch (InterruptedException e) {
 			new AlertsDialog(AlertType.WARNING,"Observation stopped incorrectly\nEnd the observation by pressing Obs Group", ButtonType.OK);
 		} catch (Exception e) {
 			new AlertsDialog(e);
 		}
+
+		//Finaliza a conexão com recurso
+		relation.proactiveCancel();
 
 		//Finaliza o thread clientCoap
 		client.shutdown();
