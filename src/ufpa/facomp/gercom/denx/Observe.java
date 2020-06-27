@@ -209,7 +209,7 @@ public class Observe{
 		try {
 
 			synchronized (this) {
-				//Trava o(s) thread(s), enquanto faz a observação,esperanda a liberação de outro thread
+				//Trava o(s) thread(s), enquanto faz a observação,esperando a liberação de outro thread
 				wait();
 			}
 		} catch (InterruptedException e) {
