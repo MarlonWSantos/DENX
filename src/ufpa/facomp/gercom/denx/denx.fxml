@@ -22,7 +22,7 @@
    <children>
       <HBox prefHeight="26.0" prefWidth="918.0" spacing="20.0">
          <children>
-            <Button fx:id="buttonDiscover" mnemonicParsing="false" onAction="#mainController" text="Discover" />
+            <ToggleButton fx:id="toggleDiscover" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#mainController" text="Discover" />
             <TextField fx:id="textFieldURL" promptText="aaaa::c30c:0:0:1" text="aaaa::c30c:0:0:1" />
             <Button fx:id="buttonGet" mnemonicParsing="false" onAction="#getMoteResource" text="GET">
                <HBox.margin>
