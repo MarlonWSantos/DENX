@@ -30,7 +30,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root,1024,748);
 			scene.getStylesheets().add(getClass().getResource("denx.css").toExternalForm());
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("IIPDN - GUI CoAP Client");
+			primaryStage.setTitle("DENX - GUI CoAP Client");
 			primaryStage.show();
 
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
