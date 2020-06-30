@@ -7,6 +7,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -54,6 +55,9 @@ public class Controller implements Initializable{
 	/** Flag informa se há motes sendo observados. */
 	private static boolean isObserving;
 
+	/** Thread que executa o Discover na rede. */
+	private static Thread getData;
+
 	@FXML private TextField textFieldURL;
 	@FXML private Text textNeighbors;
 	@FXML private Text textInfoMote;
@@ -61,7 +65,7 @@ public class Controller implements Initializable{
 	@FXML private Text TextAlert;
 	@FXML private Text textTerminal;
 	@FXML private ToggleButton toggleObs;    
-	@FXML private Button buttonDiscover;
+	@FXML private ToggleButton toggleDiscover;
 	@FXML private Button buttonGet;
 	@FXML private Button buttonObs;
 	@FXML private ListView<String> listViewNeighbors;
@@ -94,52 +98,85 @@ public class Controller implements Initializable{
 	@FXML
 	private void mainController(ActionEvent event)   {
 
-		//Se o campo da URL estiver vazio, exibe alerta ao usuário pedindo que insira uma URL
-		if(textFieldURL.getText().isEmpty()) {
+		//Se o campo da URL estiver vazio com botão selecionado, exibe alerta ao usuário pedindo URL
+		if(textFieldURL.getText().isEmpty() && toggleDiscover.isSelected()) {
 
-			new AlertsDialog(Alert.AlertType.INFORMATION,"Insira uma URL válida",ButtonType.CLOSE);
+			toggleDiscover.setSelected(false);
 
-		}else {
+			new AlertsDialog(Alert.AlertType.INFORMATION,"Insert a valid URL",ButtonType.CLOSE);
 
-			WgetJava obj = new WgetJava();
-			RoutesMotes routes = new RoutesMotes();
-			ResourcesMotes res = new ResourcesMotes();
+			//se URL digitada e o botão estiver selecionado
+		}else if(!textFieldURL.getText().isEmpty() && toggleDiscover.isSelected()){
+
+			toggleDiscover.setSelected(true);
 
 			//Captura a URL do Border Router digitada
 			urlBorderRouter=textFieldURL.getText();
 
-			//Armazena  URL do Border Router
-			obj.setUrl(urlBorderRouter);
-
 			//Busca  informações dos motes e rotas via GET
-			getInformation(obj, routes, res);
+			getInformation(urlBorderRouter);
 
 			//Cria um thread para gerar clusters no gráfico
-			//new ThreadCluster(this,routes);			
+			//new ThreadCluster(this,routes);
+
+			//se botão não estive selecionado (De ligado para desligado)
+		}else if(!toggleDiscover.isSelected()) {
+
+			toggleDiscover.setSelected(true);
+
+			//Pergunta ao usuário se encerra a conexão com a rede
+			AlertsDialog alertInterrupt = new AlertsDialog(AlertType.CONFIRMATION);
+			alertInterrupt.setContentText("Do you want to stop the connection with network?");
+
+			Optional<ButtonType> result = alertInterrupt.showAndWait();
+
+			//Se usuário escolher sim, finaliza a conexão com a rede e limpa os dados
+			if(result.get()== ButtonType.OK) {
+				toggleDiscover.setSelected(false);
+				getData.interrupt();
+				clearGUI();
+
+			}else {
+				toggleDiscover.setSelected(true);
+			}
 		}
 	}
 
 	/**
 	 * Cria um thread e faz requisições sobre os motes e rotas a cada minuto.
 	 * 
-	 * @param obj objeto da classe WgetJava
-	 * @param routes objeto da classe RoutesMotes
-	 * @param res objeto da classe ResourcesMotes
-	 * 
+	 * @param urlBorderRouter URL digitada na GUI
 	 */
-	private void getInformation(WgetJava obj, RoutesMotes routes, ResourcesMotes res) {
+	private void getInformation(String urlBorderRouter) {
 
-		Thread getData = new Thread(new Runnable() {
+		getData = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
+
+				WgetJava obj = new WgetJava();
+				RoutesMotes routes = new RoutesMotes();
+				ResourcesMotes res = new ResourcesMotes();
+
+				//Armazena  URL do Border Router
+				obj.setUrl(urlBorderRouter);
+
 				try {
 					while(true) {
+
 						//Faz o pedido ao Border Router da informação e armazena
 						obj.sendGET();
 						treatmentOfInformation(obj,routes);
-						showIPs(routes,res);
-						showRoutes(routes);	
+
+						Platform.runLater(new Runnable() {
+
+							@Override
+							public void run() {
+								//Exibe na GUI
+								showIPs(routes,res);
+								showRoutes(routes);								
+							}
+						});	
 
 						//Thread pausa por 1 minuto e volta ao começo
 						Thread.sleep(60000);
@@ -161,6 +198,10 @@ public class Controller implements Initializable{
 
 					DefineAlertsDialog("Communication failure",e);
 
+				} catch (InterruptedException e) {
+
+					return;
+
 				}catch(Exception e) {
 
 					DefineAlertsDialog("Exception",e);
@@ -172,9 +213,21 @@ public class Controller implements Initializable{
 		}; 
 
 		//Inicia o thread
-		getData.start();				
+		getData.start();
+	}
 
-
+	/**
+	 * Limpa as informações de todos os campos da GUI.
+	 */
+	private void clearGUI() {
+		listViewInfoMote.getItems().clear();
+		listViewNeighbors.getItems().clear();
+		listViewGroup.getItems().clear();
+		textAreaRoutes.clear();
+		textAreaClusters.clear();
+		textAreaMetrics.clear();
+		scatterChartGraphic.getData().remove(0,scatterChartGraphic.getData().size());
+		labelTerminal.setText("");
 	}
 
 	/**
@@ -188,6 +241,9 @@ public class Controller implements Initializable{
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
+
+				toggleDiscover.setSelected(false);				
+
 				if(error.equalsIgnoreCase("Exception")) {
 					new AlertsDialog(e);
 				}else {
@@ -446,7 +502,7 @@ public class Controller implements Initializable{
 	 * @param option false para exibir parte da GUI
 	 */
 	public void disableNodes(boolean option ) {
-		buttonDiscover.setDisable(option);
+		toggleDiscover.setDisable(option);
 		buttonGet.setDisable(option);
 		listViewNeighbors.setDisable(option);
 		listViewInfoMote.setDisable(option);
