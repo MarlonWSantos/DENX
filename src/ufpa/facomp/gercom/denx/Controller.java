@@ -166,6 +166,7 @@ public class Controller implements Initializable{
 				WgetJava obj = new WgetJava();
 				RoutesMotes routes = new RoutesMotes();
 				ResourcesMotes res = new ResourcesMotes();
+				BridgeCoapCluster bridge = new BridgeCoapCluster();
 
 				//Armazena  URL do Border Router
 				obj.setUrl(urlBorderRouter);
@@ -183,7 +184,8 @@ public class Controller implements Initializable{
 							public void run() {
 								//Exibe na GUI
 								showIPs(routes,res);
-								showRoutes(routes);								
+								showRoutes(routes);
+								bridge.FindActivesMotes(routes, res);
 							}
 						});	
 
@@ -814,6 +816,12 @@ public class Controller implements Initializable{
 		textAreaMetrics.setText(infoMetrics.toString());
 	}
 	
+	/**
+	 * Abre a janela do sistema para escolha de um arquivo para carregar. 
+	 *  
+	 * @param event clique no botão da GUI
+	 */
+	
     @FXML
     private void openFile(ActionEvent event) {
     	
@@ -823,17 +831,26 @@ public class Controller implements Initializable{
 		
 		if(selectedFile != null) {
 			labelOpenFile.setText(selectedFile.getName().toString());
-			Cluster cluster = new Cluster();
+			BridgeCoapCluster bridge = new BridgeCoapCluster();
 			System.out.println(selectedFile.getAbsolutePath());
 			try {
-				cluster.createClusters(selectedFile.getAbsolutePath());
+				
+				bridge.loadCoordinatesFile(selectedFile.getAbsolutePath());
+				
+			}catch (FileNotFoundException e) {
+				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
     }
     
+    /**
+     * Define o local onde o arquivo será salvo.
+     * 
+	 * @param event clique no botão da GUI
+     */
     @FXML
     private void saveFile(ActionEvent event) {
     	

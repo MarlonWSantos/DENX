@@ -56,7 +56,7 @@ public class Cluster {
 	protected static int numberClusters;
 
 	/******************************************************************************/
-	
+		//TODO mover para fora da classe cluster, enviar somente a lista pra classe
 	/**
 	 * Pega a lista de IPs ativos já armazenados na plataforma.
 	 * 
@@ -69,7 +69,7 @@ public class Cluster {
 		lista.toArray(IPs);	
 	}
 	/******************************************************************************/
-	
+		//TODO remover esse método
 	/** 
 	 * Converte de CSV para um array na memória a lista de IPs gerados pelo cooja. 
 	 *  
@@ -97,7 +97,7 @@ public class Cluster {
 		}
 	}
 	/******************************************************************************/
-	
+		//TODO modificar pra reutilizar
 	/**
 	 * Lê o IP ativo da lista e busca no arquivo gerado pelo cooja suas coordenadas
 	 * 
@@ -122,7 +122,7 @@ public class Cluster {
 		}
 	}
 	/******************************************************************************/
-	
+			//TODO remover esse métodoj
 	/**
 	 * Salva em CSV a lista com os IPs ativos e respectivas coordenadas.
 	 * 	
@@ -144,7 +144,7 @@ public class Cluster {
 		br.close();
 	}
 	/******************************************************************************/
-	
+			//TODO remover esse método
 	/**
 	 * Carrega o arquivo CSV com os IPs ativos e suas coordenadas e converte para ARFF. 
 	 * 
@@ -157,7 +157,7 @@ public class Cluster {
 		data = loader.getDataSet();
 	}
 	/******************************************************************************/
-	
+			//TODO remover esse método
 	/**
 	 * Carrega os dados com os IPs ativos e salva em formato ARFF. 
 	 * 
@@ -179,11 +179,10 @@ public class Cluster {
 	 * @param control permite o envio da informação para GUI
 	 * @throws Exception em caso de erro na leitura do arquivo
 	 */
-	public void createClusters(Controller control) throws Exception {
+	public void createClusters(BufferedReader datafile) throws Exception {
 
 		SimpleKMeans kmeans = new SimpleKMeans();
 		
-		BufferedReader datafile = readDataFile(PATH_ARFF_FILE);
 		Instances dataForCluster = new Instances(datafile);
 
 		numberClusters = elbow(dataForCluster);
@@ -192,7 +191,7 @@ public class Cluster {
 		kmeans.setPreserveInstancesOrder(true);
 		kmeans.setNumClusters(numberClusters);
 
-		graphic.createSerieCluster(numberClusters);
+		//graphic.createSerieCluster(numberClusters);
 		
 		kmeans.buildClusterer(dataForCluster);
 
@@ -208,28 +207,31 @@ public class Cluster {
 		for(int clusterNum : assignments) {
 			
 			infoCluster=String.format("Instance %d -> Cluster %d \n", i, clusterNum+1);
-			infoMote=String.format("%s",motesActives.get(mote));
+			//infoMote=String.format("%s",motesActives.get(mote));
 
 			infoKmeans.append(infoCluster);
-			infoKmeans.append(infoMote);
-			infoKmeans.append("\n\n");
+			//infoKmeans.append(infoMote);
+			//infoKmeans.append("\n\n");
 
-			coordX=Double.parseDouble(motesActives.get(mote).get(1));
-			coordY=Double.parseDouble(motesActives.get(mote).get(2));
+			//coordX=Double.parseDouble(motesActives.get(mote).get(1));
+			//coordY=Double.parseDouble(motesActives.get(mote).get(2));
 
-			graphic.setCoordinatesSeries(coordX, coordY,clusterNum);
+			//graphic.setCoordinatesSeries(coordX, coordY,clusterNum);
 				
 			i++;
 			mote++;
 		}
+		System.out.println(infoKmeans.toString());
 
-		Platform.runLater(new Runnable() {
 
-			@Override
-			public void run() {
-				control.showInformationCluster(infoKmeans);					
-			}
-		});
+//		Platform.runLater(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				//control.showInformationCluster(infoKmeans);	
+//				System.out.println(infoKmeans);
+//			}
+//		});
 
 	}
 	/******************************************************************************/
