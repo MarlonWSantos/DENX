@@ -1,5 +1,6 @@
 package ufpa.facomp.gercom.denx;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -9,6 +10,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -33,6 +35,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 
 /**
@@ -89,6 +93,11 @@ public class Controller implements Initializable{
 	@FXML private Text textClusers;
 	@FXML private TextArea textAreaMetrics;
 	@FXML private Text textMetrics;
+	@FXML private Label labelOpenFile;
+	@FXML private Label labelSaveFile;
+	@FXML private Button buttonOpenFile;
+	@FXML private Button buttonSaveFile;
+
 
 	/**
 	 * Controla e chama as demais funções da aplicação.
@@ -804,6 +813,40 @@ public class Controller implements Initializable{
 
 		textAreaMetrics.setText(infoMetrics.toString());
 	}
+	
+    @FXML
+    private void openFile(ActionEvent event) {
+    	
+    	FileChooser fc = new FileChooser();
+		fc.getExtensionFilters().addAll(new ExtensionFilter("ARFF File","*.arff"));
+		File selectedFile = fc.showOpenDialog(null);
+		
+		if(selectedFile != null) {
+			labelOpenFile.setText(selectedFile.getName().toString());
+			Cluster cluster = new Cluster();
+			System.out.println(selectedFile.getAbsolutePath());
+			try {
+				cluster.createClusters(selectedFile.getAbsolutePath());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+    }
+    
+    @FXML
+    private void saveFile(ActionEvent event) {
+    	
+    	FileChooser fc = new FileChooser();
+		fc.getExtensionFilters().addAll(new ExtensionFilter("TXT File","*.txt"));
+		File selectedFile = fc.showSaveDialog(null);		
+		
+		if(selectedFile != null) {
+			labelSaveFile.setText(selectedFile.getName().toString());
+			Cluster cluster = new Cluster();
+			System.out.println(selectedFile.getAbsolutePath());			
+		}
+    }
 
 	/**
 	 * Inicializa a plataforma com o campo Observe Group desabilitado.
