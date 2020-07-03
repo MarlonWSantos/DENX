@@ -119,5 +119,7 @@
       <Separator layoutX="699.0" layoutY="325.0" prefWidth="320.0" />
       <Separator layoutX="11.0" layoutY="500.0" prefWidth="680.0" />
       <Text fx:id="textMetrics" layoutX="524.0" layoutY="521.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Metrics" />
+      <Button fx:id="buttonOpenFile" layoutX="715.0" layoutY="692.0" mnemonicParsing="false" onAction="#openFile" text="Load Coordinates" />
+      <Label fx:id="labelOpenFile" layoutX="852.0" layoutY="692.0" prefHeight="26.0" prefWidth="156.0" />
    </children>
 </AnchorPane>
