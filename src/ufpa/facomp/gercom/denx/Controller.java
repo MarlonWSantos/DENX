@@ -186,8 +186,10 @@ public class Controller implements Initializable{
 								//Exibe na GUI
 								showIPs(routes,res);
 								showRoutes(routes);
+								
 								//Inicia processo de clusters
 								bridge.FindActivesMotes(routes, res);
+								
 								//Se houver info de clusters, exibe na GUI
 								if(cluster.getInfoClusters() != null) {
 									showInformationCluster(cluster.getInfoClusters());
@@ -838,10 +840,8 @@ public class Controller implements Initializable{
 		
 		if(selectedFile != null) {
 			labelOpenFile.setText(selectedFile.getName().toString());
-			BridgeCoapCluster bridge = new BridgeCoapCluster();
-			System.out.println(selectedFile.getAbsolutePath());
-				
-				bridge.savePathFile(selectedFile.getAbsolutePath());
+			BridgeCoapCluster bridge = new BridgeCoapCluster();				
+			bridge.savePathFile(selectedFile.getAbsolutePath());
 		}
     }
     
@@ -860,7 +860,6 @@ public class Controller implements Initializable{
 		if(selectedFile != null) {
 			labelSaveFile.setText(selectedFile.getName().toString());
 			Cluster cluster = new Cluster();
-			System.out.println(selectedFile.getAbsolutePath());			
 		}
     }
 
