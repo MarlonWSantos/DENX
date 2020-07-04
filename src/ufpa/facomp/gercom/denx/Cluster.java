@@ -41,6 +41,7 @@ public class Cluster {
 	/** Número de clusters. */
 	protected static int numberClusters;
 
+	/** Armazena a informações dos clusters gerada pelo kmeans. */
 	static StringBuilder infoKmeans;
 	
 
@@ -48,9 +49,9 @@ public class Cluster {
 	/********************************************************************************/
 
 	/**
-	 * Carrega o arquivo ARFF e cria os clusters com base nos dados dos IPs e coordenadas.
+	 * Cria os clusters com base nos dados dos IPs e coordenadas.
 	 * 
-	 * @param control permite o envio da informação para GUI
+	 * @param datafile datasetcom os ips e coordenadas
 	 * @throws Exception em caso de erro na leitura do arquivo
 	 */
 	public void createClusters(BufferedReader datafile) throws Exception {
@@ -80,21 +81,19 @@ public class Cluster {
 		for(int clusterNum : assignments) {
 
 			infoCluster=String.format("Instance %d -> Cluster %d \n", i, clusterNum+1);
-			//infoMote=String.format("%s",motesActives.get(mote));
-
+			infoMote=String.format("%s",dataForCluster.get(mote));
 			infoKmeans.append(infoCluster);
-			//infoKmeans.append(infoMote);
-			//infoKmeans.append("\n\n");
-
-			//coordX=Double.parseDouble(motesActives.get(mote).get(1));
-			//coordY=Double.parseDouble(motesActives.get(mote).get(2));
+			infoKmeans.append(infoMote);
+			infoKmeans.append("\n\n");
+			
+			coordX=dataForCluster.get(mote).value(1);
+			coordY=dataForCluster.get(mote).value(2);
 
 			//graphic.setCoordinatesSeries(coordX, coordY,clusterNum);
 
 			i++;
 			mote++;
 		}
-		System.out.println(infoKmeans.toString());
 	}
 	/******************************************************************************/	
 
@@ -193,6 +192,11 @@ public class Cluster {
 		}
 	}
 	
+	/** 
+	 * Retorna as informações do Kmeans.
+	 * 
+	 * @return infoKmeans informação dos clusters gerados
+	 */  
 	public StringBuilder getInfoClusters() {		
 		
 		return infoKmeans;
