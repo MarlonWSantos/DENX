@@ -167,6 +167,7 @@ public class Controller implements Initializable{
 				RoutesMotes routes = new RoutesMotes();
 				ResourcesMotes res = new ResourcesMotes();
 				BridgeCoapCluster bridge = new BridgeCoapCluster();
+				Cluster cluster = new Cluster();
 
 				//Armazena  URL do Border Router
 				obj.setUrl(urlBorderRouter);
@@ -185,7 +186,13 @@ public class Controller implements Initializable{
 								//Exibe na GUI
 								showIPs(routes,res);
 								showRoutes(routes);
+								//Inicia processo de clusters
 								bridge.FindActivesMotes(routes, res);
+								//Se houver info de clusters, exibe na GUI
+								if(cluster.getInfoClusters() != null) {
+									showInformationCluster(cluster.getInfoClusters());
+								}
+								
 							}
 						});	
 
