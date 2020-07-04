@@ -839,9 +839,11 @@ public class Controller implements Initializable{
 				
 			}catch (FileNotFoundException e) {
 				
+				new AlertsDialog(AlertType.ERROR,"Failed to access the file Coordinates",ButtonType.CLOSE);
+				
 			} catch (Exception e) {
 				
-				e.printStackTrace();
+				new AlertsDialog(e);
 			}
 		}
     }
