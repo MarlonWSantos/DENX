@@ -75,7 +75,7 @@ public class ThreadCluster implements Runnable{
 					cluster.saveARFF();
 
 					//Carrega o arquivo ARFF e cria os clusters com base nos dados dos IPs e coordenadas 
-					cluster.createClusters(control);
+				//	cluster.createClusters(control);
 
 
 					Platform.runLater(new Runnable() {

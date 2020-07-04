@@ -16,7 +16,8 @@ public class BridgeCoapCluster {
 	static ArrayList<String> listIP  = new ArrayList<String>();
 	static BufferedReader contentFile;
 	static Boolean dataSetLoaded=false;
-
+	static String path;
+	
 	public void FindActivesMotes(RoutesMotes routes,ResourcesMotes res) {
 
 		if (!listIP.isEmpty()) {
@@ -30,17 +31,25 @@ public class BridgeCoapCluster {
 		listIP.addAll(res.getCoapIPs());
 		
 		if(listIP.size()>0 && dataSetLoaded) {
+			loadCoordinatesFile();
 			motesActivesOnDataSet();
 		}
 	}
 	
-
-
-	public void loadCoordinatesFile(String path) throws FileNotFoundException {
-
-		contentFile = new BufferedReader(new FileReader(path));
-		
+	public void savePathFile(String pathFile) {
+		path=pathFile;
 		dataSetLoaded = true;
+	}
+
+	public void loadCoordinatesFile(){
+
+		try {
+			contentFile = new BufferedReader(new FileReader(path));
+		} catch (FileNotFoundException e) {
+			
+			new AlertsDialog(AlertType.ERROR,"Failed to access the file Coordinates",ButtonType.CLOSE);
+		}
+		
 
 	}
 

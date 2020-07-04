@@ -833,18 +833,8 @@ public class Controller implements Initializable{
 			labelOpenFile.setText(selectedFile.getName().toString());
 			BridgeCoapCluster bridge = new BridgeCoapCluster();
 			System.out.println(selectedFile.getAbsolutePath());
-			try {
 				
-				bridge.loadCoordinatesFile(selectedFile.getAbsolutePath());
-				
-			}catch (FileNotFoundException e) {
-				
-				new AlertsDialog(AlertType.ERROR,"Failed to access the file Coordinates",ButtonType.CLOSE);
-				
-			} catch (Exception e) {
-				
-				new AlertsDialog(e);
-			}
+				bridge.savePathFile(selectedFile.getAbsolutePath());
 		}
     }
     
