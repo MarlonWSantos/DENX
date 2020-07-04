@@ -53,39 +53,39 @@ public class ThreadCluster implements Runnable{
 				//Se existir o arquivo CSV no path indicado
 				if (file.exists()){
 
-					//Pega a lista de IPs ativos já armazenados na plataforma
-					cluster.getIPsActivesMotes(routes);
-
-					//Converte de CSV para um array na memória a lista de IPs gerados pelo cooja 
-					cluster.convertCSV2Array();
-
-					//Lê o IP ativo da lista e busca no arquivo gerado pelo cooja suas coordenadas
-					cluster.readEndAddressFindData();
-
-					//Busca e armazena IPs e coordenadas de toda a rede de motes ativos
-					cluster.calculateMetricNetwork();
-
-					//Salva em CSV a lista com os IPs ativos e respectivas coordenadas
-					cluster.savingActivesMotesInCSV();
-
-					//Carrega o arquivo CSV com os IPs ativos e suas coordenadas e converte para ARFF
-					cluster.loadCSV();
-
-					//Carrega os dados com os IPs ativos e salva em formato ARFF
-					cluster.saveARFF();
-
-					//Carrega o arquivo ARFF e cria os clusters com base nos dados dos IPs e coordenadas 
-				//	cluster.createClusters(control);
-
-
-					Platform.runLater(new Runnable() {
-
-						@Override
-						public void run() {
-							//Chama a função que carrega os dados e insere no gráfico na GUI
-							control.LoadGraphic();							
-						}
-					});
+//					//Pega a lista de IPs ativos já armazenados na plataforma
+//					cluster.getIPsActivesMotes(routes);
+//
+//					//Converte de CSV para um array na memória a lista de IPs gerados pelo cooja 
+//					cluster.convertCSV2Array();
+//
+//					//Lê o IP ativo da lista e busca no arquivo gerado pelo cooja suas coordenadas
+//					cluster.readEndAddressFindData();
+//
+//					//Busca e armazena IPs e coordenadas de toda a rede de motes ativos
+//					cluster.calculateMetricNetwork();
+//
+//					//Salva em CSV a lista com os IPs ativos e respectivas coordenadas
+//					cluster.savingActivesMotesInCSV();
+//
+//					//Carrega o arquivo CSV com os IPs ativos e suas coordenadas e converte para ARFF
+//					cluster.loadCSV();
+//
+//					//Carrega os dados com os IPs ativos e salva em formato ARFF
+//					cluster.saveARFF();
+//
+//					//Carrega o arquivo ARFF e cria os clusters com base nos dados dos IPs e coordenadas 
+//				//	cluster.createClusters(control);
+//
+//
+//					Platform.runLater(new Runnable() {
+//
+//						@Override
+//						public void run() {
+//							//Chama a função que carrega os dados e insere no gráfico na GUI
+//							control.LoadGraphic();							
+//						}
+//					});
 
 					//Cria um thread para calcular as métricas
 					///new ThreadMetrics(control);
@@ -98,8 +98,8 @@ public class ThreadCluster implements Runnable{
 
 		} catch (InterruptedException e) {
 			new AlertsDialog(AlertType.ERROR,"Thread Interrupted",ButtonType.CLOSE);	
-		} catch (IOException e) {
-			new AlertsDialog(AlertType.ERROR, "Communication failure", ButtonType.CLOSE);
+//		} catch (IOException e) {
+//			new AlertsDialog(AlertType.ERROR, "Communication failure", ButtonType.CLOSE);
 		}catch (Exception e) {
 			new AlertsDialog(e);
 		}
