@@ -26,6 +26,7 @@ import java.io.File;
  * para dentro da plataforma. 
  */
 
+
 public class Cluster {
 
 	/** Informação dos motes. */
@@ -39,6 +40,9 @@ public class Cluster {
 
 	/** Número de clusters. */
 	protected static int numberClusters;
+
+	static StringBuilder infoKmeans;
+	
 
 
 	/********************************************************************************/
@@ -54,7 +58,6 @@ public class Cluster {
 		SimpleKMeans kmeans = new SimpleKMeans();
 
 		Instances dataForCluster = new Instances(datafile);
-
 		numberClusters = elbow(dataForCluster);
 
 		kmeans.setSeed(10);
@@ -65,7 +68,7 @@ public class Cluster {
 
 		kmeans.buildClusterer(dataForCluster);
 
-		StringBuilder infoKmeans = new StringBuilder();
+		infoKmeans = new StringBuilder();
 		String infoCluster;
 		String infoMote;
 
@@ -92,17 +95,6 @@ public class Cluster {
 			mote++;
 		}
 		System.out.println(infoKmeans.toString());
-
-
-//				Platform.runLater(new Runnable() {
-//					Controller control = new Controller();
-//
-//					@Override
-//					public void run() {
-//						control.showInformationCluster(infoKmeans);	
-//						System.out.println(infoKmeans);
-//					}
-//				});
 	}
 	/******************************************************************************/	
 
@@ -199,5 +191,10 @@ public class Cluster {
 			coordY=Double.parseDouble(motesActives.get(i).get(2));
 			graphic.setCoordinatesSeriesNetwork(coordX,coordY);
 		}
+	}
+	
+	public StringBuilder getInfoClusters() {		
+		
+		return infoKmeans;
 	}
 }
