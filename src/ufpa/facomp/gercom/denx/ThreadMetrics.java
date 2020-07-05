@@ -2,14 +2,14 @@ package ufpa.facomp.gercom.denx;
 
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Classe responsável por criar threads para calculo da métrica de cada cluster.
  */
 public class ThreadMetrics implements Runnable {
-	
-	/** Objeto da classe Controller. */
-	protected Controller control;
+
 	
 	/** Thread para cálculo da métrica da rede. */
 	private static Thread NetworkMetric;
@@ -52,8 +52,9 @@ public class ThreadMetrics implements Runnable {
 	 * 
 	 * @throws InterruptedException em caso de interrupção do thread
 	 */
-	public ThreadMetrics(Controller control) throws InterruptedException {
-		this.control=control;
+	public ThreadMetrics(){
+		
+		try {
 
 		//Apaga se houve alguma informação
 		infoMetrics.delete(0, infoMetrics.length());
@@ -66,7 +67,11 @@ public class ThreadMetrics implements Runnable {
 
 		createThreadsToCalculateMetrics(numberClusters);
 
-		defineThreadStarts(numberClusters);	
+		defineThreadStarts(numberClusters);
+	
+		} catch (InterruptedException e) {
+			new AlertsDialog(AlertType.ERROR,"Error when calculate metrics.", ButtonType.CLOSE);
+		}	
 
 	}
 
@@ -96,6 +101,8 @@ public class ThreadMetrics implements Runnable {
 	 * @param numberClusters número de clusters que foram criados
 	 */
 	public void createThreadsToCalculateMetrics(int numberClusters) {
+		
+		ClusterMetric = new Thread[numberClusters];
 
 		int count=1;
 		for(int i=0;i<numberClusters;i++) {
@@ -129,10 +136,10 @@ public class ThreadMetrics implements Runnable {
 		XYChart.Series<Number, Number> dataSeries = null;
 
 		switch(Thread.currentThread().getName()) {
-//		case "Thread NetworkMetric":
-//			dataSeries =  Cluster.graphic.getCoordinateSeriesNetwork();
-//			indexMetric = 0;
-//			break;
+		case "Thread NetworkMetric":
+			dataSeries =  Cluster.graphic.getCoordinateSeriesNetwork();
+			indexMetric = 0;
+			break;
 		case "Thread ClusterMetric 1":
 			dataSeries =  Cluster.graphic.getCoordinateSeries(1);
 			indexMetric = 1;
@@ -260,15 +267,7 @@ public class ThreadMetrics implements Runnable {
 
 			//Armazena as informações da métrica
 			saveInformationMetric(metric[indexMetric],areaCluster,resultMetric,resultMovAVG);
-			
-			Platform.runLater(new Runnable() {
-
-				@Override
-				public void run() {
-					//Envia as informações da métrica para a GUI
-					control.showInformationMetrics(infoMetrics);				
-				}
-			});		
+	
 		}
 	}
 
@@ -297,5 +296,9 @@ public class ThreadMetrics implements Runnable {
 			infoMetrics.append("Result Metric for Cluster: "+resultMetric+"\n");
 			infoMetrics.append("Moving Average(Last 5 min.): "+movingAverage+"\n\n");
 		}
+	}
+	
+	public StringBuilder getInfoMetrics() {
+		return infoMetrics;
 	}
 }
