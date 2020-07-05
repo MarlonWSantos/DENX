@@ -173,24 +173,7 @@ public class Cluster {
 
 		return distance;
 	}
-
-	/******************************************************************************/
-
-	/**
-	 * Calcula a métrica da rede inteira. 
-	 */
-	public void calculateMetricNetwork(){
-		double coordX=0;
-		double coordY=0;
-
-		graphic.createSerieNetwork();
-
-		for(int i=0;i<motesActives.size();i++) {
-			coordX=Double.parseDouble(motesActives.get(i).get(1));
-			coordY=Double.parseDouble(motesActives.get(i).get(2));
-			graphic.setCoordinatesSeriesNetwork(coordX,coordY);
-		}
-	}
+	
 	
 	/** 
 	 * Retorna as informações do Kmeans.
