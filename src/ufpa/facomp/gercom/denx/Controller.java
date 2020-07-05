@@ -195,6 +195,10 @@ public class Controller implements Initializable{
 									showInformationCluster(cluster.getInfoClusters());
 									//Exibe também o gráfico
 									LoadGraphic();
+									ThreadMetrics metrics = new ThreadMetrics();
+									if(metrics.getInfoMetrics() != null) {
+										showInformationMetrics(metrics.getInfoMetrics());
+									}
 								}													
 							}
 						});	
@@ -528,6 +532,7 @@ public class Controller implements Initializable{
 		listViewNeighbors.setDisable(option);
 		listViewInfoMote.setDisable(option);
 		checkObsGroup.setDisable(option);
+		buttonOpenFile.setDisable(option);
 	}
 
 
