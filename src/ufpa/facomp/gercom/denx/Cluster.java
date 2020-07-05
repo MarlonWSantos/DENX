@@ -64,6 +64,8 @@ public class Cluster {
 		kmeans.setSeed(10);
 		kmeans.setPreserveInstancesOrder(true);
 		kmeans.setNumClusters(numberClusters);
+		
+		calculateMetricNetwork(dataForCluster);
 
 		graphic.createSerieCluster(numberClusters);
 
@@ -183,5 +185,22 @@ public class Cluster {
 	public StringBuilder getInfoClusters() {		
 		
 		return infoKmeans;
+	}
+	
+	
+	/**
+	 * Calcula a métrica da rede inteira. 
+	 */
+	public void calculateMetricNetwork(Instances dataForCluster){
+		double coordX=0;
+		double coordY=0;
+
+		graphic.createSerieNetwork();
+
+		for(int i=0;i<dataForCluster.size();i++) {
+			coordX=dataForCluster.get(i).value(1);
+			coordY=dataForCluster.get(i).value(2);
+			graphic.setCoordinatesSeriesNetwork(coordX,coordY);
+		}
 	}
 }
