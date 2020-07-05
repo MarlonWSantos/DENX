@@ -193,8 +193,9 @@ public class Controller implements Initializable{
 								//Se houver info de clusters, exibe na GUI
 								if(cluster.getInfoClusters() != null) {
 									showInformationCluster(cluster.getInfoClusters());
-								}
-								
+									//Exibe também o gráfico
+									LoadGraphic();
+								}													
 							}
 						});	
 
