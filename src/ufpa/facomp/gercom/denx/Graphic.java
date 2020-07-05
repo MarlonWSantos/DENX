@@ -9,22 +9,10 @@ import javafx.scene.chart.XYChart;
  */
 
 public class Graphic {
-
-	
-	/** Armazena coordenadas de todos os motes ativos da rede. */
-	private XYChart.Series<Number, Number> seriesNetwork;
 	
 	/** Array armazena coordenadas dos motes dos clusters. */
 	private XYChart.Series<Number,Number>[] series;
 
-	
-	/**
-	 * Cria série que armazena coordenadas de todos motes ativos da rede. 
-	 */
-	public void createSerieNetwork() {
-		seriesNetwork = new XYChart.Series<>();
-		seriesNetwork.setName("Network ");
-	}
 
 	/**
 	 * Cria série(s) que armazena(m) coordenadas dos motes do(s) respectivo(s) cluster(s).
@@ -43,16 +31,6 @@ public class Graphic {
 		}
 	}
 
-	/**
-	 * Insere coordenadas dos motes ativos da rede.
-	 *  
-	 * @param X coordenada x do mote
-	 * @param Y coordenada y do mote
-	 */
-	public void setCoordinatesSeriesNetwork(double X,double Y) {
-		seriesNetwork.getData().add(new XYChart.Data<>(X, Y));
-	}
-
 
 	/**
 	 * Insere coordenadas do(s) cluster(s) na(s) série(s) 
@@ -66,15 +44,6 @@ public class Graphic {
 		
 	}
 
-
-	/**
-	 * Retorna as coordenadas dos motes ativos da rede.
-	 *  
-	 * @return seriesNetwork coordenadas de motes ativos
-	 */
-	public XYChart.Series<Number, Number> getCoordinateSeriesNetwork() {
-		return seriesNetwork;
-	}
 
 	/**
 	 * Retorna as coordenadas do cluster definido.
