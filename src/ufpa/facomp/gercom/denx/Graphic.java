@@ -33,6 +33,9 @@ public class Graphic {
 	 */
 	public void createSerieCluster(int numberClusters) {
 		int count=1;
+		
+		series = new XYChart.Series[numberClusters];
+		
 		for(int i=0;i<numberClusters;i++) {
 			series[i] = new XYChart.Series<>();
 			series[i].setName("Cluster "+count+" ");
