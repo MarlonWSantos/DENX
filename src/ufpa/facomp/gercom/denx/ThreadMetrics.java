@@ -129,10 +129,10 @@ public class ThreadMetrics implements Runnable {
 		XYChart.Series<Number, Number> dataSeries = null;
 
 		switch(Thread.currentThread().getName()) {
-		case "Thread NetworkMetric":
-			dataSeries =  Cluster.graphic.getCoordinateSeriesNetwork();
-			indexMetric = 0;
-			break;
+//		case "Thread NetworkMetric":
+//			dataSeries =  Cluster.graphic.getCoordinateSeriesNetwork();
+//			indexMetric = 0;
+//			break;
 		case "Thread ClusterMetric 1":
 			dataSeries =  Cluster.graphic.getCoordinateSeries(1);
 			indexMetric = 1;
