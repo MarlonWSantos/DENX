@@ -65,7 +65,7 @@ public class Cluster {
 		kmeans.setPreserveInstancesOrder(true);
 		kmeans.setNumClusters(numberClusters);
 
-		//graphic.createSerieCluster(numberClusters);
+		graphic.createSerieCluster(numberClusters);
 
 		kmeans.buildClusterer(dataForCluster);
 
@@ -89,7 +89,7 @@ public class Cluster {
 			coordX=dataForCluster.get(mote).value(1);
 			coordY=dataForCluster.get(mote).value(2);
 
-			//graphic.setCoordinatesSeries(coordX, coordY,clusterNum);
+			graphic.setCoordinatesSeries(coordX, coordY,clusterNum);
 
 			i++;
 			mote++;
