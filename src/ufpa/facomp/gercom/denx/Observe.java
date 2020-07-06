@@ -55,8 +55,8 @@ public class Observe{
 	/** Objeto da classe PrintStream. */
 	private static PrintStream file=null;
 
-	/** Arquivo com as informações da observação. */
-	private static String savePath = "/tmp/obsResult.txt"; //Caminho default para salvar dados da observação
+	/** URL do arquivo com as informações da observação. */
+	private static String savePath = null; //Caminho default para salvar dados da observação
 
 
 	/**
