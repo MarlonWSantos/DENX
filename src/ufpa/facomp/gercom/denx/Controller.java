@@ -79,8 +79,6 @@ public class Controller implements Initializable{
 	@FXML private ScrollPane scrollTerminal;
 	@FXML private CheckBox checkObsGroup;
 	@FXML private Text textGroups;
-	@FXML private Text textSaveto;
-	@FXML private TextField texFieldSaveTo;
 	@FXML private Button buttonAddItem;
 	@FXML private Button buttonRemoveItem;
 	@FXML private Button buttonClearGroup;
@@ -186,10 +184,10 @@ public class Controller implements Initializable{
 								//Exibe na GUI
 								showIPs(routes,res);
 								showRoutes(routes);
-								
+
 								//Inicia processo de clusters
 								bridge.FindActivesMotes(routes, res);
-								
+
 								//Se houver info de clusters, exibe na GUI
 								if(cluster.getInfoClusters() != null) {
 									showInformationCluster(cluster.getInfoClusters());
@@ -572,9 +570,7 @@ public class Controller implements Initializable{
 		buttonAddItem.setDisable(option);
 		buttonRemoveItem.setDisable(option);
 		buttonClearGroup.setDisable(option);
-		textSaveto.setOpacity(opacity);
-		texFieldSaveTo.setDisable(option);
-
+		buttonSaveFile.setDisable(option);
 	}
 
 	/**
@@ -664,27 +660,19 @@ public class Controller implements Initializable{
 	@FXML
 	private void obsGroup(ActionEvent event) {
 
-		//Se a lista de grupo não estive vazia, o botão selecionado e não observando
-		if(!listGroup.isEmpty() && toggleObsGroup.isSelected() && !isObserving){
+		Observe obs = new Observe();
+
+		if(obs.getSavePath() == null) {
+
+			new AlertsDialog(AlertType.WARNING,"Click on button 'Save to'\nand choose a path to save the log file",ButtonType.CLOSE);
+			//Não seleciona o botão Obs Group
+			toggleObsGroup.setSelected(false);
+			
+			//Se a lista de grupo não estive vazia, o botão selecionado e não observando
+		}else if(!listGroup.isEmpty() && toggleObsGroup.isSelected() && !isObserving){
 
 			try {
-
-				//Captura o caminho e nome do arquivo para salvar dados Obs
-				String pathToSave = texFieldSaveTo.getText();
-				Observe obs = new Observe();
-
-				//Se um caminho tiver sido digitado
-				if(!pathToSave.isEmpty()) {
-
-					//salva o caminho e cria nele um arquivo para armazenar os dados
-					obs.setSavePath(pathToSave);
-					obs.saveFileObs();
-
-					//do contrário, apenas cria um arquivo num caminho default
-				}else {
-
-					obs.saveFileObs();
-				}
+				obs.saveFileObs();				
 
 				//Muda flag para observando
 				isObserving=true;
@@ -718,11 +706,11 @@ public class Controller implements Initializable{
 
 			}catch(SecurityException e) {
 
-				new AlertsDialog(AlertType.ERROR,"Access denied to write to the file",ButtonType.CLOSE);
+				new AlertsDialog(AlertType.ERROR,"Access denied!\nSecurity violation!",ButtonType.CLOSE);
 
 			}catch(FileNotFoundException e) {
 
-				new AlertsDialog(AlertType.ERROR,"File path not found",ButtonType.CLOSE);
+				new AlertsDialog(AlertType.ERROR,"Access denied to write on the file",ButtonType.CLOSE);
 
 			}catch(IOException e) {
 
@@ -830,44 +818,45 @@ public class Controller implements Initializable{
 
 		textAreaMetrics.setText(infoMetrics.toString());
 	}
-	
+
 	/**
 	 * Abre a janela do sistema para escolha de um arquivo para carregar. 
 	 *  
 	 * @param event clique no botão da GUI
 	 */
-	
-    @FXML
-    private void openFile(ActionEvent event) {
-    	
-    	FileChooser fc = new FileChooser();
+
+	@FXML
+	private void openFile(ActionEvent event) {
+
+		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(new ExtensionFilter("ARFF File","*.arff"));
 		File selectedFile = fc.showOpenDialog(null);
-		
+
 		if(selectedFile != null) {
 			labelOpenFile.setText(selectedFile.getName().toString());
 			BridgeCoapCluster bridge = new BridgeCoapCluster();				
 			bridge.savePathFile(selectedFile.getAbsolutePath());
 		}
-    }
-    
-    /**
-     * Define o local onde o arquivo será salvo.
-     * 
+	}
+
+	/**
+	 * Define o local onde o arquivo será salvo.
+	 * 
 	 * @param event clique no botão da GUI
-     */
-    @FXML
-    private void saveFile(ActionEvent event) {
-    	
-    	FileChooser fc = new FileChooser();
+	 */
+	@FXML
+	private void saveFile(ActionEvent event) {
+
+		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(new ExtensionFilter("TXT File","*.txt"));
 		File selectedFile = fc.showSaveDialog(null);		
-		
+
 		if(selectedFile != null) {
 			labelSaveFile.setText(selectedFile.getName().toString());
-			Cluster cluster = new Cluster();
-		}
-    }
+			Observe obs = new Observe();
+			obs.setSavePath(selectedFile.getAbsolutePath().toString());
+		} 
+	}
 
 	/**
 	 * Inicializa a plataforma com o campo Observe Group desabilitado.
