@@ -1,36 +1,23 @@
 # DENX
 GUI Coap client
 
-
-# Tools
-## Download and install Eclipse IDE:
-https://www.eclipse.org/downloads/
-
-## Download and install Scene Builder for Java 8:
-https://gluonhq.com/products/scene-builder/
-
-### Direct link:
-https://gluonhq.com/products/scene-builder/download/scene-builder-linux-deb/
-
 # JavaFX install
-At eclipse installed, go to:
- Help > Eclipse marketplace > e(fx)clipse > Install
+- sudo apt install openjfx openjdk-8-jdk
 
-In the terminal:
- sudo apt install openjfx openjdk-8-jdk
+# Maven install
+- sudo apt install maven
 
-# Add dependences
-- weka/weka.jar
-- slf4j/slf4j-api-1.7.9.jar
-- slf4j/slf4j-nop-1.7.9.jar
-- Select the src of the Project and with menu mouse (click right button mouse), in Build path, click in Configure Build Path.
+# Dependences
+- weka-stable-3.8.4.jar
+- slf4j-api-1.7.9.jar
+- slf4j-nop-1.7.9.jar
 
-- Select Libraries > Add External JARs...
+# Maven
+- mvn clean compile
+- mvn package assembly:single
 
-- Select the dependences (weka, slf4j)
+# Run
+- java -cp target/DENX-1.0-SNAPSHOT.jar:Jar-file1.jar:Jar-file2: path.to.Main.class
 
-- Apply and Close
-
-# Vídeo
-https://youtu.be/8VnSkCtPwJM
-
+# Run with dependencies
+- java -cp target/DENX-1.0-SNAPSHOT-jar-with-dependencies.jar path.to.Main.class
